@@ -2503,6 +2503,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76a41b08905a8be42a9304889f03e44a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _prtAbr: 0
+  _prtObj: {fileID: 1558546003}
 --- !u!1 &778895871
 GameObject:
   m_ObjectHideFlags: 0
@@ -4791,7 +4793,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1558546005}
-  - component: {fileID: 1558546006}
   m_Layer: 0
   m_Name: Porta
   m_TagString: Untagged
@@ -4815,18 +4816,6 @@ Transform:
   - {fileID: 773144469}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1558546006
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1558546003}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76a41b08905a8be42a9304889f03e44a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1575411463
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,14 +2,38 @@ using UnityEngine;
 
 public class porta : MonoBehaviour
 {
-    private bool _aberta = false;
+    //====================== ESTADOS ======================
+    [Header("Estado da Porta")]
+    public bool _prtAbr = false;
 
+    //====================== REFERÊNCIAS ======================
+    [Header("Referências")]
+    public GameObject _prtObj; // objeto visual da porta
+
+    //====================== AWAKE ======================
+    public void Awake()
+    {
+        // inicia com a porta fechada
+        _prtAbr = false;
+    }
+
+    //====================== ABRIR / FECHAR ======================
+    // função que alterna entre abrir e fechar a porta
     public void AbrirPorta()
     {
-        if (!_aberta)
+        // se estiver fechada, abre
+        if (!_prtAbr)
         {
-            transform.Rotate(0f, 90f, 0f); // gira 90 graus no eixo Y
-            _aberta = true;
+            // gira o objeto da porta pra abrir (90° no eixo Y)
+            _prtObj.transform.Rotate(0f, 90f, 0f);
+            _prtAbr = true;
+        }
+        // se já estiver aberta, fecha
+        else
+        {
+            // gira de volta (fecha a porta)
+            _prtObj.transform.Rotate(0f, -90f, 0f);
+            _prtAbr = false;
         }
     }
 }
