@@ -2,38 +2,63 @@ using UnityEngine;
 
 public class porta : MonoBehaviour
 {
-    //====================== ESTADOS ======================
-    [Header("Estado da Porta")]
-    public bool _prtAbr = false;
-
     //====================== REFERÊNCIAS ======================
     [Header("Referências")]
-    public GameObject _prtObj; // objeto visual da porta
+    public Transform _prtObj; // objeto da porta (visualmente)
 
-    //====================== AWAKE ======================
-    public void Awake()
+    //====================== ESTADOS ======================
+    [Header("Estados")]
+    public bool _prtAbr = false; // se a porta está aberta
+    public bool _prtAnim = false; // se a porta está em animação
+
+    //====================== PARÂMETROS ======================
+    [Header("Parâmetros")]
+    public float _prtDur = 0.25f; // duração da animação
+
+    //====================== VARIÁVEIS INTERNAS ======================
+    private Quaternion _rotIni; // rotação inicial
+    private Quaternion _rotAlv; // rotação alvo
+    private float _tmpAnim;     // tempo atual da animação
+
+    //====================== UPDATE ======================
+    void Update()
     {
-        // inicia com a porta fechada
-        _prtAbr = false;
+        // verifica se tá animando
+        if (_prtAnim)
+        {
+            // avança o tempo
+            _tmpAnim += Time.deltaTime;
+
+            // calcula o tempo em porcentagem da animação
+            float _t = Mathf.Clamp01(_tmpAnim / _prtDur);
+
+            // rotaciona suavemente entre inicial e alvo
+            _prtObj.rotation = Quaternion.Slerp(_rotIni, _rotAlv, _t);
+
+            // se chegou ao final
+            if (_t >= 1f)
+            {
+                _prtAnim = false; // para animação
+                _prtAbr = !_prtAbr; // troca o estado da porta
+            }
+        }
     }
 
-    //====================== ABRIR / FECHAR ======================
-    // função que alterna entre abrir e fechar a porta
-    public void AbrirPorta()
+    //====================== ACIONAR PORTA ======================
+    public void AcionarPorta()
     {
-        // se estiver fechada, abre
-        if (!_prtAbr)
-        {
-            // gira o objeto da porta pra abrir (90° no eixo Y)
-            _prtObj.transform.Rotate(0f, 90f, 0f);
-            _prtAbr = true;
-        }
-        // se já estiver aberta, fecha
-        else
-        {
-            // gira de volta (fecha a porta)
-            _prtObj.transform.Rotate(0f, -90f, 0f);
-            _prtAbr = false;
-        }
+        // se já tá animando, ignora
+        if (_prtAnim) return;
+
+        // inicia animação
+        _prtAnim = true;
+        _tmpAnim = 0f;
+
+        // salva rotação atual
+        _rotIni = _prtObj.rotation;
+
+        // define rotação alvo (abre ou fecha)
+        float _angY = _prtAbr ? -90f : 90f;
+        _rotAlv = _rotIni * Quaternion.Euler(0f, _angY, 0f);
     }
 }

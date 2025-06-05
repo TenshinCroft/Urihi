@@ -143,12 +143,8 @@ public class Player : MonoBehaviour
                 porta porta = hit.GetComponent<porta>();
                 if (porta != null)
                 {
-                    porta.AbrirPorta();
+                    porta.AcionarPorta();
                     Debug.Log("Porta aberta: " + hit.name);
-                }
-                else
-                {
-                    Debug.Log("Porta não encontrada");
                 }
                 break;
             }
