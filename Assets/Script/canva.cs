@@ -22,7 +22,7 @@ public class canva : MonoBehaviour
             win.SetActive(true);
             Debug.Log("Venceu");
         }
-        if (inimigo.gameObject.GetComponent<Enemy>()._plyAtq && !lose.activeSelf)
+        if (inimigo.gameObject.GetComponent<Enemy>()._pAtq && !lose.activeSelf)
         {
             lose.SetActive(true);
             Debug.Log("perdeu");
