@@ -82,7 +82,7 @@ public class Player : MonoBehaviour
     //================ UPDATE ======================
     private void Update()
     {
-        if(inimigo.gameObject.GetComponent<Enemy>()._pAtq)
+        if(inimigo.gameObject.GetComponent<Enemy>()._plyAtq)
         {
             inputActions.Disable();
         }

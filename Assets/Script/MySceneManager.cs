@@ -6,7 +6,7 @@ public class MySceneManager : MonoBehaviour
     //================== SINGLETON ==================
     public static MySceneManager _inst; // instância global (acesso rápido)
 
-    private void Awake()
+    public void Awake()
     {
         // verifica se já existe outra instância
         if (_inst == null)
