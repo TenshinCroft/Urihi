@@ -5,6 +5,7 @@ public class porta : MonoBehaviour
     //====================== REFERÊNCIAS ======================
     [Header("Referências")]
     public Transform _prtObj; // objeto da porta (visualmente)
+    public int _port;
 
     //====================== ESTADOS ======================
     [Header("Estados")]
