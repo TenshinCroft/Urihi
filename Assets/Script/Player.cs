@@ -1,6 +1,9 @@
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
@@ -158,17 +161,17 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Hide()
+    public void Hide()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, hideRange, hideMask);
-
-        foreach (var hit in hits)
+        if (MySceneManager._inst != null)
         {
-            if (hit.CompareTag("Armario"))
+            if (SceneManager.GetActiveScene().name == "Testes")
             {
-                Debug.Log("Entrou no Armario: " + hit.name);
-                //Destroy(hit.gameObject); // Coleta/destrói o item
-                break;
+                MySceneManager._inst.LoadScene("Ambiente");
+            }
+            else
+            {
+                MySceneManager._inst.LoadScene("Testes");
             }
         }
     }
