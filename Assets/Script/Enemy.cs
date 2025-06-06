@@ -20,8 +20,8 @@ public class Enemy : MonoBehaviour
 
     //============== IA ==========================
     [Header("Timers")]
-    public float _maxLostTime = 2f; // tempo pra entrar no modo de sondagem
-    private float _lostTimer = 0f; // contador interno
+    public float _maxLostTime = 2f; // tipo 2 segundos de memória
+    private float _lostTimer = 0f;
 
     [Header("Sondagem")]
     public Transform[] _waypoints; // pontos que o inimigo vai patrulhar
@@ -66,11 +66,16 @@ public class Enemy : MonoBehaviour
         {
             _nav.SetDestination(_p.transform.position);
         }
+        else if (_waypoints != null)
+        {
+            Patrol();
+        }
         else
         {
             _nav.ResetPath();
         }
     }
+
 
 
     public void ChasePlayer()

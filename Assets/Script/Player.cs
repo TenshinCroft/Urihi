@@ -7,13 +7,15 @@ public class Player : MonoBehaviour
 {
     //=============== Interação ===============
     [Header("Interação")]
-    public float interactRange = 2f;
+    public float interactRange = 8f;
     public LayerMask interactableMask;
     private bool interactPressed;
     private bool hidePressed;
+    public bool _giz;
     public float hideRange = 4f;
     public LayerMask hideMask;
     public GameObject inimigo;
+    public Camera playerCam;
 
     //================ MOVIMENTO ================
     [Header("Movimento")]
@@ -72,6 +74,9 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        if (playerCam == null)
+            playerCam = Camera.main;
+
         if (groundCheck == null)
             Debug.LogWarning("groundCheck não foi atribuído no Inspetor!");
 
@@ -126,29 +131,30 @@ public class Player : MonoBehaviour
     }
     public void InteractWithObject()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, interactRange, interactableMask);
+        Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
+        RaycastHit hit;
 
-        foreach (var hit in hits)
+        if (Physics.Raycast(ray, out hit, interactRange, interactableMask))
         {
-            if (hit.CompareTag("Item"))
+            if (hit.collider.CompareTag("Item"))
             {
                 _itens += 1;
-                Debug.Log("Item coletado: " + hit.name);
-                Destroy(hit.gameObject); // Coleta/destrói o item
-                break;
+                Debug.Log("Item coletado: " + hit.collider.name);
+                Destroy(hit.collider.gameObject); // Coleta/destrói o item
             }
-
-            if (hit.CompareTag("Porta"))
+            else if (hit.collider.CompareTag("Porta"))
             {
-                porta porta = hit.GetComponent<porta>();
+                porta porta = hit.collider.GetComponent<porta>();
                 if (porta != null)
                 {
                     porta.AcionarPorta();
-                    Debug.Log("Porta aberta: " + hit.name);
+                    Debug.Log("Porta aberta: " + hit.collider.name);
                 }
-                break;
             }
-
+        }
+        else
+        {
+            Debug.Log("Nada interagível na frente");
         }
     }
 
@@ -168,13 +174,16 @@ public class Player : MonoBehaviour
     }
 
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, interactRange);
+        if (_giz)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawRay(playerCam.transform.position, playerCam.transform.forward * interactRange);
 
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, hideRange);
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, hideRange);
+        }
     }
 
 }

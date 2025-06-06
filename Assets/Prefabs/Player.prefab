@@ -156,6 +156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _p: {fileID: 6812683406811213645}
   _clsPos: {x: 0, y: 0, z: 0}
+  _inCls: 0
 --- !u!1 &5521177950812171724
 GameObject:
   m_ObjectHideFlags: 0
@@ -385,11 +386,13 @@ MonoBehaviour:
   interactableMask:
     serializedVersion: 2
     m_Bits: 64
+  _giz: 0
   hideRange: 4
   hideMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   inimigo: {fileID: 0}
+  playerCam: {fileID: 3099742786686974341}
   moveSpeed: 18
   jumpHeight: 2
   gravity: -9.81
