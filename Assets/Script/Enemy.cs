@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour
 
     //============== MOVIMENTO ===================
     [Header("Parâmetros de Movimento")]
-    public float _stpDst = 2f;
+    public float _stpDst = 1.7f;
     public float _chsRng = 15f;
     [Range(0, 360)]
     public float _fov = 135f;
@@ -71,6 +71,10 @@ public class Enemy : MonoBehaviour
         if (_playerVisible)
         {
             _nav.SetDestination(_p.transform.position);
+            if (Vector3.Distance(_p.transform.position, transform.position) <= _stpDst)
+            {
+                AttackPlayer();
+            }
         }
         else if (_waypoints != null)
         {
