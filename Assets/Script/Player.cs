@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     public LayerMask hideMask;
     public GameObject inimigo;
     public Camera playerCam;
+    public ReBakeManager _rbake;
 
     //================ MOVIMENTO ================
     [Header("Movimento")]
@@ -147,6 +148,7 @@ public class Player : MonoBehaviour
                 _itens += 1;
                 Debug.Log("Item coletado: " + hit.collider.name);
                 Destroy(hit.collider.gameObject); // Coleta/destrói o item
+                _rbake.RebakeNavMesh();
             }
             else if (hit.collider.CompareTag("Porta"))
             {
@@ -154,8 +156,11 @@ public class Player : MonoBehaviour
                 if (porta != null)
                 {
                     if (_itens >= hit.collider.GetComponent<porta>()._port)
-                    porta.AcionarPorta();
-                    Debug.Log("Porta aberta: " + hit.collider.name);
+                    {
+                        _rbake.RebakeNavMesh();
+                        porta.AcionarPorta();
+                        Debug.Log("Porta aberta: " + hit.collider.name);
+                    }
                 }
             }
         }
