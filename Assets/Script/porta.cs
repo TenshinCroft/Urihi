@@ -11,6 +11,8 @@ public class porta : MonoBehaviour
     [Header("Estados")]
     public bool _prtAbr = false; // se a porta está aberta
     public bool _prtAnim = false; // se a porta está em animação
+    public bool _canOpen = true;
+    public bool _canClose = true;
 
     //====================== PARÂMETROS ======================
     [Header("Parâmetros")]
@@ -48,18 +50,37 @@ public class porta : MonoBehaviour
     //====================== ACIONAR PORTA ======================
     public void AcionarPorta()
     {
-        // se já tá animando, ignora
-        if (_prtAnim) return;
+        if (_canOpen && !_prtAbr)
+        {
+            // se já tá animando, ignora
+            if (_prtAnim) return;
 
-        // inicia animação
-        _prtAnim = true;
-        _tmpAnim = 0f;
+            // inicia animação
+            _prtAnim = true;
+            _tmpAnim = 0f;
 
-        // salva rotação atual
-        _rotIni = _prtObj.rotation;
+            // salva rotação atual
+            _rotIni = _prtObj.rotation;
 
-        // define rotação alvo (abre ou fecha)
-        float _angY = _prtAbr ? -90f : 90f;
-        _rotAlv = _rotIni * Quaternion.Euler(0f, _angY, 0f);
+            // define rotação alvo (abre ou fecha)
+            float _angY = _prtAbr ? -90f : 90f;
+            _rotAlv = _rotIni * Quaternion.Euler(0f, _angY, 0f);
+        }
+        else if (_canClose && _prtAbr)
+        {
+            // se já tá animando, ignora
+            if (_prtAnim) return;
+
+            // inicia animação
+            _prtAnim = true;
+            _tmpAnim = 0f;
+
+            // salva rotação atual
+            _rotIni = _prtObj.rotation;
+
+            // define rotação alvo (abre ou fecha)
+            float _angY = _prtAbr ? -90f : 90f;
+            _rotAlv = _rotIni * Quaternion.Euler(0f, _angY, 0f);
+        }
     }
 }

@@ -32,7 +32,8 @@ public class Enemy : MonoBehaviour
 
     //============== INTERNOS ====================
     private NavMeshAgent _nav;
-    private bool _playerVisible;
+    public bool _playerVisible;
+    public bool _IsPlayerInFOV;
 
     public void Awake()
     {
@@ -47,14 +48,9 @@ public class Enemy : MonoBehaviour
 
     public void Update()
     {
-        Vector3 from = transform.position;
-        Vector3 to = _p.transform.position;
-        Vector3 dir = to - from;
+        IsPlayerInFOV();
 
-        Debug.DrawRay(from, dir, Color.green, 5f);
-        float _dstToPly = Vector3.Distance(transform.position, _p.transform.position);
-
-        if (IsPlayerInFOV())
+        if (_IsPlayerInFOV && !_p.GetComponent<goToPlayer>()._inCls)
         {
             _playerVisible = true;
             _lostTimer = 0f; // zera o tempo perdido
@@ -62,12 +58,11 @@ public class Enemy : MonoBehaviour
         else
         {
             _lostTimer += Time.deltaTime;
-            if(!_p.GetComponent<goToPlayer>()._inCls)
+            if (_p.GetComponent<goToPlayer>()._inCls)
             {
                 _playerVisible = false;
             }
-
-            if (_lostTimer >= _maxLostTime)
+            else if (_lostTimer >= _maxLostTime)
             {
                 _playerVisible = false; // depois do delay, esquece
             }
@@ -86,27 +81,6 @@ public class Enemy : MonoBehaviour
             _nav.ResetPath();
         }
     }
-
-
-
-    public void ChasePlayer()
-    {
-        _nav.SetDestination(_p.transform.position);
-    }
-
-
-    public void ChasePlayer(float _dstToPly)
-    {
-        if (_dstToPly > _stpDst)
-        {
-            _nav.SetDestination(_p.transform.position);
-        }
-        else
-        {
-            AttackPlayer();
-        }
-    }
-
     public void AttackPlayer()
     {
         Debug.Log("Você Morreu");
@@ -124,13 +98,34 @@ public class Enemy : MonoBehaviour
             _curWp = (_curWp + 1) % _waypoints.Length;
         }
     }
-    public bool IsPlayerInFOV()
+    public void IsPlayerInFOV()
     {
-        Vector3 _dirToPlayer = (_p.transform.position - transform.position).normalized;
-        float _angle = Vector3.Angle(transform.forward, _dirToPlayer);
+        // Assumindo que player é Transform
+        Vector3 directionToPlayer = _p.transform.position - transform.position;
+        float distanceToPlayer = Vector3.Distance(_p.transform.position, transform.position);
 
-        return _angle <= _fov / 2f && Vector3.Distance(transform.position, _p.transform.position) <= _chsRng;
+        if (Physics.Raycast(transform.position, directionToPlayer.normalized, out RaycastHit hit, distanceToPlayer))
+        {
+            if (hit.collider.CompareTag("Player"))
+            {
+                // Verifica se tá dentro do range E do campo de visão
+                float angle = Vector3.Angle(transform.forward, directionToPlayer);
+                if (distanceToPlayer <= _chsRng && angle <= _fov / 2f)
+                {
+                    _IsPlayerInFOV = true;
+                    return;
+                }
+
+            }
+            else
+            {
+                // Tem algo na frente (parede, objeto, etc)
+                _IsPlayerInFOV = false;
+            }
+        }
+
     }
+
     public void OnDrawGizmos()
     {
         if (_giz)

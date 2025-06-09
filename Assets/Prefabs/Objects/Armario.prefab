@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8949788229232374770}
   - component: {fileID: 5714102759529848364}
   - component: {fileID: 4320255986938856641}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Armario
   m_TagString: Armario
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4195275250967400406}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: 'HidePosition '
   m_TagString: HideSpot
   m_Icon: {fileID: 0}
