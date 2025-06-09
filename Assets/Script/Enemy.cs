@@ -23,6 +23,8 @@ public class Enemy : MonoBehaviour
     public float _maxLostTime = 2f; // tipo 2 segundos de memória
     private float _lostTimer = 0f;
 
+    public LayerMask _visionMask; // <-- adiciona no topo do script pra setar pelo Inspector
+
     [Header("Sondagem")]
     public Transform[] _waypoints; // pontos que o inimigo vai patrulhar
     private int _curWp = 0;
@@ -45,6 +47,11 @@ public class Enemy : MonoBehaviour
 
     public void Update()
     {
+        Vector3 from = transform.position;
+        Vector3 to = _p.transform.position;
+        Vector3 dir = to - from;
+
+        Debug.DrawRay(from, dir, Color.green, 5f);
         float _dstToPly = Vector3.Distance(transform.position, _p.transform.position);
 
         if (IsPlayerInFOV())
@@ -55,6 +62,10 @@ public class Enemy : MonoBehaviour
         else
         {
             _lostTimer += Time.deltaTime;
+            if(!_p.GetComponent<goToPlayer>()._inCls)
+            {
+                _playerVisible = false;
+            }
 
             if (_lostTimer >= _maxLostTime)
             {
@@ -113,7 +124,6 @@ public class Enemy : MonoBehaviour
             _curWp = (_curWp + 1) % _waypoints.Length;
         }
     }
-
     public bool IsPlayerInFOV()
     {
         Vector3 _dirToPlayer = (_p.transform.position - transform.position).normalized;
@@ -121,7 +131,6 @@ public class Enemy : MonoBehaviour
 
         return _angle <= _fov / 2f && Vector3.Distance(transform.position, _p.transform.position) <= _chsRng;
     }
-
     public void OnDrawGizmos()
     {
         if (_giz)

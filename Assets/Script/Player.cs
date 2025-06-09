@@ -90,9 +90,12 @@ public class Player : MonoBehaviour
     //================ UPDATE ======================
     private void Update()
     {
-        if(inimigo.gameObject.GetComponent<Enemy>()._plyAtq)
+        if(inimigo != null)
         {
-            inputActions.Disable();
+            if (inimigo.gameObject.GetComponent<Enemy>()._plyAtq)
+            {
+                inputActions.Disable();
+            }
         }
 
         // Checa se está no chão
@@ -172,7 +175,7 @@ public class Player : MonoBehaviour
             }
             else
             {
-                MySceneManager._inst.LoadScene("Testes");
+                //MySceneManager._inst.LoadScene("Testes");
             }
         }
     }

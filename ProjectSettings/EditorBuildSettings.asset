@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Ambiente.unity
     guid: 89db2641ac853854fbb029207c79d753
+  - enabled: 1
+    path: Assets/Scenes/CasaInterna.unity
+    guid: 0da239fd4cd9bb44a9a46e560a06664a
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
