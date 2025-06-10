@@ -8,8 +8,8 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
-    //=============== InteraÁ„o ===============
-    [Header("InteraÁ„o")]
+    //=============== Intera√ß√£o ===============
+    [Header("Intera√ß√£o")]
     public float interactRange = 8f;
     public LayerMask interactableMask;
     private bool interactPressed;
@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
 
 
     //================ GROUND CHECK ================
-    [Header("VerificaÁ„o de Ch„o")]
+    [Header("Verifica√ß√£o de Ch√£o")]
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
@@ -82,7 +82,7 @@ public class Player : MonoBehaviour
             playerCam = Camera.main;
 
         if (groundCheck == null)
-            Debug.LogWarning("groundCheck n„o foi atribuÌdo no Inspetor!");
+            Debug.LogWarning("groundCheck n√£o foi atribu√≠do no Inspetor!");
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -99,7 +99,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        // Checa se est· no ch„o
+        // Checa se est√° no ch√£o
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         if (isGrounded && velocity.y < 0f)
@@ -147,8 +147,8 @@ public class Player : MonoBehaviour
             {
                 _itens += 1;
                 Debug.Log("Item coletado: " + hit.collider.name);
-                Destroy(hit.collider.gameObject); // Coleta/destrÛi o item
-                _rbake.RebakeNavMesh();
+                Destroy(hit.collider.gameObject); // Coleta/destr√≥i o item
+                
             }
             else if (hit.collider.CompareTag("Porta"))
             {
@@ -157,7 +157,10 @@ public class Player : MonoBehaviour
                 {
                     if (_itens >= hit.collider.GetComponent<porta>()._port)
                     {
-                        _rbake.RebakeNavMesh();
+                        if(_rbake != null)
+                        {
+                          _rbake.RebakeNavMesh();
+                        }
                         porta.AcionarPorta();
                         Debug.Log("Porta aberta: " + hit.collider.name);
                     }
@@ -166,7 +169,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            Debug.Log("Nada interagÌvel na frente");
+            Debug.Log("Nada interag√≠vel na frente");
         }
     }
 
