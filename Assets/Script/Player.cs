@@ -157,10 +157,6 @@ public class Player : MonoBehaviour
                 {
                     if (_itens >= hit.collider.GetComponent<porta>()._port)
                     {
-                        if(_rbake != null)
-                        {
-                          _rbake.RebakeNavMesh();
-                        }
                         porta.AcionarPorta();
                         Debug.Log("Porta aberta: " + hit.collider.name);
                     }
