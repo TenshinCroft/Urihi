@@ -5,144 +5,192 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
-    //=============== Interação ===============
+    //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    //=+=+=+=+=+=+=+= INTERAÇÃO =+=+=+=+=+=+=+=
     [Header("Interação")]
-    public float interactRange = 8f;
-    public LayerMask interactableMask;
-    private bool interactPressed;
-    private bool hidePressed;
-    public bool _giz;
-    public float hideRange = 4f;
-    public LayerMask hideMask;
-    public GameObject inimigo;
-    public Camera playerCam;
-    public ReBakeManager _rbake;
+    //||||||||||||||| PUBLICAS ||||||||||||||||
+    //---------------- floats -----------------
+    public float _alcanceDeInteração = 8f;
+    //--------------- layermasks --------------
+    public LayerMask _mascaraDeInteração;
+    //-------------- game objects -------------
+    public GameObject _inimigo;
+    //||||||||||||||| PRIVADAS ||||||||||||||||
+    //----------------- bools -----------------
+    private bool _intPressed;
+    private bool _cScPressed;
+    private bool _giz;
+    //--------------- components --------------
+    private Camera _pCam;
+    ///////////////////////////////////////////
 
-    //================ MOVIMENTO ================
+
+    //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    //=+=+=+=+=+=+=+= MOVIMENTO =+=+=+=+=+=+=+=
     [Header("Movimento")]
-    public float moveSpeed = 12f;
-    public float jumpHeight = 2f;
-    public float gravity = -9.81f;
-    public float airControlMultiplier = 0.5f;
+    //||||||||||||||| PUBLICAS ||||||||||||||||
+    //---------------- floats -----------------
+    public float _velocidade = 12f;
+    public float _alturaDoPulo = 2f;
+    public float _velocidadeNoAr = 0.5f;
+    //||||||||||||||| PRIVADAS ||||||||||||||||
+    //---------------- floats -----------------
+    private float _g = 9.81f;
+    //---------------- vectors ----------------
+    private Vector2 _inpMove;
+    private Vector3 _vel;
+    private Vector3 _m;
+    //----------------- bools -----------------
+    private bool _isOnG;
+    private bool _jPressed;
+    //---------------- floats -----------------
+    private float _cntrMult;
+    ///////////////////////////////////////////
 
-    public Vector2 inputMove;
-    public Vector3 velocity;
 
-    public bool isGrounded;
-    public bool jumpPressed;
-
-
-    //================ GROUND CHECK ================
+    //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    //=+=+=+=+=+=+= GROUND CHECK +=+=+=+=+=+=+=
     [Header("Verificação de Chão")]
-    public Transform groundCheck;
-    public float groundDistance = 0.4f;
-    public LayerMask groundMask;
+    //||||||||||||||| PUBLICAS ||||||||||||||||
+    //---------------- floats -----------------
+    public float _distanciaDoChão = 0.4f;
+    //--------------- layermasks --------------
+    public LayerMask _chão;
+    //||||||||||||||| PRIVADAS ||||||||||||||||
+    //--------------- components --------------
+    private Transform _gCheck;
+    ///////////////////////////////////////////
 
-    //================ SISTEMA DE INPUT ================
+
+    //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    //=+=+=+=+=+=+=+ CONTROLER +=+=+=+=+=+=+=+=
     [Header("Sistema de Input")]
-    public PlayerControls inputActions;
+    //||||||||||||||| PUBLICAS ||||||||||||||||
+    //----------------- ints ------------------
+    //++++++++++++++ invisiveis +++++++++++++++
+    [HideInInspector]
+    public int _i = 0;
+    //||||||||||||||| PRIVADAS ||||||||||||||||
+    //--------------- components --------------
+    private PlayerControls _inpActions;
+    private CharacterController _cntr;
+    ///////////////////////////////////////////
 
-    //================ CONTROLLER ================
-    [Header("Character Controller")]
-    public CharacterController controller;
 
-    public int _itens = 0;
-
-    //================ CICLO DE VIDA ================
+    //=+=+=+=+= ANTES DO JOGO COMEÇAR =+=+=+=+=
     public void Awake()
     {
-        // Pega o CharacterController e inicializa os inputs
-        controller = GetComponent<CharacterController>();
-        inputActions = new PlayerControls();
+        // Pega o character controller e inicializa os inputs
+        _cntr = GetComponent<CharacterController>();
+        _inpActions = new PlayerControls();
 
-        inputActions.Player.Move.performed += ctx => inputMove = ctx.ReadValue<Vector2>();
-        inputActions.Player.Move.canceled += ctx => inputMove = Vector2.zero;
-        inputActions.Player.Jump.performed += ctx => jumpPressed = true;
-        inputActions.Player.Interact.performed += ctx => interactPressed = true;
-        inputActions.Player.Hide.performed += ctx => hidePressed = true;
+        // verifica se os inputs foram ativados
+        _inpActions.Player.Move.performed += ctx => _inpMove = ctx.ReadValue<Vector2>();
+        _inpActions.Player.Move.canceled += ctx => _inpMove = Vector2.zero;
+        _inpActions.Player.Jump.performed += ctx => _jPressed = true;
+        _inpActions.Player.Interact.performed += ctx => _intPressed = true;
+        _inpActions.Player.Hide.performed += ctx => _cScPressed = true;
 
     }
 
+    // verifica se o jogador foi ativado
     public void OnEnable()
     {
-        inputActions.Enable();
+        // ativa os input actions
+        _inpActions.Enable();
     }
 
+    // verifica se o jogador foi desativado
     public void OnDisable()
     {
-        inputActions.Disable();
+        // desativa os input actions
+        _inpActions.Disable();
     }
 
-    private void Start()
+
+    //=+=+=+=+= QUANDO O JOGO COMEÇA +=+=+=+=+=
+    public void Start()
     {
-        if (playerCam == null)
-            playerCam = Camera.main;
+        // verifica se o player tem uma camera
+        if (_pCam == null)
+        {
+            // atribui uma camera ao jogador
+            _pCam = Camera.main;
+        }
 
-        if (groundCheck == null)
-            Debug.LogWarning("groundCheck não foi atribuído no Inspetor!");
-
+        // prende o cursor na tela e dexa ele invisivel
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    //================ UPDATE ======================
-    private void Update()
+
+    //=+=+=+=+ QUANDO O JOGO COMEÇA =+=+=+=+=
+    public void Update()
     {
-        if(inimigo != null)
+        // verifica se tem um inimigo atribuido
+        if(_inimigo != null)
         {
-            if (inimigo.gameObject.GetComponent<Enemy>()._plyAtq)
+            // verifica se o inimigo atacou
+            if (_inimigo.gameObject.GetComponent<Enemy>()._plyAtq)
             {
-                inputActions.Disable();
+                // desativa os input actions
+                _inpActions.Disable();
             }
         }
 
-        // Checa se está no chão
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        // checa se está no chão
+        _isOnG = Physics.CheckSphere(_gCheck.position, _distanciaDoChão, _chão);
 
-        if (isGrounded && velocity.y < 0f)
-            velocity.y = -2f;
-
-
-        // Movimento
-        Vector3 move = transform.right * inputMove.x + transform.forward * inputMove.y;
-        float controlMultiplier = isGrounded ? 1f : airControlMultiplier;
-        controller.Move(move * moveSpeed * controlMultiplier * Time.deltaTime);
-
-        // Pulo
-        if (jumpPressed && isGrounded)
+        // checa se está no chão e caindo
+        if (_isOnG && _vel.y < 0f)
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            jumpPressed = false;
+            // atribui uma velocidade negativa a queda para impedir bugs
+            _vel.y = -2f;
         }
 
-        // Interagir (coletar item)
-        if (interactPressed)
+        // movimentação do jogador
+        _m = transform.right * _inpMove.x + transform.forward * _inpMove.y;
+        _cntrMult = _isOnG ? 1f : _velocidadeNoAr;
+        _cntr.Move(_m * _velocidade * _cntrMult * Time.deltaTime);
+
+        // verifica se foi precionado o pulo e esta no chão
+        if (_jPressed && _isOnG)
         {
+            // desativa o botão do pulo e atribui uma velocidade pra cima
+            _vel.y = Mathf.Sqrt(_alturaDoPulo * 2f * _g);
+            _jPressed = false;
+        }
+
+        // verifica se o botão de interação foi precionado
+        if (_intPressed)
+        {
+            // chama a função de interação e desativa o botão
             InteractWithObject();
-            interactPressed = false;
+            _intPressed = false;
         }
 
-        // Interagir (entrar no armario)
-        if (hidePressed)
+        // verifica se o botão de mudar de cena foi precionado
+        if (_cScPressed)
         {
-            Hide();
-            hidePressed = false;
+            //chama a função de mudar de cena e desativa o botão
+            ChangeSC();
+            _cScPressed = false;
         }
 
-        // Gravidade
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
+        // aplica a gravidade do jogador
+        _vel.y += -_g * Time.deltaTime;
+        _cntr.Move(_vel * Time.deltaTime);
     }
     public void InteractWithObject()
     {
-        Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
+        Ray ray = new Ray(_pCam.transform.position, _pCam.transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, interactRange, interactableMask))
+        if (Physics.Raycast(ray, out hit, _alcanceDeInteração, _mascaraDeInteração))
         {
             if (hit.collider.CompareTag("Item"))
             {
-                _itens += 1;
+                _i += 1;
                 Debug.Log("Item coletado: " + hit.collider.name);
                 Destroy(hit.collider.gameObject); // Coleta/destrói o item
                 
@@ -152,7 +200,7 @@ public class Player : MonoBehaviour
                 porta porta = hit.collider.GetComponent<porta>();
                 if (porta != null)
                 {
-                    if (_itens >= hit.collider.GetComponent<porta>()._port)
+                    if (_i >= hit.collider.GetComponent<porta>()._port)
                     {
                         porta.AcionarPorta();
                         Debug.Log("Porta aberta: " + hit.collider.name);
@@ -166,7 +214,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void Hide()
+    public void ChangeSC()
     {
         if (MySceneManager._inst != null)
         {
@@ -187,10 +235,7 @@ public class Player : MonoBehaviour
         if (_giz)
         {
             Gizmos.color = Color.yellow;
-            Gizmos.DrawRay(playerCam.transform.position, playerCam.transform.forward * interactRange);
-
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, hideRange);
+            Gizmos.DrawRay(_pCam.transform.position, _pCam.transform.forward * _alcanceDeInteração);
         }
     }
 

@@ -10,7 +10,7 @@ public class canva : MonoBehaviour
     public GameObject inimigo;
     void Update()
     {
-        contador = _player.GetComponent<Player>()._itens;
+        contador = _player.GetComponent<Player>()._i;
         // Verifica se chegou no 7 e o canvas ainda tá escondido
         if (contador >= 9 && !win.activeSelf)
         {
