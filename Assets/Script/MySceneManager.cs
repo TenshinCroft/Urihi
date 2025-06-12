@@ -8,16 +8,7 @@ public class MySceneManager : MonoBehaviour
 
     public void Awake()
     {
-        // verifica se já existe outra instância
-        if (_inst == null)
-        {
-            _inst = this;
-            DontDestroyOnLoad(gameObject); // persiste entre cenas (opcional)
-        }
-        else
-        {
-            Destroy(gameObject); // evita duplicatas
-        }
+
     }
 
     //================== LOAD POR NOME ==================

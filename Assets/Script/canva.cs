@@ -21,10 +21,13 @@ public class canva : MonoBehaviour
                 Destroy(inimigo);
             }
         }
-        if (inimigo.gameObject.GetComponent<Enemy>()._plyAtq && !lose.activeSelf)
+        if (inimigo != null)
         {
-            lose.SetActive(true);
-            Debug.Log("perdeu");
+            if (inimigo.gameObject.GetComponent<Enemy>()._plyAtq && !lose.activeSelf)
+            {
+                lose.SetActive(true);
+                Debug.Log("perdeu");
+            }
         }
     }
 }

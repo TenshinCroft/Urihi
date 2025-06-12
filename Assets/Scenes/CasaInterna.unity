@@ -6668,6 +6668,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Inimigo
       objectReference: {fileID: 0}
+    - target: {fileID: 1132106349112111949, guid: f5b37090cb9528a4cbf1232e7e3622ab, type: 3}
+      propertyPath: m_Speed
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1897812904434193791, guid: f5b37090cb9528a4cbf1232e7e3622ab, type: 3}
       propertyPath: m_LocalScale.x
       value: 2.93
