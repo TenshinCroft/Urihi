@@ -8,12 +8,12 @@ ModelImporter:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Mutant_diffuse
-    second: {fileID: 2800000, guid: a9610269b7afd704fa8c0ba9ce436171, type: 3}
+    second: {fileID: 2800000, guid: c8512269bc2822d4a88eed39a70d1a8d, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Mutant_normal
-    second: {fileID: 2800000, guid: 82864adca9a1ff144871fcc07ae0d812, type: 3}
+    second: {fileID: 2800000, guid: 09e641f3a11dd3241bdd9718f05a3c75, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
