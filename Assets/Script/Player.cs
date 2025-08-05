@@ -19,9 +19,10 @@ public class Player : MonoBehaviour
     //----------------- bools -----------------
     private bool _intPressed;
     private bool _cScPressed;
+    private bool _lntPressed;
     private bool _giz;
     //--------------- components --------------
-    private Camera _pCam;
+    public Camera _pCam;
     ///////////////////////////////////////////
 
 
@@ -41,8 +42,10 @@ public class Player : MonoBehaviour
     private Vector3 _vel;
     private Vector3 _m;
     //----------------- bools -----------------
-    private bool _isOnG;
-    private bool _jPressed;
+    public bool _isOnG;
+    public bool _jPressed;
+    public bool _lntrOn; // essa variável vai ser lida pelo script da lanterna
+
     //---------------- floats -----------------
     private float _cntrMult;
     ///////////////////////////////////////////
@@ -58,7 +61,7 @@ public class Player : MonoBehaviour
     public LayerMask _chão;
     //||||||||||||||| PRIVADAS ||||||||||||||||
     //--------------- components --------------
-    private Transform _gCheck;
+    public Transform _gCheck;
     ///////////////////////////////////////////
 
 
@@ -90,6 +93,7 @@ public class Player : MonoBehaviour
         _inpActions.Player.Jump.performed += ctx => _jPressed = true;
         _inpActions.Player.Interact.performed += ctx => _intPressed = true;
         _inpActions.Player.Hide.performed += ctx => _cScPressed = true;
+        _inpActions.Player.Lanterna.performed += ctx => _lntPressed = true;
 
     }
 
@@ -177,6 +181,12 @@ public class Player : MonoBehaviour
             _cScPressed = false;
         }
 
+        if (_lntPressed)
+        {
+            LanternPres();
+            _lntPressed = false;
+        }
+
         // aplica a gravidade do jogador
         _vel.y += -_g * Time.deltaTime;
         _cntr.Move(_vel * Time.deltaTime);
@@ -226,6 +236,18 @@ public class Player : MonoBehaviour
             {
                 //MySceneManager._inst.LoadScene("Testes");
             }
+        }
+    }
+
+    public void LanternPres()
+    {
+        if (_lntrOn)
+        {
+            _lntrOn = false;
+        }
+        else
+        {
+            _lntrOn = true;
         }
     }
 

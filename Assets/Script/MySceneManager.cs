@@ -4,24 +4,30 @@ using UnityEngine.SceneManagement;
 public class MySceneManager : MonoBehaviour
 {
     //================== SINGLETON ==================
-    public static MySceneManager _inst; // instância global (acesso rápido)
+    public static MySceneManager _inst; // instância global
 
-    public void Awake()
+    void Awake()
     {
-
+        if (_inst == null)
+        {
+            _inst = this;
+            DontDestroyOnLoad(gameObject); // mantém entre cenas
+        }
+        else
+        {
+            Destroy(gameObject); // evita duplicatas
+        }
     }
 
     //================== LOAD POR NOME ==================
     public void LoadScene(string _scnName)
     {
-        // carrega a cena pelo nome
         SceneManager.LoadScene(_scnName);
     }
 
     //================== LOAD POR INDEX ==================
     public void LoadScene(int _scnIdx)
     {
-        // verifica se o índice é válido
         if (_scnIdx >= 0 && _scnIdx < SceneManager.sceneCountInBuildSettings)
         {
             SceneManager.LoadScene(_scnIdx);
@@ -35,7 +41,6 @@ public class MySceneManager : MonoBehaviour
     //================== RECARREGAR A ATUAL ==================
     public void ReloadScene()
     {
-        // recarrega a cena atual
         int _idx = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(_idx);
     }
@@ -43,7 +48,6 @@ public class MySceneManager : MonoBehaviour
     //================== SAIR DO JOGO ==================
     public void QuitGame()
     {
-        // sai do jogo (só funciona no build, no editor não faz nada)
         Debug.Log("Saindo do jogo...");
         Application.Quit();
     }
