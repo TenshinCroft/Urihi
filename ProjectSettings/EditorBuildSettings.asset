@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Testes.unity
     guid: 9912db9b22b7e744bbd1987a665defe8
   - enabled: 1
-    path: Assets/Scenes/Ambiente.unity
+    path: Assets/Scenes/tela inicio.unity
     guid: 89db2641ac853854fbb029207c79d753
   - enabled: 1
     path: Assets/Scenes/CasaInterna.unity
