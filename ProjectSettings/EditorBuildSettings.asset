@@ -8,18 +8,21 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Tela Inicio.unity
     guid: ef1bf86eabdf8db48b5d92eb3a1d2c04
   - enabled: 1
     path: Assets/Scenes/Testes.unity
     guid: 9912db9b22b7e744bbd1987a665defe8
   - enabled: 1
-    path: Assets/Scenes/tela inicio.unity
+    path: Assets/Scenes/telainicio.unity
     guid: 89db2641ac853854fbb029207c79d753
   - enabled: 1
     path: Assets/Scenes/CasaInterna.unity
     guid: 0da239fd4cd9bb44a9a46e560a06664a
+  - enabled: 1
+    path: Assets/Scenes/Ambiente.unity
+    guid: bfe8acb4d50681f4180db6a013efa675
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

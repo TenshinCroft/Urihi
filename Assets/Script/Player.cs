@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     //||||||||||||||| PRIVADAS ||||||||||||||||
     //----------------- bools -----------------
     private bool _intPressed;
-    private bool _cScPressed;
+    private bool _runPressed;
     private bool _lntPressed;
     private bool _giz;
     //--------------- components --------------
@@ -31,12 +31,14 @@ public class Player : MonoBehaviour
     [Header("Movimento")]
     //||||||||||||||| PUBLICAS ||||||||||||||||
     //---------------- floats -----------------
-    public float _velocidade = 12f;
+    public float _velocidade = 12;
+    public float _multiplicadorDeVelocidade = 1.5f;
     public float _alturaDoPulo = 2f;
     public float _velocidadeNoAr = 0.5f;
     //||||||||||||||| PRIVADAS ||||||||||||||||
     //---------------- floats -----------------
     private float _g = 9.81f;
+    private float _speed;
     //---------------- vectors ----------------
     private Vector2 _inpMove;
     private Vector3 _vel;
@@ -92,7 +94,8 @@ public class Player : MonoBehaviour
         _inpActions.Player.Move.canceled += ctx => _inpMove = Vector2.zero;
         _inpActions.Player.Jump.performed += ctx => _jPressed = true;
         _inpActions.Player.Interact.performed += ctx => _intPressed = true;
-        _inpActions.Player.Hide.performed += ctx => _cScPressed = true;
+        _inpActions.Player.Correr.performed += ctx => _runPressed = true;
+        _inpActions.Player.Correr.canceled += ctx => _runPressed = false;
         _inpActions.Player.Lanterna.performed += ctx => _lntPressed = true;
 
     }
@@ -131,6 +134,8 @@ public class Player : MonoBehaviour
     //=+=+=+=+ QUANDO O JOGO COMEÇA =+=+=+=+=
     public void Update()
     {
+
+        Run();
         // verifica se tem um inimigo atribuido
         if(_inimigo != null)
         {
@@ -155,7 +160,7 @@ public class Player : MonoBehaviour
         // movimentação do jogador
         _m = transform.right * _inpMove.x + transform.forward * _inpMove.y;
         _cntrMult = _isOnG ? 1f : _velocidadeNoAr;
-        _cntr.Move(_m * _velocidade * _cntrMult * Time.deltaTime);
+        _cntr.Move(_m * _speed * _cntrMult * Time.deltaTime);
 
         // verifica se foi precionado o pulo e esta no chão
         if (_jPressed && _isOnG)
@@ -171,14 +176,6 @@ public class Player : MonoBehaviour
             // chama a função de interação e desativa o botão
             InteractWithObject();
             _intPressed = false;
-        }
-
-        // verifica se o botão de mudar de cena foi precionado
-        if (_cScPressed)
-        {
-            //chama a função de mudar de cena e desativa o botão
-            ChangeSC();
-            _cScPressed = false;
         }
 
         if (_lntPressed)
@@ -224,18 +221,16 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void ChangeSC()
+    public void Run()
     {
-        if (MySceneManager._inst != null)
+        // se o botão tá pressionado, aplica o multiplicador
+        if (_runPressed)
         {
-            if (SceneManager.GetActiveScene().name == "Testes")
-            {
-                MySceneManager._inst.LoadScene("Ambiente");
-            }
-            else
-            {
-                //MySceneManager._inst.LoadScene("Testes");
-            }
+            _speed = _velocidade * _multiplicadorDeVelocidade;
+        }
+        else
+        {
+            _speed = _velocidade;
         }
     }
 

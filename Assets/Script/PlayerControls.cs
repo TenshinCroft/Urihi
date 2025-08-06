@@ -128,7 +128,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Hide"",
+                    ""name"": ""Correr"",
                     ""type"": ""Button"",
                     ""id"": ""d926ae20-6440-4184-9dd6-c7dcba45c1a3"",
                     ""expectedControlType"": """",
@@ -271,7 +271,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""6611890a-6320-4f45-a549-e2e6002bc8f6"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -282,18 +282,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""6e0d7582-607f-4f01-ab87-0f3013e3d8aa"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Hide"",
+                    ""action"": ""Correr"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""19340f0e-7a09-4126-a188-268c74fd5f17"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -324,7 +324,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
-        m_Player_Hide = m_Player.FindAction("Hide", throwIfNotFound: true);
+        m_Player_Correr = m_Player.FindAction("Correr", throwIfNotFound: true);
         m_Player_Lanterna = m_Player.FindAction("Lanterna", throwIfNotFound: true);
     }
 
@@ -410,7 +410,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Interact;
-    private readonly InputAction m_Player_Hide;
+    private readonly InputAction m_Player_Correr;
     private readonly InputAction m_Player_Lanterna;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
@@ -440,9 +440,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         /// <summary>
-        /// Provides access to the underlying input action "Player/Hide".
+        /// Provides access to the underlying input action "Player/Correr".
         /// </summary>
-        public InputAction @Hide => m_Wrapper.m_Player_Hide;
+        public InputAction @Correr => m_Wrapper.m_Player_Correr;
         /// <summary>
         /// Provides access to the underlying input action "Player/Lanterna".
         /// </summary>
@@ -485,9 +485,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
-            @Hide.started += instance.OnHide;
-            @Hide.performed += instance.OnHide;
-            @Hide.canceled += instance.OnHide;
+            @Correr.started += instance.OnCorrer;
+            @Correr.performed += instance.OnCorrer;
+            @Correr.canceled += instance.OnCorrer;
             @Lanterna.started += instance.OnLanterna;
             @Lanterna.performed += instance.OnLanterna;
             @Lanterna.canceled += instance.OnLanterna;
@@ -514,9 +514,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
-            @Hide.started -= instance.OnHide;
-            @Hide.performed -= instance.OnHide;
-            @Hide.canceled -= instance.OnHide;
+            @Correr.started -= instance.OnCorrer;
+            @Correr.performed -= instance.OnCorrer;
+            @Correr.canceled -= instance.OnCorrer;
             @Lanterna.started -= instance.OnLanterna;
             @Lanterna.performed -= instance.OnLanterna;
             @Lanterna.canceled -= instance.OnLanterna;
@@ -602,12 +602,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnInteract(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Hide" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Correr" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnHide(InputAction.CallbackContext context);
+        void OnCorrer(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Lanterna" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

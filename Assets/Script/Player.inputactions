@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Hide",
+                    "name": "Correr",
                     "type": "Button",
                     "id": "d926ae20-6440-4184-9dd6-c7dcba45c1a3",
                     "expectedControlType": "",
@@ -185,7 +185,7 @@
                 {
                     "name": "",
                     "id": "6611890a-6320-4f45-a549-e2e6002bc8f6",
-                    "path": "<Keyboard>/f",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -196,18 +196,18 @@
                 {
                     "name": "",
                     "id": "6e0d7582-607f-4f01-ab87-0f3013e3d8aa",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Hide",
+                    "action": "Correr",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "19340f0e-7a09-4126-a188-268c74fd5f17",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
