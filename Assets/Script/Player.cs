@@ -207,7 +207,7 @@ public class Player : MonoBehaviour
                 porta porta = hit.collider.GetComponent<porta>();
                 if (porta != null)
                 {
-                    if (_i >= hit.collider.GetComponent<porta>()._port)
+                    if (_i >= hit.collider.GetComponent<porta>()._itensParaAbrir)
                     {
                         porta.AcionarPorta();
                         Debug.Log("Porta aberta: " + hit.collider.name);

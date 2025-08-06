@@ -157,12 +157,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76a41b08905a8be42a9304889f03e44a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prtObj: {fileID: 2353377972431730167}
-  _port: 0
-  _prtAbr: 0
-  _prtAnim: 0
-  _canOpen: 1
-  _canClose: 1
+  _Porta: {fileID: 2353377972431730167}
+  _itensParaAbrir: 0
+  _podeAbrir: 1
+  _podeFechar: 1
   _prtDur: 0.25
 --- !u!208 &5825816521636586888
 NavMeshObstacle:

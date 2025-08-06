@@ -682,6 +682,7 @@ MonoBehaviour:
   _inimigo: {fileID: 0}
   _pCam: {fileID: 3099742786686974341}
   _velocidade: 12
+  _multiplicadorDeVelocidade: 1.5
   _alturaDoPulo: 2
   _velocidadeNoAr: 0.5
   _isOnG: 0
@@ -1048,7 +1049,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6208fa0a8ec97bd4f9103b914bad19b4, type: 3}
       propertyPath: m_Name
-      value: character (1)
+      value: Mesh
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6208fa0a8ec97bd4f9103b914bad19b4, type: 3}
       propertyPath: m_Layer

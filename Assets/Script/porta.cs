@@ -4,15 +4,16 @@ public class porta : MonoBehaviour
 {
     //====================== REFERÊNCIAS ======================
     [Header("Referências")]
-    public Transform _prtObj; // objeto da porta (visualmente)
-    public int _port;
+    public Transform _Porta; // objeto da porta (visualmente)
+    public int _itensParaAbrir;
 
     //====================== ESTADOS ======================
     [Header("Estados")]
-    public bool _prtAbr = false; // se a porta está aberta
-    public bool _prtAnim = false; // se a porta está em animação
-    public bool _canOpen = true;
-    public bool _canClose = true;
+    [HideInInspector]
+    private bool _prtAbr = false; // se a porta está aberta
+    private bool _prtAnim = false; // se a porta está em animação
+    public bool _podeAbrir = true;
+    public bool _podeFechar = true;
 
     //====================== PARÂMETROS ======================
     [Header("Parâmetros")]
@@ -36,7 +37,7 @@ public class porta : MonoBehaviour
             float _t = Mathf.Clamp01(_tmpAnim / _prtDur);
 
             // rotaciona suavemente entre inicial e alvo
-            _prtObj.rotation = Quaternion.Slerp(_rotIni, _rotAlv, _t);
+            _Porta.rotation = Quaternion.Slerp(_rotIni, _rotAlv, _t);
 
             // se chegou ao final
             if (_t >= 1f)
@@ -50,7 +51,7 @@ public class porta : MonoBehaviour
     //====================== ACIONAR PORTA ======================
     public void AcionarPorta()
     {
-        if (_canOpen && !_prtAbr)
+        if (_podeAbrir && !_prtAbr)
         {
             // se já tá animando, ignora
             if (_prtAnim) return;
@@ -60,13 +61,13 @@ public class porta : MonoBehaviour
             _tmpAnim = 0f;
 
             // salva rotação atual
-            _rotIni = _prtObj.rotation;
+            _rotIni = _Porta.rotation;
 
             // define rotação alvo (abre ou fecha)
             float _angY = _prtAbr ? -90f : 90f;
             _rotAlv = _rotIni * Quaternion.Euler(0f, _angY, 0f);
         }
-        else if (_canClose && _prtAbr)
+        else if (_podeFechar && _prtAbr)
         {
             // se já tá animando, ignora
             if (_prtAnim) return;
@@ -76,7 +77,7 @@ public class porta : MonoBehaviour
             _tmpAnim = 0f;
 
             // salva rotação atual
-            _rotIni = _prtObj.rotation;
+            _rotIni = _Porta.rotation;
 
             // define rotação alvo (abre ou fecha)
             float _angY = _prtAbr ? -90f : 90f;
