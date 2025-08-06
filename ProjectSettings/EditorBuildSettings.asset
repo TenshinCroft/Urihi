@@ -8,15 +8,15 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 0
-    path: Assets/Scenes/Tela Inicio.unity
-    guid: ef1bf86eabdf8db48b5d92eb3a1d2c04
+  - enabled: 1
+    path: Assets/Scenes/tela inicio.unity
+    guid: 636b2a0c747f930429f05f9506a5c5e0
   - enabled: 1
     path: Assets/Scenes/Testes.unity
     guid: 9912db9b22b7e744bbd1987a665defe8
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/telainicio.unity
-    guid: 89db2641ac853854fbb029207c79d753
+    guid: cc55266ffc9c6ee49843bbd6c94d736f
   - enabled: 1
     path: Assets/Scenes/CasaInterna.unity
     guid: 0da239fd4cd9bb44a9a46e560a06664a

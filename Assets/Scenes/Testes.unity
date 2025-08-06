@@ -7247,15 +7247,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 606745438729634507, guid: 21c8ac67c5b07934b8c3a6bc2bf1675a, type: 3}
       propertyPath: indiceCenaDestino
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 606745438729634507, guid: 21c8ac67c5b07934b8c3a6bc2bf1675a, type: 3}
       propertyPath: cenasDisponiveis.Array.size
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 606745438729634507, guid: 21c8ac67c5b07934b8c3a6bc2bf1675a, type: 3}
+      propertyPath: 'cenasDisponiveis.Array.data[0]'
+      value: tela inicio
+      objectReference: {fileID: 0}
+    - target: {fileID: 606745438729634507, guid: 21c8ac67c5b07934b8c3a6bc2bf1675a, type: 3}
+      propertyPath: 'cenasDisponiveis.Array.data[1]'
+      value: Testes
+      objectReference: {fileID: 0}
+    - target: {fileID: 606745438729634507, guid: 21c8ac67c5b07934b8c3a6bc2bf1675a, type: 3}
       propertyPath: 'cenasDisponiveis.Array.data[3]'
-      value: telainicio
+      value: Ambiente
       objectReference: {fileID: 0}
     - target: {fileID: 8602498703131414613, guid: 21c8ac67c5b07934b8c3a6bc2bf1675a, type: 3}
       propertyPath: m_Name

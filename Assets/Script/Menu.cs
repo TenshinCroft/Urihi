@@ -1,16 +1,17 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
-    
-    void Start()
+    public string proximafase;
+    public GameObject[] itensmenu;
+    public void StartGame()
     {
-        
+        SceneManager.LoadScene(proximafase);
     }
-
-    
-    void Update()
+    public void configuracoes()
     {
-        
+
+
     }
 }

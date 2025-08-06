@@ -4,7 +4,7 @@ using UnityEngine;
 public class tp : MonoBehaviour
 {
     [Header("Cenas disponíveis pra teleportar")]
-    public string[] cenasDisponiveis = new string[] { "Testes", "telainicio", "CasaInterna", "Ambiente" };
+    public string[] cenasDisponiveis = new string[] { "tela inicio", "Testes", "CasaInterna", "Ambiente" };
 
     [Header("Cena de destino")]
     public int indiceCenaDestino = 0; // Index pra escolher cena da lista no editor
