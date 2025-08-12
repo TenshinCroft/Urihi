@@ -3922,11 +3922,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 589552151}
   m_Mesh: {fileID: -6062578164958778753, guid: 75dcfacb85e0cf8478a3969a2eb0d819, type: 3}
-<<<<<<< Updated upstream
+
 --- !u!1 &597130917
-=======
+
 --- !u!1 &593268031
->>>>>>> Stashed changes
+
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3934,24 +3934,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-<<<<<<< Updated upstream
+
   - component: {fileID: 597130919}
   - component: {fileID: 597130918}
   m_Layer: 0
   m_Name: Canva
-=======
+
   - component: {fileID: 593268032}
   - component: {fileID: 593268034}
   - component: {fileID: 593268033}
   m_Layer: 0
   m_Name: leaves (87)
->>>>>>> Stashed changes
+
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
-<<<<<<< Updated upstream
+
 --- !u!114 &597130918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3965,15 +3965,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &597130919
-=======
+
 --- !u!4 &593268032
->>>>>>> Stashed changes
+
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< Updated upstream
+
   m_GameObject: {fileID: 597130917}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -3983,7 +3983,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 440409323}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-=======
+
   m_GameObject: {fileID: 593268031}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
@@ -4970,7 +4970,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 663676508}
   m_Mesh: {fileID: -6062578164958778753, guid: 75dcfacb85e0cf8478a3969a2eb0d819, type: 3}
->>>>>>> Stashed changes
+
 --- !u!1 &664967888
 GameObject:
   m_ObjectHideFlags: 0
