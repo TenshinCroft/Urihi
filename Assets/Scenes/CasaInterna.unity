@@ -17023,12 +17023,18 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 1654167623372299304, guid: d298b00733966cf46a2189ef9353b7bf, type: 3}
-
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 --- !u!4 &1351072970 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3893267695621886276, guid: d298b00733966cf46a2189ef9353b7bf, type: 3}
   m_PrefabInstance: {fileID: 1995146635}
-
+=======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 --- !u!1001 &1351873965
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17315,7 +17321,13 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1b42ee7c93572e140ae99186ff7c81c1, type: 3}
   m_PrefabInstance: {fileID: 1374447473}
-
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1374932230 stripped
 Transform:
@@ -23070,7 +23082,10 @@ PrefabInstance:
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 48203134fdb5ade439a8badac8e23499, type: 3}
 --- !u!1001 &1757540055
-
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+=======
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -24285,15 +24300,15 @@ Light:
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
 --- !u!1001 &1780088286
-
+>>>>>>> Stashed changes
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-
+<<<<<<< Updated upstream
     m_TransformParent: {fileID: 846728849}
-
+=======
     m_TransformParent: {fileID: 2140181374}
     m_Modifications:
     - target: {fileID: 594038174967896467, guid: 7e924887fc4c9994dbcdcf37ac613740, type: 3}
@@ -27386,7 +27401,7 @@ PrefabInstance:
   m_Modification:
     serializedVersion: 3
     m_TransformParent: {fileID: 1657341632}
-
+>>>>>>> Stashed changes
     m_Modifications:
     - target: {fileID: -9152178459980440199, guid: d298b00733966cf46a2189ef9353b7bf, type: 3}
       propertyPath: m_LocalScale.y
@@ -28595,15 +28610,15 @@ Light:
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
 --- !u!1001 &1780088286
-
+>>>>>>> Stashed changes
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-
+<<<<<<< Updated upstream
     m_TransformParent: {fileID: 846728849}
-
+=======
     m_TransformParent: {fileID: 2140181374}
     m_Modifications:
     - target: {fileID: 594038174967896467, guid: 7e924887fc4c9994dbcdcf37ac613740, type: 3}
@@ -31696,7 +31711,7 @@ PrefabInstance:
   m_Modification:
     serializedVersion: 3
     m_TransformParent: {fileID: 1657341632}
-
+>>>>>>> Stashed changes
     m_Modifications:
     - target: {fileID: -9152178459980440199, guid: d298b00733966cf46a2189ef9353b7bf, type: 3}
       propertyPath: m_LocalScale.y
