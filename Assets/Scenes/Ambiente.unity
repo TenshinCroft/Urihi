@@ -14553,14 +14553,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mouse
       objectReference: {fileID: 0}
-    - target: {fileID: 5080688129208023984, guid: 29f0aadb859155741a84213227a85c16, type: 3}
-      propertyPath: m_RenderMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8532805416045149826, guid: 29f0aadb859155741a84213227a85c16, type: 3}
-      propertyPath: _player
-      value: 
-      objectReference: {fileID: 298150658}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

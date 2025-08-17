@@ -144,15 +144,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Above"",
-                    ""type"": ""Button"",
-                    ""id"": ""173d7c07-fa9e-415c-ab5d-623b22e356b0"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -309,17 +300,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Lanterna"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c1955b15-f6c7-4398-8a1e-9c0bfd36fb39"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Above"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -346,7 +326,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Correr = m_Player.FindAction("Correr", throwIfNotFound: true);
         m_Player_Lanterna = m_Player.FindAction("Lanterna", throwIfNotFound: true);
-        m_Player_Above = m_Player.FindAction("Above", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -433,7 +412,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Correr;
     private readonly InputAction m_Player_Lanterna;
-    private readonly InputAction m_Player_Above;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -469,10 +447,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Lanterna".
         /// </summary>
         public InputAction @Lanterna => m_Wrapper.m_Player_Lanterna;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/Above".
-        /// </summary>
-        public InputAction @Above => m_Wrapper.m_Player_Above;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -517,9 +491,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Lanterna.started += instance.OnLanterna;
             @Lanterna.performed += instance.OnLanterna;
             @Lanterna.canceled += instance.OnLanterna;
-            @Above.started += instance.OnAbove;
-            @Above.performed += instance.OnAbove;
-            @Above.canceled += instance.OnAbove;
         }
 
         /// <summary>
@@ -549,9 +520,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Lanterna.started -= instance.OnLanterna;
             @Lanterna.performed -= instance.OnLanterna;
             @Lanterna.canceled -= instance.OnLanterna;
-            @Above.started -= instance.OnAbove;
-            @Above.performed -= instance.OnAbove;
-            @Above.canceled -= instance.OnAbove;
         }
 
         /// <summary>
@@ -647,12 +615,5 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLanterna(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Above" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnAbove(InputAction.CallbackContext context);
     }
 }

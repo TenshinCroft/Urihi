@@ -21,8 +21,6 @@ public class Player : MonoBehaviour
     private bool _runPressed;
     private bool _lntPressed;
     private bool _giz;
-    private Rigidbody _rb;
-
     //--------------- components --------------
     public Camera _pCam;
     ///////////////////////////////////////////
@@ -37,12 +35,10 @@ public class Player : MonoBehaviour
     public float _multiplicadorDeVelocidade = 1.5f;
     public float _alturaDoPulo = 2f;
     public float _velocidadeNoAr = 0.5f;
-    public float _relm;
     //||||||||||||||| PRIVADAS ||||||||||||||||
     //---------------- floats -----------------
     private float _g = 9.81f;
     private float _speed;
-    public float _sssssss;
     //---------------- vectors ----------------
     private Vector2 _inpMove;
     private Vector3 _vel;
@@ -50,8 +46,6 @@ public class Player : MonoBehaviour
     //----------------- bools -----------------
     public bool _isOnG;
     public bool _jPressed;
-    public bool _abovePressed;
-    public bool _onAbove;
     public bool _lntrOn; // essa variável vai ser lida pelo script da lanterna
 
     //---------------- floats -----------------
@@ -103,14 +97,6 @@ public class Player : MonoBehaviour
         _inpActions.Player.Correr.performed += ctx => _runPressed = true;
         _inpActions.Player.Correr.canceled += ctx => _runPressed = false;
         _inpActions.Player.Lanterna.performed += ctx => _lntPressed = true;
-        _inpActions.Player.Above.performed += ctx => _abovePressed = true;
-
-        _rb = GetComponent<Rigidbody>();
-        if (_rb != null)
-        {
-            _rb.isKinematic = true;
-            _rb.useGravity = false;
-        }
 
     }
 
@@ -148,6 +134,7 @@ public class Player : MonoBehaviour
     //=+=+=+=+ QUANDO O JOGO COMEÇA =+=+=+=+=
     public void Update()
     {
+
         Run();
         // verifica se tem um inimigo atribuido
         if(_inimigo != null)
@@ -195,12 +182,6 @@ public class Player : MonoBehaviour
         {
             LanternPres();
             _lntPressed = false;
-        }
-
-        if (_abovePressed)
-        {
-            goToAbove();
-            _abovePressed = false;
         }
 
         // aplica a gravidade do jogador
@@ -265,62 +246,8 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void goToAbove()
-    {
-        //vetor do destino
-        Vector3 destino;
 
-        //define se vai subir ou descer
-        if (!_onAbove)
-        {
-            destino = transform.position + new Vector3(0f, _sssssss, 0f); //sobe
-        }
-        else
-        {
-            destino = transform.position - new Vector3(0f, _sssssss, 0f); //desce
-        }
-
-        //desativa o controller antes do teleporte
-        _cntr.enabled = false;
-
-        //tentativas de posição: centro, direita, esquerda
-        Vector3[] tentativas = {
-            destino,
-            destino + Vector3.right * 0.5f,
-            destino + Vector3.left * 0.5f
-        };
-
-        //raio da checagem de colisão
-        float checkRadius = 0.4f;
-
-        //flag pra ver se deu certo
-        bool teleportou = false;
-
-        //tenta teleportar pra alguma posição livre
-        foreach (Vector3 tentativa in tentativas)
-        {
-            //posição da checagem (um pouco acima pra evitar chão)
-            Vector3 checkPos = tentativa + Vector3.up * 0.5f;
-
-            //se não tiver nada no caminho, faz o teleporte
-            if (!Physics.CheckSphere(checkPos, checkRadius))
-            {
-                transform.position = tentativa;
-                _onAbove = !_onAbove;
-                teleportou = true;
-                break;
-            }
-        }
-
-        if (!teleportou)
-        {
-            Debug.Log("⚠️ Nenhuma posição livre pro teleporte.");
-        }
-
-        //reativa o controller
-        _cntr.enabled = true;
-    }
-private void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
         if (_giz)
         {
