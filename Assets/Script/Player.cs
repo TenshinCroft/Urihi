@@ -5,17 +5,17 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
+
+
     //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     //=+=+=+=+=+=+=+= INTERAÇÃO =+=+=+=+=+=+=+=
     [Header("Interação")]
-    //||||||||||||||| PUBLICAS ||||||||||||||||
     //---------------- floats -----------------
     public float _alcanceDeInteração = 8f;
     //--------------- layermasks --------------
     public LayerMask _mascaraDeInteração;
     //-------------- game objects -------------
     public GameObject _inimigo;
-    //||||||||||||||| PRIVADAS ||||||||||||||||
     //----------------- bools -----------------
     private bool _intPressed;
     private bool _runPressed;
@@ -29,13 +29,11 @@ public class Player : MonoBehaviour
     //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     //=+=+=+=+=+=+=+= MOVIMENTO =+=+=+=+=+=+=+=
     [Header("Movimento")]
-    //||||||||||||||| PUBLICAS ||||||||||||||||
     //---------------- floats -----------------
     public float _velocidade = 12;
     public float _multiplicadorDeVelocidade = 1.5f;
     public float _alturaDoPulo = 2f;
     public float _velocidadeNoAr = 0.5f;
-    //||||||||||||||| PRIVADAS ||||||||||||||||
     //---------------- floats -----------------
     private float _g = 9.81f;
     private float _speed;
@@ -46,8 +44,7 @@ public class Player : MonoBehaviour
     //----------------- bools -----------------
     public bool _isOnG;
     public bool _jPressed;
-    public bool _lntrOn; // essa variável vai ser lida pelo script da lanterna
-
+    public bool _lntrOn; // variável de estado da lanterna
     //---------------- floats -----------------
     private float _cntrMult;
     ///////////////////////////////////////////
@@ -56,27 +53,30 @@ public class Player : MonoBehaviour
     //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     //=+=+=+=+=+=+= GROUND CHECK +=+=+=+=+=+=+=
     [Header("Verificação de Chão")]
-    //||||||||||||||| PUBLICAS ||||||||||||||||
     //---------------- floats -----------------
     public float _distanciaDoChão = 0.4f;
     //--------------- layermasks --------------
     public LayerMask _chão;
-    //||||||||||||||| PRIVADAS ||||||||||||||||
     //--------------- components --------------
     public Transform _gCheck;
     ///////////////////////////////////////////
 
 
     //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    //=+=+=+=+=+=+= LANERNA + SONS =+=+=+=+=+=+
+    [Header("Lanterna")]
+    public AudioSource _lanternAudioSource;
+    public AudioClip _somLigarLanterna;
+    public AudioClip _somDesligarLanterna;
+    [Range(0f, 1f)] public float _lanternVolume = 1f;
+    ///////////////////////////////////////////
+
+
+    //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     //=+=+=+=+=+=+=+ CONTROLER +=+=+=+=+=+=+=+=
     [Header("Sistema de Input")]
-    //||||||||||||||| PUBLICAS ||||||||||||||||
-    //----------------- ints ------------------
-    //++++++++++++++ invisiveis +++++++++++++++
     [HideInInspector]
     public int _i = 0;
-    //||||||||||||||| PRIVADAS ||||||||||||||||
-    //--------------- components --------------
     private PlayerControls _inpActions;
     private CharacterController _cntr;
     ///////////////////////////////////////////
@@ -98,82 +98,67 @@ public class Player : MonoBehaviour
         _inpActions.Player.Correr.canceled += ctx => _runPressed = false;
         _inpActions.Player.Lanterna.performed += ctx => _lntPressed = true;
 
+        // ==== ÁUDIO DA LANTERNA ==== //
+        if (_lanternAudioSource == null)
+            _lanternAudioSource = GetComponent<AudioSource>();
+
+        if (_lanternAudioSource != null)
+        {
+            _lanternAudioSource.playOnAwake = false;
+            _lanternAudioSource.loop = false;
+            _lanternAudioSource.spatialBlend = 0f; // 2D para sempre ouvir
+        }
+        else
+        {
+            Debug.LogWarning("[Player] AudioSource ausente no Player.");
+        }
     }
 
-    // verifica se o jogador foi ativado
-    public void OnEnable()
-    {
-        // ativa os input actions
-        _inpActions.Enable();
-    }
-
-    // verifica se o jogador foi desativado
-    public void OnDisable()
-    {
-        // desativa os input actions
-        _inpActions.Disable();
-    }
+    public void OnEnable() => _inpActions.Enable();
+    public void OnDisable() => _inpActions.Disable();
 
 
     //=+=+=+=+= QUANDO O JOGO COMEÇA +=+=+=+=+=
     public void Start()
     {
-        // verifica se o player tem uma camera
         if (_pCam == null)
-        {
-            // atribui uma camera ao jogador
             _pCam = Camera.main;
-        }
 
-        // prende o cursor na tela e dexa ele invisivel
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
 
-    //=+=+=+=+ QUANDO O JOGO COMEÇA =+=+=+=+=
+    //=+=+=+=+ LOOP DO JOGO =+=+=+=+=
     public void Update()
     {
-
         Run();
-        // verifica se tem um inimigo atribuido
-        if(_inimigo != null)
+
+        if (_inimigo != null)
         {
-            // verifica se o inimigo atacou
             if (_inimigo.gameObject.GetComponent<Enemy>()._plyAtq)
             {
-                // desativa os input actions
                 _inpActions.Disable();
             }
         }
 
-        // checa se está no chão
         _isOnG = Physics.CheckSphere(_gCheck.position, _distanciaDoChão, _chão);
 
-        // checa se está no chão e caindo
         if (_isOnG && _vel.y < 0f)
-        {
-            // atribui uma velocidade negativa a queda para impedir bugs
             _vel.y = -2f;
-        }
 
-        // movimentação do jogador
         _m = transform.right * _inpMove.x + transform.forward * _inpMove.y;
         _cntrMult = _isOnG ? 1f : _velocidadeNoAr;
         _cntr.Move(_m * _speed * _cntrMult * Time.deltaTime);
 
-        // verifica se foi precionado o pulo e esta no chão
         if (_jPressed && _isOnG)
         {
-            // desativa o botão do pulo e atribui uma velocidade pra cima
             _vel.y = Mathf.Sqrt(_alturaDoPulo * 2f * _g);
             _jPressed = false;
         }
 
-        // verifica se o botão de interação foi precionado
         if (_intPressed)
         {
-            // chama a função de interação e desativa o botão
             InteractWithObject();
             _intPressed = false;
         }
@@ -184,10 +169,11 @@ public class Player : MonoBehaviour
             _lntPressed = false;
         }
 
-        // aplica a gravidade do jogador
         _vel.y += -_g * Time.deltaTime;
         _cntr.Move(_vel * Time.deltaTime);
     }
+
+
     public void InteractWithObject()
     {
         Ray ray = new Ray(_pCam.transform.position, _pCam.transform.forward);
@@ -199,8 +185,7 @@ public class Player : MonoBehaviour
             {
                 _i += 1;
                 Debug.Log("Item coletado: " + hit.collider.name);
-                Destroy(hit.collider.gameObject); // Coleta/destrói o item
-                
+                Destroy(hit.collider.gameObject);
             }
             else if (hit.collider.CompareTag("Porta"))
             {
@@ -223,26 +208,26 @@ public class Player : MonoBehaviour
 
     public void Run()
     {
-        // se o botão tá pressionado, aplica o multiplicador
         if (_runPressed)
-        {
             _speed = _velocidade * _multiplicadorDeVelocidade;
-        }
         else
-        {
             _speed = _velocidade;
-        }
     }
 
+    // ==== LANERNA + ÁUDIO ====
     public void LanternPres()
     {
+        _lntrOn = !_lntrOn;
+
         if (_lntrOn)
         {
-            _lntrOn = false;
+            if (_somLigarLanterna != null && _lanternAudioSource != null)
+                _lanternAudioSource.PlayOneShot(_somLigarLanterna, _lanternVolume);
         }
         else
         {
-            _lntrOn = true;
+            if (_somDesligarLanterna != null && _lanternAudioSource != null)
+                _lanternAudioSource.PlayOneShot(_somDesligarLanterna, _lanternVolume);
         }
     }
 
@@ -255,5 +240,6 @@ public class Player : MonoBehaviour
             Gizmos.DrawRay(_pCam.transform.position, _pCam.transform.forward * _alcanceDeInteração);
         }
     }
+
 
 }
