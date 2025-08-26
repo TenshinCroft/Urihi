@@ -8,6 +8,9 @@ TagManager:
   - HideSpot
   - Armario
   - Porta
+  - Ground_Grass
+  - Ground_Asphalt
+  - Ground_House
   layers:
   - Default
   - TransparentFX

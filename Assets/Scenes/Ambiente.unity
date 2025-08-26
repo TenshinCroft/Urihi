@@ -609,9 +609,9 @@ GameObject:
   - component: {fileID: 39309010}
   - component: {fileID: 39309009}
   - component: {fileID: 39309008}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: Ground_Asphalt
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1783,7 +1783,7 @@ GameObject:
   - component: {fileID: 123754163}
   m_Layer: 3
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Ground_House
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3256,7 +3256,7 @@ GameObject:
   - component: {fileID: 207236326}
   m_Layer: 3
   m_Name: Cube (2)
-  m_TagString: Untagged
+  m_TagString: Ground_House
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3614,7 +3614,7 @@ GameObject:
   - component: {fileID: 229993860}
   m_Layer: 3
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: Ground_House
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4587,6 +4587,14 @@ PrefabInstance:
       propertyPath: _somDesligarLanterna
       value: 
       objectReference: {fileID: 8300000, guid: 81a1861899fb5304597f895156a0851b, type: 3}
+    - target: {fileID: 3099742786686974341, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
+      propertyPath: m_ClearFlags
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5436129738889304456, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
+      propertyPath: m_RenderPostProcessing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6812683406811213645, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 63.8
@@ -4635,12 +4643,18 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6812683406811213645, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 1573696284}
+    - targetCorrespondingSourceObject: {fileID: 6812683406811213645, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 761074514}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8179845243717924264, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 298150663}
+    - targetCorrespondingSourceObject: {fileID: 8179845243717924264, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 298150664}
     - targetCorrespondingSourceObject: {fileID: 5521177950812171724, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 892973955}
@@ -4752,6 +4766,34 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &298150664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298150658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baae3fa340b715b4ea808a7e3def95a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footstepsSource: {fileID: 298150663}
+  walkPitch: 1
+  runPitch: 1.5
+  defaultStepSound: {fileID: 8300000, guid: ac7fb8fcc33ba2943bd23180d79fc629, type: 3}
+  surfaceFootsteps:
+  - surfaceTag: Ground_Grass
+    footstepClip: {fileID: 8300000, guid: ac7fb8fcc33ba2943bd23180d79fc629, type: 3}
+  - surfaceTag: Ground_Asphalt
+    footstepClip: {fileID: 8300000, guid: 9f9c8c484cfece04b8b2c0cae201349c, type: 3}
+  - surfaceTag: Ground_House
+    footstepClip: {fileID: 8300000, guid: 482bc7718fb03724ea0887840a9c0def, type: 3}
+  groundCheckOrigin: {fileID: 1573696284}
+  groundCheckDistance: 1.2
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &306998676
 GameObject:
   m_ObjectHideFlags: 0
@@ -14396,6 +14438,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: -8391222552659086748, guid: 3317c1ec89ee1bd47a80e19ae233e6cb, type: 3}
+      propertyPath: m_TagString
+      value: Ground_House
+      objectReference: {fileID: 0}
     - target: {fileID: -7918335002988649766, guid: 3317c1ec89ee1bd47a80e19ae233e6cb, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -14769,6 +14815,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 440409323}
     m_Modifications:
+    - target: {fileID: 913389872026570613, guid: 29f0aadb859155741a84213227a85c16, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 913389872026570613, guid: 29f0aadb859155741a84213227a85c16, type: 3}
+      propertyPath: m_Color.b
+      value: 0.7924528
+      objectReference: {fileID: 0}
+    - target: {fileID: 913389872026570613, guid: 29f0aadb859155741a84213227a85c16, type: 3}
+      propertyPath: m_Color.g
+      value: 0.7924528
+      objectReference: {fileID: 0}
+    - target: {fileID: 913389872026570613, guid: 29f0aadb859155741a84213227a85c16, type: 3}
+      propertyPath: m_Color.r
+      value: 0.7924528
+      objectReference: {fileID: 0}
     - target: {fileID: 1833330126071819925, guid: 29f0aadb859155741a84213227a85c16, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -19397,6 +19459,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1573326268}
   m_Mesh: {fileID: -6062578164958778753, guid: 75dcfacb85e0cf8478a3969a2eb0d819, type: 3}
+--- !u!1 &1573696283
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1573696284}
+  m_Layer: 3
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1573696284
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573696283}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -2.99, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 298150659}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1573768061
 GameObject:
   m_ObjectHideFlags: 0
@@ -25433,6 +25526,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ee87fac68173973408ec8dce08e9e9c1, type: 3}
+      propertyPath: m_TagString
+      value: Ground_Grass
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -25851,5 +25948,5 @@ SceneRoots:
   - {fileID: 1284205381}
   - {fileID: 1273228037}
   - {fileID: 50366139}
-  - {fileID: 298150657}
   - {fileID: 2020316142}
+  - {fileID: 298150657}
