@@ -11,6 +11,7 @@ TagManager:
   - Ground_Grass
   - Ground_Asphalt
   - Ground_House
+  - ChaveInicio
   layers:
   - Default
   - TransparentFX
