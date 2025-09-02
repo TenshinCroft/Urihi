@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ddf15782cf59f2f4aae3d72909bdfc87
+guid: 1030b7a1f795b8743ba4421d7431fe2f
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Mansion Door
-    second: {fileID: 2100000, guid: c2139b872862aca4d8bf7589d83189de, type: 2}
+    second: {fileID: 2100000, guid: 2bd2eb786eae4594c9bfd42886146bd1, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
