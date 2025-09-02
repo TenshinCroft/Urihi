@@ -16,7 +16,7 @@ RenderSettings:
   serializedVersion: 10
   m_Fog: 1
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  m_FogMode: 2
+  m_FogMode: 1
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
@@ -15963,9 +15963,9 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 2
-  m_Color: {r: 1, g: 0.88869286, b: 0, a: 1}
-  m_Intensity: 1
-  m_Range: 10
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 0.3
+  m_Range: 1.0000019
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -16007,8 +16007,8 @@ Light:
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
+  m_ColorTemperature: 3449
+  m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
@@ -20109,11 +20109,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3317c1ec89ee1bd47a80e19ae233e6cb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.750724
+      value: -3.7507243
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3317c1ec89ee1bd47a80e19ae233e6cb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.9
+      value: -0.9602442
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3317c1ec89ee1bd47a80e19ae233e6cb, type: 3}
       propertyPath: m_LocalRotation.w
