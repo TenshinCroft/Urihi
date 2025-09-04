@@ -16,6 +16,9 @@ public class PianoPuzzle : MonoBehaviour
     {
         if (itemLiberado != null)
         {
+            // Desativa o item no início
+            itemLiberado.SetActive(false);
+
             rbItem = itemLiberado.GetComponent<Rigidbody>();
 
             if (rbItem != null)
@@ -55,7 +58,6 @@ public class PianoPuzzle : MonoBehaviour
             {
                 if (hit.collider.gameObject == ordemCorreta[indiceAtual])
                 {
-                    
                     indiceAtual++;
 
                     if (indiceAtual >= ordemCorreta.Length)
@@ -63,11 +65,16 @@ public class PianoPuzzle : MonoBehaviour
                         Debug.Log("Puzzle completo");
                         indiceAtual = 0;
 
-                        // Libera o item
-                        if (rbItem != null)
+                        // Ativa e libera o item
+                        if (itemLiberado != null)
                         {
-                            rbItem.isKinematic = false;
-                            rbItem.useGravity = true;
+                            itemLiberado.SetActive(true); // Torna visível
+
+                            if (rbItem != null)
+                            {
+                                rbItem.isKinematic = false;
+                                rbItem.useGravity = true;
+                            }
                         }
                     }
                 }
@@ -80,5 +87,6 @@ public class PianoPuzzle : MonoBehaviour
         }
     }
 }
+
 
 
