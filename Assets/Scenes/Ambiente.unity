@@ -15361,9 +15361,9 @@ GameObject:
   - component: {fileID: 1088354829}
   - component: {fileID: 1088354830}
   - component: {fileID: 1088354831}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Script
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15799,6 +15799,10 @@ PrefabInstance:
       value: chave antiga
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 69c0fd9c4b7ad5841a12c591f914c5c8, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 69c0fd9c4b7ad5841a12c591f914c5c8, type: 3}
       propertyPath: m_TagString
       value: Item
       objectReference: {fileID: 0}
@@ -15811,7 +15815,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 69c0fd9c4b7ad5841a12c591f914c5c8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1088354829}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 69c0fd9c4b7ad5841a12c591f914c5c8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1221019455}
   m_SourcePrefab: {fileID: 100100000, guid: 69c0fd9c4b7ad5841a12c591f914c5c8, type: 3}
 --- !u!1 &1131165942
 GameObject:
@@ -16746,6 +16753,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1218186485}
   m_Mesh: {fileID: -6062578164958778753, guid: 75dcfacb85e0cf8478a3969a2eb0d819, type: 3}
+--- !u!1 &1221019454 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 69c0fd9c4b7ad5841a12c591f914c5c8, type: 3}
+  m_PrefabInstance: {fileID: 1127888196}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1221019455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1221019454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a103771402c3f64ba05875e4bd83649, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: Chave Da Entrada
 --- !u!4 &1225569926 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 75dcfacb85e0cf8478a3969a2eb0d819, type: 3}
@@ -16881,6 +16906,55 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1833330126071819925, guid: 29f0aadb859155741a84213227a85c16, type: 3}
   m_PrefabInstance: {fileID: 1226706832}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1234846911 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1635290491475856232, guid: e1e07beddb0cac1488251203d998d9fa, type: 3}
+  m_PrefabInstance: {fileID: 1273228037}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1234846912 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2160154029866242514, guid: e1e07beddb0cac1488251203d998d9fa, type: 3}
+  m_PrefabInstance: {fileID: 1273228037}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1234846913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234846911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76a41b08905a8be42a9304889f03e44a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Porta: {fileID: 1234846912}
+  _itensParaAbrir: 1
+  _podeAbrir: 1
+  _podeFechar: 1
+  _prtDur: 0.25
+--- !u!64 &1234846914
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234846911}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1 &1235925762
 GameObject:
   m_ObjectHideFlags: 0
@@ -17303,7 +17377,7 @@ GameObject:
   - component: {fileID: 1246199905}
   - component: {fileID: 1246199907}
   - component: {fileID: 1246199906}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17574,6 +17648,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2771364720179140631, guid: e1e07beddb0cac1488251203d998d9fa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1273228039}
+    - targetCorrespondingSourceObject: {fileID: 1635290491475856232, guid: e1e07beddb0cac1488251203d998d9fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1234846914}
+    - targetCorrespondingSourceObject: {fileID: 1635290491475856232, guid: e1e07beddb0cac1488251203d998d9fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1234846913}
   m_SourcePrefab: {fileID: 100100000, guid: e1e07beddb0cac1488251203d998d9fa, type: 3}
 --- !u!1 &1273228038 stripped
 GameObject:

@@ -12,6 +12,7 @@ TagManager:
   - Ground_Asphalt
   - Ground_House
   - ChaveInicio
+  - Carta
   layers:
   - Default
   - TransparentFX

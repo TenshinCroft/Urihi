@@ -179,30 +179,63 @@ public class Player : MonoBehaviour
         Ray ray = new Ray(_pCam.transform.position, _pCam.transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, _alcanceDeInteração, _mascaraDeInteração))
+        // Importante: seta para também acertar colliders com "Is Trigger"
+        if (Physics.Raycast(ray, out hit, _alcanceDeInteração, _mascaraDeInteração, QueryTriggerInteraction.Collide))
         {
+            // ====== CARTA (primeiro) – detecta pelo componente, mesmo se o colisor estiver em filho/pai ======
+            Carta carta =
+                hit.collider.GetComponent<Carta>() ??
+                hit.collider.GetComponentInParent<Carta>() ??
+                hit.collider.GetComponentInChildren<Carta>();
+
+            if (carta != null)
+            {
+                var cartaUI = FindObjectOfType<CartaUI>(true); // true: procura mesmo se estiver desativado
+                if (cartaUI != null)
+                {
+                    cartaUI.MostrarCarta(carta.cartaSprite);
+                    Debug.Log($"[Interação] Carta aberta via '{hit.collider.name}'.");
+                }
+                else
+                {
+                    Debug.LogWarning("[Interação] CartaUI não encontrada na cena. Coloque o script CartaUI no Canvas e arraste as referências.");
+                }
+                return; // já interagiu com a carta; sai do método
+            }
+
+            // ====== ITEM ======
             if (hit.collider.CompareTag("Item"))
             {
                 _i += 1;
                 Debug.Log("Item coletado: " + hit.collider.name);
                 Destroy(hit.collider.gameObject);
+                return;
             }
-            else if (hit.collider.CompareTag("Porta"))
+
+            // ====== PORTA ======
+            if (hit.collider.CompareTag("Porta"))
             {
                 porta porta = hit.collider.GetComponent<porta>();
                 if (porta != null)
                 {
-                    if (_i >= hit.collider.GetComponent<porta>()._itensParaAbrir)
+                    if (_i >= porta._itensParaAbrir)
                     {
                         porta.AcionarPorta();
                         Debug.Log("Porta aberta: " + hit.collider.name);
                     }
+                    else
+                    {
+                        Debug.Log($"Precisa de {porta._itensParaAbrir} itens, você tem {_i}.");
+                    }
                 }
+                return;
             }
+
+            Debug.Log($"[Interação] Ray acertou '{hit.collider.name}', mas não é Item/Porta e não tem Carta.");
         }
         else
         {
-            Debug.Log("Nada interagível na frente");
+            Debug.Log("[Interação] Nada Interagivel");
         }
     }
 
