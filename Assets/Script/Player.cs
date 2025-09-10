@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
-
+    
 
     //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     //=+=+=+=+=+=+=+= INTERAÇÃO =+=+=+=+=+=+=+=
@@ -182,27 +182,7 @@ public class Player : MonoBehaviour
         // Importante: seta para também acertar colliders com "Is Trigger"
         if (Physics.Raycast(ray, out hit, _alcanceDeInteração, _mascaraDeInteração, QueryTriggerInteraction.Collide))
         {
-            // ====== CARTA (primeiro) – detecta pelo componente, mesmo se o colisor estiver em filho/pai ======
-            Carta carta =
-                hit.collider.GetComponent<Carta>() ??
-                hit.collider.GetComponentInParent<Carta>() ??
-                hit.collider.GetComponentInChildren<Carta>();
-
-            if (carta != null)
-            {
-                var cartaUI = FindObjectOfType<CartaUI>(true); // true: procura mesmo se estiver desativado
-                if (cartaUI != null)
-                {
-                    cartaUI.MostrarCarta(carta.cartaSprite);
-                    Debug.Log($"[Interação] Carta aberta via '{hit.collider.name}'.");
-                }
-                else
-                {
-                    Debug.LogWarning("[Interação] CartaUI não encontrada na cena. Coloque o script CartaUI no Canvas e arraste as referências.");
-                }
-                return; // já interagiu com a carta; sai do método
-            }
-
+           
             // ====== ITEM ======
             if (hit.collider.CompareTag("Item"))
             {
@@ -254,13 +234,13 @@ public class Player : MonoBehaviour
 
         if (_lntrOn)
         {
-            if (_somLigarLanterna != null && _lanternAudioSource != null)
-                _lanternAudioSource.PlayOneShot(_somLigarLanterna, _lanternVolume);
+            if (_somLigarLanterna != null)
+                AudioSource.PlayClipAtPoint(_somLigarLanterna, transform.position, _lanternVolume);
         }
         else
         {
-            if (_somDesligarLanterna != null && _lanternAudioSource != null)
-                _lanternAudioSource.PlayOneShot(_somDesligarLanterna, _lanternVolume);
+            if (_somDesligarLanterna != null)
+                AudioSource.PlayClipAtPoint(_somDesligarLanterna, transform.position, _lanternVolume);
         }
     }
 

@@ -15819,6 +15819,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 69c0fd9c4b7ad5841a12c591f914c5c8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1221019455}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 69c0fd9c4b7ad5841a12c591f914c5c8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1221019457}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 69c0fd9c4b7ad5841a12c591f914c5c8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1221019456}
   m_SourcePrefab: {fileID: 100100000, guid: 69c0fd9c4b7ad5841a12c591f914c5c8, type: 3}
 --- !u!1 &1131165942
 GameObject:
@@ -16770,7 +16776,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a103771402c3f64ba05875e4bd83649, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Chave Da Entrada
+  itemName: Chave
+--- !u!54 &1221019456
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1221019454}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &1221019457
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1221019454}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.010598711, y: 0.0034576722, z: 0.00082473067}
+  m_Center: {x: 0.000012036872, y: 0.0001099086, z: 0.00015105019}
 --- !u!4 &1225569926 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 75dcfacb85e0cf8478a3969a2eb0d819, type: 3}
