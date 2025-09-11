@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4124014204220655533}
   - component: {fileID: 1925461276891761645}
   - component: {fileID: 1132106349112111949}
-  - component: {fileID: 1731885371101977889}
+  - component: {fileID: 7096466512541200451}
   m_Layer: 0
   m_Name: Inimigo
   m_TagString: Untagged
@@ -106,13 +106,18 @@ MonoBehaviour:
   _plyAtq: 0
   _stpDst: 2
   _chsRng: 15
-  _fov: 135
-  _maxLostTime: 2
-  _visionBlockMask:
+  _fov: 180
+  _maxSpeed: 8
+  _accelRate: 50
+  _decelRate: 16
+  _maxLostTime: 3
+  _visionMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   _waypoints: []
   _giz: 0
+  _playerVisible: 0
+  _IsPlayerInFOV: 0
 --- !u!143 &1925461276891761645
 CharacterController:
   m_ObjectHideFlags: 0
@@ -131,8 +136,8 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2.06
-  m_Radius: 0.2
+  m_Height: 1.8521856
+  m_Radius: 0.45
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -148,20 +153,20 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
+  m_Speed: 8
+  m_Acceleration: 10
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 1
-  m_BaseOffset: 0.5
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!136 &1731885371101977889
-CapsuleCollider:
+--- !u!64 &7096466512541200451
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -178,8 +183,7 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.19956589
-  m_Height: 1.8372941
-  m_Direction: 1
-  m_Center: {x: 0.0014185905, y: 0.90947366, z: 0.074186325}
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4407679230795050791, guid: 0bcf7d027efffda4a9635880fd113565, type: 3}

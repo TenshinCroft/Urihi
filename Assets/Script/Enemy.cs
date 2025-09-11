@@ -18,15 +18,21 @@ public class Enemy : MonoBehaviour
     [Range(0, 360)]
     public float _fov = 135f;
 
+    [Header("Velocidade")]
+    public float _maxSpeed = 5f;       // velocidade máxima
+    public float _accelRate = 3f;      // aceleração quando começa a correr
+    public float _decelRate = 6f;      // desaceleração quando para
+    private float _curSpeed = 0f;      // velocidade atual
+
     //============== IA ==========================
     [Header("Timers")]
-    public float _maxLostTime = 2f; // tipo 2 segundos de memória
+    public float _maxLostTime = 2f;
     private float _lostTimer = 0f;
 
-    public LayerMask _visionMask; // <-- adiciona no topo do script pra setar pelo Inspector
+    public LayerMask _visionMask;
 
     [Header("Sondagem")]
-    public Transform[] _waypoints; // pontos que o inimigo vai patrulhar
+    public Transform[] _waypoints;
     private int _curWp = 0;
     public bool _giz;
 
@@ -38,6 +44,7 @@ public class Enemy : MonoBehaviour
     public void Awake()
     {
         _nav = GetComponent<NavMeshAgent>();
+        _nav.updateRotation = true;
     }
 
     public void Start()
@@ -53,7 +60,7 @@ public class Enemy : MonoBehaviour
         if (_IsPlayerInFOV && !_p.GetComponent<goToPlayer>()._inCls)
         {
             _playerVisible = true;
-            _lostTimer = 0f; // zera o tempo perdido
+            _lostTimer = 0f;
         }
         else
         {
@@ -64,32 +71,52 @@ public class Enemy : MonoBehaviour
             }
             else if (_lostTimer >= _maxLostTime)
             {
-                _playerVisible = false; // depois do delay, esquece
+                _playerVisible = false;
             }
         }
 
+        // define destino + controle de aceleração
         if (_playerVisible)
         {
             _nav.SetDestination(_p.transform.position);
+
+            // rotação instantânea pro player
+            _nav.updateRotation = false;
+            Vector3 dir = (_p.transform.position - transform.position).normalized;
+            dir.y = 0;
+            if (dir != Vector3.zero)
+                transform.rotation = Quaternion.LookRotation(dir);
+
+            // acelera até a velocidade máxima
+            _curSpeed = Mathf.MoveTowards(_curSpeed, _maxSpeed, _accelRate * Time.deltaTime);
+
             if (Vector3.Distance(_p.transform.position, transform.position) <= _stpDst)
-            {
                 AttackPlayer();
-            }
         }
-        else if (_waypoints != null)
+        else if (_waypoints != null && _waypoints.Length > 0)
         {
+            _nav.updateRotation = true;
             Patrol();
+            // desacelera um pouco quando patrulhando
+            _curSpeed = Mathf.MoveTowards(_curSpeed, _maxSpeed * 0.5f, _accelRate * Time.deltaTime);
         }
         else
         {
             _nav.ResetPath();
+            // desaceleração rápida
+            _curSpeed = Mathf.MoveTowards(_curSpeed, 0f, _decelRate * Time.deltaTime);
         }
+
+        // aplica a velocidade no navmesh
+        _nav.speed = _curSpeed;
     }
+
     public void AttackPlayer()
     {
         Debug.Log("Você Morreu");
         _plyAtq = true;
         _nav.ResetPath();
+        _curSpeed = 0f; // trava movimento quando atacar
     }
 
     public void Patrol()
@@ -102,9 +129,9 @@ public class Enemy : MonoBehaviour
             _curWp = (_curWp + 1) % _waypoints.Length;
         }
     }
+
     public void IsPlayerInFOV()
     {
-        // Assumindo que player é Transform
         Vector3 directionToPlayer = _p.transform.position - transform.position;
         float distanceToPlayer = Vector3.Distance(_p.transform.position, transform.position);
 
@@ -112,22 +139,18 @@ public class Enemy : MonoBehaviour
         {
             if (hit.collider.CompareTag("Player"))
             {
-                // Verifica se tá dentro do range E do campo de visão
                 float angle = Vector3.Angle(transform.forward, directionToPlayer);
                 if (distanceToPlayer <= _chsRng && angle <= _fov / 2f)
                 {
                     _IsPlayerInFOV = true;
                     return;
                 }
-
             }
             else
             {
-                // Tem algo na frente (parede, objeto, etc)
                 _IsPlayerInFOV = false;
             }
         }
-
     }
 
     public void OnDrawGizmos()
@@ -146,7 +169,6 @@ public class Enemy : MonoBehaviour
             Gizmos.DrawRay(transform.position, _lftRay * _chsRng);
             Gizmos.DrawRay(transform.position, _rgtRay * _chsRng);
 
-            // Desenha o raio de visão direta
             Gizmos.color = Color.green;
             Vector3 from = transform.position + Vector3.up * 1.5f;
             Vector3 to = _p.transform.position + Vector3.up * 1.5f;
