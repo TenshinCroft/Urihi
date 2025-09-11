@@ -144,6 +144,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FecharCarta"",
+                    ""type"": ""Button"",
+                    ""id"": ""5a7136d9-c746-4a78-9095-359aa5c41e5d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -300,6 +309,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Lanterna"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c9d73060-bf0b-4b33-96e7-32849bff2a80"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FecharCarta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -326,6 +346,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Correr = m_Player.FindAction("Correr", throwIfNotFound: true);
         m_Player_Lanterna = m_Player.FindAction("Lanterna", throwIfNotFound: true);
+        m_Player_FecharCarta = m_Player.FindAction("FecharCarta", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -412,6 +433,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Correr;
     private readonly InputAction m_Player_Lanterna;
+    private readonly InputAction m_Player_FecharCarta;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -447,6 +469,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Lanterna".
         /// </summary>
         public InputAction @Lanterna => m_Wrapper.m_Player_Lanterna;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/FecharCarta".
+        /// </summary>
+        public InputAction @FecharCarta => m_Wrapper.m_Player_FecharCarta;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -491,6 +517,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Lanterna.started += instance.OnLanterna;
             @Lanterna.performed += instance.OnLanterna;
             @Lanterna.canceled += instance.OnLanterna;
+            @FecharCarta.started += instance.OnFecharCarta;
+            @FecharCarta.performed += instance.OnFecharCarta;
+            @FecharCarta.canceled += instance.OnFecharCarta;
         }
 
         /// <summary>
@@ -520,6 +549,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Lanterna.started -= instance.OnLanterna;
             @Lanterna.performed -= instance.OnLanterna;
             @Lanterna.canceled -= instance.OnLanterna;
+            @FecharCarta.started -= instance.OnFecharCarta;
+            @FecharCarta.performed -= instance.OnFecharCarta;
+            @FecharCarta.canceled -= instance.OnFecharCarta;
         }
 
         /// <summary>
@@ -615,5 +647,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLanterna(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "FecharCarta" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnFecharCarta(InputAction.CallbackContext context);
     }
 }

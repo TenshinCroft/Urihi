@@ -5,92 +5,67 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
-    
+    // CARTA
+    [Header("Carta")]
+    private GameObject cartaAtualUI;  // carta ativa no momento
+    public bool cartaAberta = false;
 
-    //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-    //=+=+=+=+=+=+=+= INTERAÇÃO =+=+=+=+=+=+=+=
+    [Tooltip("Imagem que aparece no canto da tela junto com qualquer carta")]
+    public GameObject imagemExtraUI; // <- arraste no Inspector (Canvas)
+
+
+    // INTERAÇÃO
     [Header("Interação")]
-    //---------------- floats -----------------
     public float _alcanceDeInteração = 8f;
-    //--------------- layermasks --------------
     public LayerMask _mascaraDeInteração;
-    //-------------- game objects -------------
     public GameObject _inimigo;
-    //----------------- bools -----------------
     private bool _intPressed;
     private bool _runPressed;
     private bool _lntPressed;
     private bool _giz;
-    public bool _carta = true;
-    //--------------- components --------------
     public Camera _pCam;
-    ///////////////////////////////////////////
 
-
-    //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-    //=+=+=+=+=+=+=+= MOVIMENTO =+=+=+=+=+=+=+=
+    // MOVIMENTO
     [Header("Movimento")]
-    //---------------- floats -----------------
     public float _velocidade = 12;
     public float _multiplicadorDeVelocidade = 1.5f;
     public float _alturaDoPulo = 2f;
     public float _velocidadeNoAr = 0.5f;
-    //---------------- floats -----------------
     private float _g = 9.81f;
     private float _speed;
-    //---------------- vectors ----------------
     private Vector2 _inpMove;
     private Vector3 _vel;
     private Vector3 _m;
-    //----------------- bools -----------------
     public bool _isOnG;
     public bool _jPressed;
-    public bool _lntrOn; // variável de estado da lanterna
-    //---------------- floats -----------------
+    public bool _lntrOn;
     private float _cntrMult;
-    ///////////////////////////////////////////
 
-
-    //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-    //=+=+=+=+=+=+= GROUND CHECK +=+=+=+=+=+=+=
+    // CHÃO
     [Header("Verificação de Chão")]
-    //---------------- floats -----------------
     public float _distanciaDoChão = 0.4f;
-    //--------------- layermasks --------------
     public LayerMask _chão;
-    //--------------- components --------------
     public Transform _gCheck;
-    ///////////////////////////////////////////
 
-
-    //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-    //=+=+=+=+=+=+= LANERNA + SONS =+=+=+=+=+=+
+    // LANTERNA
     [Header("Lanterna")]
     public AudioSource _lanternAudioSource;
     public AudioClip _somLigarLanterna;
     public AudioClip _somDesligarLanterna;
     [Range(0f, 1f)] public float _lanternVolume = 1f;
-    ///////////////////////////////////////////
 
-
-    //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-    //=+=+=+=+=+=+=+ CONTROLER +=+=+=+=+=+=+=+=
+    // CONTROLER
     [Header("Sistema de Input")]
-    [HideInInspector]
-    public int _i = 0;
+    [HideInInspector] public int _i = 0;
     private PlayerControls _inpActions;
     private CharacterController _cntr;
-    ///////////////////////////////////////////
 
-
-    //=+=+=+=+= ANTES DO JOGO COMEÇAR =+=+=+=+=
+    // ===== AWAKE =====
     public void Awake()
     {
-        // Pega o character controller e inicializa os inputs
         _cntr = GetComponent<CharacterController>();
         _inpActions = new PlayerControls();
 
-        // verifica se os inputs foram ativados
         _inpActions.Player.Move.performed += ctx => _inpMove = ctx.ReadValue<Vector2>();
         _inpActions.Player.Move.canceled += ctx => _inpMove = Vector2.zero;
         _inpActions.Player.Jump.performed += ctx => _jPressed = true;
@@ -99,7 +74,6 @@ public class Player : MonoBehaviour
         _inpActions.Player.Correr.canceled += ctx => _runPressed = false;
         _inpActions.Player.Lanterna.performed += ctx => _lntPressed = true;
 
-        // ==== ÁUDIO DA LANTERNA ==== //
         if (_lanternAudioSource == null)
             _lanternAudioSource = GetComponent<AudioSource>();
 
@@ -107,84 +81,95 @@ public class Player : MonoBehaviour
         {
             _lanternAudioSource.playOnAwake = false;
             _lanternAudioSource.loop = false;
-            _lanternAudioSource.spatialBlend = 0f; // 2D para sempre ouvir
-        }
-        else
-        {
-            Debug.LogWarning("[Player] AudioSource ausente no Player.");
+            _lanternAudioSource.spatialBlend = 0f;
         }
     }
 
     public void OnEnable() => _inpActions.Enable();
     public void OnDisable() => _inpActions.Disable();
 
-
-    //=+=+=+=+= QUANDO O JOGO COMEÇA +=+=+=+=+=
+    // ===== START =====
     public void Start()
     {
         if (_pCam == null)
             _pCam = Camera.main;
 
+        if (cartaAtualUI != null)
+            cartaAtualUI.SetActive(false);
+
+        if (imagemExtraUI != null)
+            imagemExtraUI.SetActive(false); // começa desativada
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-
-    //=+=+=+=+ LOOP DO JOGO =+=+=+=+=
+    // ===== UPDATE =====
     public void Update()
     {
-        Run();
-
-        if (_inimigo != null)
+        
         {
-            if (_inimigo.gameObject.GetComponent<Enemy>()._plyAtq)
+            if (cartaAberta)
             {
-                _inpActions.Disable();
+                // fecha carta quando apertar F
+                if (Keyboard.current.fKey.wasPressedThisFrame)
+                {
+                    FecharCarta();
+                }
+
+                // impede que o player se mova enquanto a carta está aberta
+                return;
             }
+
+            Run();
+
+            if (_inimigo != null)
+            {
+                if (_inimigo.gameObject.GetComponent<Enemy>()._plyAtq)
+                    _inpActions.Disable();
+            }
+
+            _isOnG = Physics.CheckSphere(_gCheck.position, _distanciaDoChão, _chão);
+
+            if (_isOnG && _vel.y < 0f)
+                _vel.y = -2f;
+
+            _m = transform.right * _inpMove.x + transform.forward * _inpMove.y;
+            _cntrMult = _isOnG ? 1f : _velocidadeNoAr;
+            _cntr.Move(_m * _speed * _cntrMult * Time.deltaTime);
+
+            if (_jPressed && _isOnG)
+            {
+                _vel.y = Mathf.Sqrt(_alturaDoPulo * 2f * _g);
+                _jPressed = false;
+            }
+
+            if (_intPressed)
+            {
+                InteractWithObject();
+                _intPressed = false;
+            }
+
+            if (_lntPressed)
+            {
+                LanternPres();
+                _lntPressed = false;
+            }
+
+            _vel.y += -_g * Time.deltaTime;
+            _cntr.Move(_vel * Time.deltaTime);
         }
-
-        _isOnG = Physics.CheckSphere(_gCheck.position, _distanciaDoChão, _chão);
-
-        if (_isOnG && _vel.y < 0f)
-            _vel.y = -2f;
-
-        _m = transform.right * _inpMove.x + transform.forward * _inpMove.y;
-        _cntrMult = _isOnG ? 1f : _velocidadeNoAr;
-        _cntr.Move(_m * _speed * _cntrMult * Time.deltaTime);
-
-        if (_jPressed && _isOnG)
-        {
-            _vel.y = Mathf.Sqrt(_alturaDoPulo * 2f * _g);
-            _jPressed = false;
-        }
-
-        if (_intPressed)
-        {
-            InteractWithObject();
-            _intPressed = false;
-        }
-
-        if (_lntPressed)
-        {
-            LanternPres();
-            _lntPressed = false;
-        }
-
-        _vel.y += -_g * Time.deltaTime;
-        _cntr.Move(_vel * Time.deltaTime);
     }
 
-
-    public void InteractWithObject()
+        // ===== INTERAÇÃO =====
+        public void InteractWithObject()
     {
         Ray ray = new Ray(_pCam.transform.position, _pCam.transform.forward);
         RaycastHit hit;
 
-        // Importante: seta para também acertar colliders com "Is Trigger"
         if (Physics.Raycast(ray, out hit, _alcanceDeInteração, _mascaraDeInteração, QueryTriggerInteraction.Collide))
         {
-           
-            // ====== ITEM ======
+            // ITEM
             if (hit.collider.CompareTag("Item"))
             {
                 _i += 1;
@@ -193,16 +178,20 @@ public class Player : MonoBehaviour
                 return;
             }
 
-            // ====== CARTA ======
+            // CARTA
             if (hit.collider.CompareTag("Carta"))
             {
-                Debug.Log("Carta Aberta: " + hit.collider.name);
-                _carta = !_carta;
-                hit.collider.GetComponent<CollectibleItem>()._carta = !_carta;
+                Debug.Log("Interagiu com a Carta: " + hit.collider.name);
+
+                CollectibleItem carta = hit.collider.GetComponent<CollectibleItem>();
+                if (carta != null && carta.cartaUI != null)
+                {
+                    AbrirCarta(carta.cartaUI);
+                }
                 return;
             }
 
-            // ====== PORTA ======
+            // PORTA
             if (hit.collider.CompareTag("Porta"))
             {
                 porta porta = hit.collider.GetComponent<porta>();
@@ -220,24 +209,52 @@ public class Player : MonoBehaviour
                 }
                 return;
             }
-
-            Debug.Log($"[Interação] Ray acertou '{hit.collider.name}', mas não é Item/Porta e não tem Carta.");
-        }
-        else
-        {
-            Debug.Log("[Interação] Nada Interagivel");
         }
     }
 
+    // ===== ABRIR CARTA =====
+    public void AbrirCarta(GameObject cartaUI)
+    {
+        cartaAtualUI = cartaUI;
+        cartaAtualUI.SetActive(true);
+
+        if (imagemExtraUI != null)
+            imagemExtraUI.SetActive(true); // ativa a imagem no canto
+
+        cartaAberta = true;
+        Time.timeScale = 0f; // congela o jogo
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        Debug.Log("Carta aberta!");
+    }
+
+    // ===== FECHAR CARTA =====
+    private void FecharCarta()
+    {
+        if (cartaAtualUI != null)
+            cartaAtualUI.SetActive(false);
+
+        if (imagemExtraUI != null)
+            imagemExtraUI.SetActive(false); // desativa junto
+
+        cartaAberta = false;
+        Time.timeScale = 1f; // volta o jogo
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        Debug.Log("Carta fechada!");
+    }
+
+    // ===== MOVIMENTO =====
     public void Run()
     {
-        if (_runPressed)
-            _speed = _velocidade * _multiplicadorDeVelocidade;
-        else
-            _speed = _velocidade;
+        _speed = _runPressed ? _velocidade * _multiplicadorDeVelocidade : _velocidade;
     }
 
-    // ==== LANERNA + ÁUDIO ====
+    // ===== LANTERNA =====
     public void LanternPres()
     {
         _lntrOn = !_lntrOn;
@@ -254,7 +271,7 @@ public class Player : MonoBehaviour
         }
     }
 
-
+    // ===== GIZMOS =====
     private void OnDrawGizmos()
     {
         if (_giz)
@@ -263,6 +280,4 @@ public class Player : MonoBehaviour
             Gizmos.DrawRay(_pCam.transform.position, _pCam.transform.forward * _alcanceDeInteração);
         }
     }
-
-
 }
