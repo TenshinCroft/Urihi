@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     private bool _runPressed;
     private bool _lntPressed;
     private bool _giz;
+    public bool _carta = true;
     //--------------- components --------------
     public Camera _pCam;
     ///////////////////////////////////////////
@@ -189,6 +190,15 @@ public class Player : MonoBehaviour
                 _i += 1;
                 Debug.Log("Item coletado: " + hit.collider.name);
                 Destroy(hit.collider.gameObject);
+                return;
+            }
+
+            // ====== CARTA ======
+            if (hit.collider.CompareTag("Carta"))
+            {
+                Debug.Log("Carta Aberta: " + hit.collider.name);
+                _carta = !_carta;
+                hit.collider.GetComponent<CollectibleItem>()._carta = !_carta;
                 return;
             }
 

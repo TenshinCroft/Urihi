@@ -19619,6 +19619,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a2717c7f4d19e154b865061185462698, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1840960148}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a2717c7f4d19e154b865061185462698, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1840960151}
   m_SourcePrefab: {fileID: 100100000, guid: a2717c7f4d19e154b865061185462698, type: 3}
 --- !u!1 &1786776944 stripped
 GameObject:
@@ -19907,11 +19910,15 @@ PrefabInstance:
       objectReference: {fileID: 165574752}
     - target: {fileID: 4124014204220655533, guid: f5b37090cb9528a4cbf1232e7e3622ab, type: 3}
       propertyPath: _fov
-      value: 180
+      value: 215
       objectReference: {fileID: 0}
     - target: {fileID: 4124014204220655533, guid: f5b37090cb9528a4cbf1232e7e3622ab, type: 3}
       propertyPath: _giz
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4124014204220655533, guid: f5b37090cb9528a4cbf1232e7e3622ab, type: 3}
+      propertyPath: _plyAtq
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4124014204220655533, guid: f5b37090cb9528a4cbf1232e7e3622ab, type: 3}
       propertyPath: _stpDst
@@ -20624,6 +20631,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 9166428700591565276, guid: a2717c7f4d19e154b865061185462698, type: 3}
+--- !u!208 &1840960151
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840960147}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.009000001, y: 0.0050000004, z: 0.0050000004}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0.0050000004}
+  m_TimeToStationary: 0.5
 --- !u!1 &1843538557 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5100191712389108339, guid: d298b00733966cf46a2189ef9353b7bf, type: 3}

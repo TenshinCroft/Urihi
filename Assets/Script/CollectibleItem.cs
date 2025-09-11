@@ -2,8 +2,21 @@ using UnityEngine;
 
 public class CollectibleItem : MonoBehaviour
 {
+<<<<<<< Updated upstream
     public string itemName = "Item";
     public AudioClip collectSound;
+=======
+    public string itemName = "Carta";
+    public GameObject _cartaImage;
+    public bool _carta = false;
+    public void Update()
+    {
+        if (_cartaImage != null)
+        {
+            _cartaImage.SetActive(_carta);
+        }
+    }
+>>>>>>> Stashed changes
 
     void OnTriggerEnter(Collider other)
     {
