@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class PianoPuzzle : MonoBehaviour
 {
@@ -9,66 +10,92 @@ public class PianoPuzzle : MonoBehaviour
     [Header("Item que será liberado ao completar o puzzle")]
     public GameObject itemLiberado;
 
+    [Header("Sons de feedback")]
+    public AudioClip somErro;
+    public AudioClip somAcerto;
+
     private int indiceAtual = 0;
     private Rigidbody rbItem;
+    private AudioSource audioSource;
+    private bool puzzleCompleto = false;
+    private bool feedbackTocando = false;
 
     void Start()
     {
         if (itemLiberado != null)
         {
-            // Desativa o item no início
             itemLiberado.SetActive(false);
 
             rbItem = itemLiberado.GetComponent<Rigidbody>();
 
             if (rbItem != null)
             {
-                // Congela o item no início
                 rbItem.isKinematic = true;
                 rbItem.useGravity = false;
             }
+        }
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
         }
     }
 
     void Update()
     {
+        if (feedbackTocando)
+            return; // Bloqueia qualquer interação enquanto som de erro/acerto está tocando
+
         Vector2 posicaoClique = Vector2.zero;
         bool clicou = false;
 
-        // Clique do mouse
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
             posicaoClique = Mouse.current.position.ReadValue();
             clicou = true;
         }
 
-        // Toque na tela (mobile)
         if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
         {
             posicaoClique = Touchscreen.current.primaryTouch.position.ReadValue();
             clicou = true;
         }
 
-        // Se houve clique/toque
         if (clicou)
         {
             Ray ray = Camera.main.ScreenPointToRay(posicaoClique);
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                if (hit.collider.gameObject == ordemCorreta[indiceAtual])
+                GameObject objetoClicado = hit.collider.gameObject;
+
+                int indiceDoObjeto = System.Array.IndexOf(ordemCorreta, objetoClicado);
+
+                if (indiceDoObjeto != -1)
                 {
-                    indiceAtual++;
-
-                    if (indiceAtual >= ordemCorreta.Length)
+                    // Após o puzzle ser concluído, apenas toca o som dos cubos livremente
+                    if (puzzleCompleto)
                     {
-                        Debug.Log("Puzzle completo");
-                        indiceAtual = 0;
+                        TocarSomDoObjeto(objetoClicado);
+                        return;
+                    }
 
-                        // Ativa e libera o item
+                    bool clicouCorretamente = objetoClicado == ordemCorreta[indiceAtual];
+                    bool completou = (indiceAtual + 1) >= ordemCorreta.Length;
+
+                    if (completou && clicouCorretamente)
+                    {
+                        PararSomDoCubo(objetoClicado); // Não toca a última nota
+
+                        if (somAcerto != null)
+                        {
+                            StartCoroutine(TocarSomFeedback(somAcerto));
+                        }
+
                         if (itemLiberado != null)
                         {
-                            itemLiberado.SetActive(true); // Torna visível
+                            itemLiberado.SetActive(true);
 
                             if (rbItem != null)
                             {
@@ -76,15 +103,63 @@ public class PianoPuzzle : MonoBehaviour
                                 rbItem.useGravity = true;
                             }
                         }
+
+                        puzzleCompleto = true;
+                        Debug.Log("Puzzle completo");
                     }
-                }
-                else
-                {
-                    Debug.Log("Reiniciando sequência");
-                    indiceAtual = 0;
+                    else if (clicouCorretamente)
+                    {
+                        TocarSomDoObjeto(objetoClicado);
+                        indiceAtual++;
+                    }
+                    else
+                    {
+                        PararSomDoCubo(objetoClicado); // Evita sobreposição
+
+                        if (somErro != null)
+                        {
+                            StartCoroutine(TocarSomFeedback(somErro));
+                        }
+
+                        indiceAtual = 0;
+                        Debug.Log("Reiniciando sequência");
+                    }
                 }
             }
         }
+    }
+
+    void TocarSomDoObjeto(GameObject objeto)
+    {
+        if (feedbackTocando) return; // Impede som do cubo durante erro/acerto
+
+        AudioSource audio = objeto.GetComponent<AudioSource>();
+        if (audio != null && audio.clip != null)
+        {
+            audio.Stop();
+            audio.Play();
+        }
+    }
+
+    void PararSomDoCubo(GameObject objeto)
+    {
+        AudioSource audio = objeto.GetComponent<AudioSource>();
+        if (audio != null)
+        {
+            audio.Stop();
+        }
+    }
+
+    IEnumerator TocarSomFeedback(AudioClip clip)
+    {
+        feedbackTocando = true;
+
+        audioSource.Stop();
+        audioSource.PlayOneShot(clip);
+
+        yield return new WaitForSeconds(clip.length);
+
+        feedbackTocando = false;
     }
 }
 
