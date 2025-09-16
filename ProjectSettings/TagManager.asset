@@ -13,6 +13,7 @@ TagManager:
   - Ground_House
   - ChaveInicio
   - Carta
+  - Quadro
   layers:
   - Default
   - TransparentFX

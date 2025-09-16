@@ -209,6 +209,17 @@ public class Player : MonoBehaviour
                 }
                 return;
             }
+
+            // QUADRO
+            if (hit.collider.CompareTag("Quadro"))
+            {
+                PuzzleTrigger pzt = hit.collider.GetComponent<PuzzleTrigger>();
+                if (pzt != null)
+                {
+                    pzt._bool = true;
+                }
+                return;
+            }
         }
     }
 
