@@ -40,12 +40,12 @@ public class PlayerLook : MonoBehaviour
         float mouseX = mouseInput.x * mouseSensitivity * Time.deltaTime;
         float mouseY = mouseInput.y * mouseSensitivity * Time.deltaTime;
 
-        // Câmera (pra cima/baixo)
+        
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
         transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
 
-        // Player (pra esquerda/direita)
+        
         playerBody.Rotate(Vector3.up * mouseX);
     }
 }
