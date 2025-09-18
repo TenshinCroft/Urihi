@@ -22,7 +22,10 @@ public class Player : MonoBehaviour
     private bool _intPressed;
     private bool _runPressed;
     private bool _lntPressed;
+    private bool _gmod1Pressed;
     private bool _giz;
+    public bool _GameMode1Enabled = false;
+    private bool _gmod1;
     public Camera _pCam;
 
     // MOVIMENTO
@@ -73,6 +76,7 @@ public class Player : MonoBehaviour
         _inpActions.Player.Correr.performed += ctx => _runPressed = true;
         _inpActions.Player.Correr.canceled += ctx => _runPressed = false;
         _inpActions.Player.Lanterna.performed += ctx => _lntPressed = true;
+        _inpActions.Player.GAMEMODE1.performed += ctx => _gmod1Pressed = true;
 
         if (_lanternAudioSource == null)
             _lanternAudioSource = GetComponent<AudioSource>();
@@ -107,62 +111,73 @@ public class Player : MonoBehaviour
     // ===== UPDATE =====
     public void Update()
     {
-        
+        // Toggle do GameMode1
+        if (_gmod1Pressed && _GameMode1Enabled)
         {
-            if (cartaAberta)
-            {
-                // fecha carta quando apertar F
-                if (Keyboard.current.fKey.wasPressedThisFrame)
-                {
-                    FecharCarta();
-                }
-
-                // impede que o player se mova enquanto a carta está aberta
-                return;
-            }
-
-            Run();
-
-            if (_inimigo != null)
-            {
-                if (_inimigo.gameObject.GetComponent<Enemy>()._plyAtq)
-                    _inpActions.Disable();
-            }
-
-            _isOnG = Physics.CheckSphere(_gCheck.position, _distanciaDoChão, _chão);
-
-            if (_isOnG && _vel.y < 0f)
-                _vel.y = -2f;
-
-            _m = transform.right * _inpMove.x + transform.forward * _inpMove.y;
-            _cntrMult = _isOnG ? 1f : _velocidadeNoAr;
-            _cntr.Move(_m * _speed * _cntrMult * Time.deltaTime);
-
-            if (_jPressed && _isOnG)
-            {
-                _vel.y = Mathf.Sqrt(_alturaDoPulo * 2f * _g);
-                _jPressed = false;
-            }
-
-            if (_intPressed)
-            {
-                InteractWithObject();
-                _intPressed = false;
-            }
-
-            if (_lntPressed)
-            {
-                LanternPres();
-                _lntPressed = false;
-            }
-
-            _vel.y += -_g * Time.deltaTime;
-            _cntr.Move(_vel * Time.deltaTime);
+            _gmod1 = !_gmod1;
+            _lntPressed = false;
         }
+        _gmod1Pressed = false; // <- importante: reseta o clique
+
+        // Se o GM1 for desativado de fora, força sair do modo
+        if (!_GameMode1Enabled && _gmod1)
+        {
+            _gmod1 = false;
+        }
+
+        gMode();
+
+        if (cartaAberta)
+        {
+            if (Keyboard.current.fKey.wasPressedThisFrame)
+            {
+                FecharCarta();
+            }
+            return;
+        }
+
+        Run();
+
+        if (_inimigo != null)
+        {
+            if (_inimigo.gameObject.GetComponent<Enemy>()._plyAtq)
+                _inpActions.Disable();
+        }
+
+        _isOnG = Physics.CheckSphere(_gCheck.position, _distanciaDoChão, _chão);
+
+        if (_isOnG && _vel.y < 0f)
+            _vel.y = -2f;
+
+        _m = transform.right * _inpMove.x + transform.forward * _inpMove.y;
+        _cntrMult = _isOnG ? 1f : _velocidadeNoAr;
+        _cntr.Move(_m * _speed * _cntrMult * Time.deltaTime);
+
+        if (_jPressed && _isOnG)
+        {
+            _vel.y = Mathf.Sqrt(_alturaDoPulo * 2f * _g);
+            _jPressed = false;
+        }
+
+        if (_intPressed)
+        {
+            InteractWithObject();
+            _intPressed = false;
+        }
+
+        if (_lntPressed)
+        {
+            LanternPres();
+            _lntPressed = false;
+        }
+
+        _vel.y += -_g * Time.deltaTime;
+        _cntr.Move(_vel * Time.deltaTime);
     }
 
-        // ===== INTERAÇÃO =====
-        public void InteractWithObject()
+
+    // ===== INTERAÇÃO =====
+    public void InteractWithObject()
     {
         Ray ray = new Ray(_pCam.transform.position, _pCam.transform.forward);
         RaycastHit hit;
@@ -281,6 +296,45 @@ public class Player : MonoBehaviour
                 AudioSource.PlayClipAtPoint(_somDesligarLanterna, transform.position, _lanternVolume);
         }
     }
+
+    // ===== GAME MODE 1 (Noclip/Fly) =====
+    // ===== GAME MODE 1 (Noclip/Fly) =====
+    public void gMode()
+    {
+        if (_gmod1)
+        {
+            // desliga colisão e gravidade
+            _cntr.enabled = false;
+            GetComponent<CapsuleCollider>().enabled = false;
+            _vel = Vector3.zero; // reseta velocidade
+
+            Vector3 dir = Vector3.zero;
+
+            // movimento com WASD
+            dir += transform.forward * _inpMove.y;
+            dir += transform.right * _inpMove.x;
+
+            // subir com espaço
+            if (Keyboard.current.spaceKey.isPressed)
+                dir += Vector3.up;
+
+            // descer com shift
+            if (Keyboard.current.leftShiftKey.isPressed)
+                dir += Vector3.down;
+
+            // velocidade do fly
+            float flySpeed = _velocidade * 2f;
+            transform.position += dir.normalized * flySpeed * Time.deltaTime;
+        }
+        else
+        {
+            // ativa de volta o CharacterController
+            if (!_cntr.enabled) _cntr.enabled = true;
+            GetComponent<CapsuleCollider>().enabled = true;
+        }
+    }
+
+
 
     // ===== GIZMOS =====
     private void OnDrawGizmos()

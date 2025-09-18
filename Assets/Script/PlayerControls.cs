@@ -153,6 +153,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GAMEMODE1"",
+                    ""type"": ""Button"",
+                    ""id"": ""70544532-7fb7-48b7-b18a-357725c8ba0d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -320,6 +329,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""FecharCarta"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""24499c6a-0969-416a-b667-4ba1d9676de6"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": ""MultiTap"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GAMEMODE1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -347,6 +367,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Correr = m_Player.FindAction("Correr", throwIfNotFound: true);
         m_Player_Lanterna = m_Player.FindAction("Lanterna", throwIfNotFound: true);
         m_Player_FecharCarta = m_Player.FindAction("FecharCarta", throwIfNotFound: true);
+        m_Player_GAMEMODE1 = m_Player.FindAction("GAMEMODE1", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -434,6 +455,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Correr;
     private readonly InputAction m_Player_Lanterna;
     private readonly InputAction m_Player_FecharCarta;
+    private readonly InputAction m_Player_GAMEMODE1;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -473,6 +495,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/FecharCarta".
         /// </summary>
         public InputAction @FecharCarta => m_Wrapper.m_Player_FecharCarta;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/GAMEMODE1".
+        /// </summary>
+        public InputAction @GAMEMODE1 => m_Wrapper.m_Player_GAMEMODE1;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -520,6 +546,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @FecharCarta.started += instance.OnFecharCarta;
             @FecharCarta.performed += instance.OnFecharCarta;
             @FecharCarta.canceled += instance.OnFecharCarta;
+            @GAMEMODE1.started += instance.OnGAMEMODE1;
+            @GAMEMODE1.performed += instance.OnGAMEMODE1;
+            @GAMEMODE1.canceled += instance.OnGAMEMODE1;
         }
 
         /// <summary>
@@ -552,6 +581,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @FecharCarta.started -= instance.OnFecharCarta;
             @FecharCarta.performed -= instance.OnFecharCarta;
             @FecharCarta.canceled -= instance.OnFecharCarta;
+            @GAMEMODE1.started -= instance.OnGAMEMODE1;
+            @GAMEMODE1.performed -= instance.OnGAMEMODE1;
+            @GAMEMODE1.canceled -= instance.OnGAMEMODE1;
         }
 
         /// <summary>
@@ -654,5 +686,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnFecharCarta(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "GAMEMODE1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnGAMEMODE1(InputAction.CallbackContext context);
     }
 }
