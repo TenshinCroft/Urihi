@@ -3,7 +3,42 @@ guid: 6d72feb25d27a034fb065006578361ca
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Luz lampada
+    second: {fileID: 2100000, guid: 242533ff1544c334bab0a9d6e0be24c0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plastico lampada
+    second: {fileID: 2100000, guid: 0ee07fade2c7f804db80b3b233d4da9c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: matal mapada
+    second: {fileID: 2100000, guid: cfcd4c62b0d15ec419021b9915211c18, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Madeira fina-marron-02 seamles
+    second: {fileID: 2800000, guid: 50a2bd0238391e4439e76934d591c75a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Madeira fina-marron-02 seamles_displace
+    second: {fileID: 2800000, guid: 2cdf1d9b3d37986428319a978345d97e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Madeira fina-marron-02 seamles_normal
+    second: {fileID: 2800000, guid: 388330505fe6ec248a1a164dfe3e75a0, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Madeira fina-marron-02 seamles_spec
+    second: {fileID: 2800000, guid: a24d90d74b934a34fab22a08c0d9e94c, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
