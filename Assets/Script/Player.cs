@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
+    // ANIMAÇÃO
+    private Animator _animator;
+
     // CARTA
     [Header("Carta")]
     private GameObject cartaAtualUI;  // carta ativa no momento
@@ -66,6 +69,10 @@ public class Player : MonoBehaviour
     // ===== AWAKE =====
     public void Awake()
     {
+        
+        
+
+
         _cntr = GetComponent<CharacterController>();
         _inpActions = new PlayerControls();
 
@@ -87,6 +94,8 @@ public class Player : MonoBehaviour
             _lanternAudioSource.loop = false;
             _lanternAudioSource.spatialBlend = 0f;
         }
+        // Inicializa Animator
+        _animator = GetComponent<Animator>();
     }
 
     public void OnEnable() => _inpActions.Enable();
@@ -111,6 +120,7 @@ public class Player : MonoBehaviour
     // ===== UPDATE =====
     public void Update()
     {
+       
         // Toggle do GameMode1
         if (_gmod1Pressed && _GameMode1Enabled)
         {
@@ -173,8 +183,21 @@ public class Player : MonoBehaviour
 
         _vel.y += -_g * Time.deltaTime;
         _cntr.Move(_vel * Time.deltaTime);
+
+        CheckAnimations();
     }
 
+
+    // ===== ANIMAÇÕES =====
+    private void CheckAnimations()
+    {
+        // Movimento (andar/correr)
+        bool isMoving = _inpMove.magnitude > 0.1f;
+        _animator.SetBool("isWalking", isMoving && !_runPressed);
+        _animator.SetBool("isRunning", isMoving && _runPressed);
+
+        
+    }
 
     // ===== INTERAÇÃO =====
     public void InteractWithObject()
@@ -216,6 +239,9 @@ public class Player : MonoBehaviour
                     {
                         porta.AcionarPorta();
                         Debug.Log("Porta aberta: " + hit.collider.name);
+                        
+                        if (_animator != null)
+                            _animator.SetTrigger("openDoor");
                     }
                     else
                     {
