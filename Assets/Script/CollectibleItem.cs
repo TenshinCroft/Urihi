@@ -1,11 +1,11 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 
 public class CollectibleItem : MonoBehaviour
 {
-    [Header("ConfiguraÁ„o do Item")]
+    [Header("Configura√ß√£o do Item")]
     public string itemName = "Item";
     public AudioClip collectSound;
-    public GameObject cartaUI;  // UI que ser· mostrada quando coletar
+    public GameObject cartaUI;  // UI que ser√° mostrada quando coletar
 
     private bool _coletado = false;
 
@@ -16,12 +16,29 @@ public class CollectibleItem : MonoBehaviour
         {
             Debug.Log("Item coletado: " + itemName);
 
-            // toca som na posiÁ„o da carta
+            // toca som na posi√ß√£o da carta
             if (collectSound != null)
                 AudioSource.PlayClipAtPoint(collectSound, transform.position);
 
-            // pede para o Player abrir a UI
             Player player = other.GetComponent<Player>();
+
+            //  Caso seja o Cassete inicia cutscene
+            if (itemName == "Cassete")
+            {
+                Debug.Log("Cassete coletada! Tentando iniciar cutscene...");
+                EnndingCutscene cutscene = FindObjectOfType<EnndingCutscene>();
+                if (cutscene != null)
+                {
+                    Debug.Log("CutsceneController encontrado, iniciando cutscene...");
+                    cutscene.IniciarCutscene();
+                }
+
+                _coletado = true;
+                Destroy(gameObject); // remove o cassete do mundo
+                return;
+            }
+
+            //  Caso seja carta comum abre normalmente
             if (player != null && cartaUI != null)
             {
                 player.AbrirCarta(cartaUI);
