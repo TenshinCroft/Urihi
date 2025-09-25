@@ -70,6 +70,7 @@ public class EnemyTriggerEvent : MonoBehaviour
     private Renderer[] enemyRenderers;
     private NavMeshAgent enemyNav;
     private MonoBehaviour[] enemyScripts;
+    private Collider[] enemyColliders;
 
     private void Awake()
     {
@@ -78,6 +79,7 @@ public class EnemyTriggerEvent : MonoBehaviour
             enemyRenderers = enemy.GetComponentsInChildren<Renderer>(true);
             enemyNav = enemy.GetComponent<NavMeshAgent>();
             enemyScripts = enemy.GetComponents<MonoBehaviour>();
+            enemyColliders = enemy.GetComponentsInChildren<Collider>(true); // pega todos os colliders
             SetEnemyVisible(false);
         }
 
@@ -96,6 +98,7 @@ public class EnemyTriggerEvent : MonoBehaviour
                 if (lightsForEvent2[i] != null)
                     savedEvent2Colors[i] = lightsForEvent2[i].color;
         }
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -229,6 +232,10 @@ public class EnemyTriggerEvent : MonoBehaviour
         if (enemyScripts != null)
             foreach (MonoBehaviour script in enemyScripts)
                 if (script != this) script.enabled = visible;
+
+        if (enemyColliders != null) // aqui desligamos os colliders
+            foreach (Collider c in enemyColliders)
+                c.enabled = visible;
     }
 
     private IEnumerator DisableFlashlightTemporarily()
