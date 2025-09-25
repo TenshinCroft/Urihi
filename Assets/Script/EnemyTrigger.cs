@@ -1,171 +1,269 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
 public class EnemyTrigger : MonoBehaviour
 
 {
-    [Header("Referências")]
-    public GameObject enemy;
-    public Light[] lightsEvent1;
-    public Light[] lightsEvent2;
-    public AudioSource eventAudio1;
-    public AudioSource eventAudio2;
-    public Transform enemyPostEvent1Position; // local pós-evento 1
-    public Transform enemyPostEvent2Position; // local onde o inimigo aparece no evento 2
-    public float event1Duration = 3f;
-    public float event2Duration = 3f;
+    [Header("Configuraï¿½ï¿½o do Evento")]
+    public EventType eventToRun = EventType.Event1;
+    public enum EventType { Event1, Event2 }
 
-    private bool event1Triggered = false;
-    private bool event2Triggered = false;
+    [Header("Referï¿½ncias Gerais")]
+    public GameObject enemy;
+    public GameObject playerFlashlight;
+
+    [Header("Configuraï¿½ï¿½o da Lanterna")]
+    public bool disableFlashlight = false;
+    public float flashlightDisableTime = 3f;
+    private bool _flshOriginalState;
+
+    // ---------------------
+    // POST PROCESSING
+    // ---------------------
+    [Header("Post Processing")]
+    public bool affectPostProcessing = false;
+    public bool disablePostInstead = false;   // se true, sï¿½ desliga o volume
+    public GameObject postProcessingOriginal;
+    public GameObject alternatePostProcessing;
+
+    public float delayBeforePost = 0f;
+    public float postActiveTime = 2f;
+    private bool postIsActive = false;
+
+    // ---------------------
+    // SCREEN SHAKE
+    // ---------------------
+    [Header("Screen Shake")]
+    public ScreenShake screenShake;
+    public bool useScreenShake = false;
+    public float shakeDuration = 0.5f;
+    public float shakeMagnitude = 0.3f;
+
+    // ---------------------
+    // EVENTO 1 CONFIG
+    // ---------------------
+    [Header("Evento 1 - Luzes e Inimigo")]
+    public Light[] lightsToToggle;
+    public float delayBeforeEnemy = 0.5f;
+    public float enemyVisibleTime = 2f;
+    public float delayAfterEnemy = 2f;
+    public float delayBeforeLight = 0f;
+    public bool useColorChange = false;
+    public Color targetColor = Color.red;
+    public Color originalLightColor = Color.white;
+    private Color[] savedOriginalColors;
+
+    // ---------------------
+    // EVENTO 2 CONFIG
+    // ---------------------
+    [Header("Evento 2 - Luzes e Spawn Alternativo")]
+    public Light[] lightsForEvent2;
+    public bool event2UseColorChange = false;
+    public Color event2TargetColor = Color.blue;
+    public Color event2OriginalLightColor = Color.white;
+    public Transform enemySpawnPoint;
+    public float event2VisibleTime = 5f;
+
+    private Color[] savedEvent2Colors;
+
+    // refs do inimigo
     private Renderer[] enemyRenderers;
-    private Color[] originalColorsEvent1;
-    private Color[] originalColorsEvent2;
     private NavMeshAgent enemyNav;
-    private Enemy enemyScript;
+    private MonoBehaviour[] enemyScripts;
 
     private void Awake()
     {
         if (enemy != null)
         {
-            // pega componentes do inimigo
-            enemyNav = enemy.GetComponent<NavMeshAgent>();
-            enemyScript = enemy.GetComponent<Enemy>();
-
-            // inimigo invisível e congelado no início
-            if (enemyNav != null) enemyNav.enabled = false;
-            if (enemyScript != null) enemyScript.enabled = false;
-
             enemyRenderers = enemy.GetComponentsInChildren<Renderer>(true);
-            foreach (Renderer r in enemyRenderers)
-                r.enabled = false;
+            enemyNav = enemy.GetComponent<NavMeshAgent>();
+            enemyScripts = enemy.GetComponents<MonoBehaviour>();
+            SetEnemyVisible(false);
         }
 
-        // cores originais das luzes
-        if (lightsEvent1 != null)
+        if (lightsToToggle != null && lightsToToggle.Length > 0)
         {
-            originalColorsEvent1 = new Color[lightsEvent1.Length];
-            for (int i = 0; i < lightsEvent1.Length; i++)
-                originalColorsEvent1[i] = lightsEvent1[i].color;
+            savedOriginalColors = new Color[lightsToToggle.Length];
+            for (int i = 0; i < lightsToToggle.Length; i++)
+                if (lightsToToggle[i] != null)
+                    savedOriginalColors[i] = lightsToToggle[i].color;
         }
 
-        if (lightsEvent2 != null)
+        if (lightsForEvent2 != null && lightsForEvent2.Length > 0)
         {
-            originalColorsEvent2 = new Color[lightsEvent2.Length];
-            for (int i = 0; i < lightsEvent2.Length; i++)
-                originalColorsEvent2[i] = lightsEvent2[i].color;
-        }
-    }
-
-    // --- Evento 1 ---
-    public void TriggerEvent1()
-    {
-        if (!event1Triggered)
-        {
-            StartCoroutine(Event1Routine());
-            event1Triggered = true;
+            savedEvent2Colors = new Color[lightsForEvent2.Length];
+            for (int i = 0; i < lightsForEvent2.Length; i++)
+                if (lightsForEvent2[i] != null)
+                    savedEvent2Colors[i] = lightsForEvent2[i].color;
         }
     }
 
-    private IEnumerator Event1Routine()
+    private void OnTriggerEnter(Collider other)
     {
-        // inimigo visível
-        foreach (Renderer r in enemyRenderers)
-            r.enabled = true;
-
-        if (eventAudio1 != null) eventAudio1.Play();
-
-        Coroutine lightsBlink = StartCoroutine(BlinkLights(lightsEvent1));
-
-        yield return new WaitForSeconds(event1Duration);
-
-        StopCoroutine(lightsBlink);
-
-        // luzes voltam ao normal
-        for (int i = 0; i < lightsEvent1.Length; i++)
+        if (other.CompareTag("Player"))
         {
-            lightsEvent1[i].color = originalColorsEvent1[i];
-            lightsEvent1[i].enabled = true;
-        }
-
-        // move inimigo pós-evento 1
-        if (enemyPostEvent1Position != null)
-        {
-            enemy.transform.position = enemyPostEvent1Position.position;
-            enemy.transform.rotation = enemyPostEvent1Position.rotation;
-        }
-
-        // inimigo invisível e congelado
-        foreach (Renderer r in enemyRenderers)
-            r.enabled = false;
-        if (enemyNav != null) enemyNav.enabled = false;
-        if (enemyScript != null) enemyScript.enabled = false;
-    }
-
-    // --- Evento 2 ---
-    public void TriggerEvent2()
-    {
-        if (!event2Triggered)
-        {
-            StartCoroutine(Event2Routine());
-            event2Triggered = true;
-        }
-    }
-
-    private IEnumerator Event2Routine()
-    {
-        // move inimigo para local do evento 2
-        if (enemyPostEvent2Position != null)
-        {
-            enemy.transform.position = enemyPostEvent2Position.position;
-            enemy.transform.rotation = enemyPostEvent2Position.rotation;
-        }
-
-        // inimigo visível
-        foreach (Renderer r in enemyRenderers)
-            r.enabled = true;
-
-        // toca áudio do evento 2
-        if (eventAudio2 != null)
-            eventAudio2.Play();
-
-        // luzes piscando
-        Coroutine lightsBlink2 = StartCoroutine(BlinkLights(lightsEvent2));
-
-        yield return new WaitForSeconds(event2Duration);
-
-        // para piscagem das luzes
-        StopCoroutine(lightsBlink2);
-
-        // volta cores originais das luzes
-        for (int i = 0; i < lightsEvent2.Length; i++)
-        {
-            lightsEvent2[i].color = originalColorsEvent2[i];
-            lightsEvent2[i].enabled = true;
-        }
-
-        // libera inimigo para agir normalmente pelo resto do jogo
-        if (enemyNav != null) enemyNav.enabled = true;
-        if (enemyScript != null) enemyScript.enabled = true;
-    }
-
-    private IEnumerator BlinkLights(Light[] lightsToBlink)
-    {
-        while (true)
-        {
-            foreach (Light l in lightsToBlink)
+            switch (eventToRun)
             {
-                l.enabled = true;
-                l.color = Color.red;
+                case EventType.Event1:
+                    StartCoroutine(Event1());
+                    break;
+                case EventType.Event2:
+                    StartCoroutine(Event2());
+                    break;
             }
-            yield return new WaitForSeconds(Random.Range(0.1f, 0.4f));
-
-            foreach (Light l in lightsToBlink)
-            {
-                l.enabled = true;
-                l.color = originalColorsEvent2[System.Array.IndexOf(lightsToBlink, l)]; // volta cor original rapidamente
-            }
-            yield return new WaitForSeconds(Random.Range(0.1f, 0.4f));
+            GetComponent<Collider>().enabled = false;
         }
+    }
+
+    // -------------------
+    // EVENTO 1
+    // -------------------
+    private IEnumerator Event1()
+    {
+        if (disableFlashlight && playerFlashlight != null)
+            StartCoroutine(DisableFlashlightTemporarily());
+
+        if (affectPostProcessing)
+            StartCoroutine(HandlePostProcessing());
+
+        if (useScreenShake && screenShake != null)
+            screenShake.Shake(shakeDuration, shakeMagnitude);
+
+        if (delayBeforeLight > 0f)
+            yield return new WaitForSeconds(delayBeforeLight);
+
+        if (useColorChange)
+        {
+            for (int i = 0; i < lightsToToggle.Length; i++)
+                if (lightsToToggle[i] != null)
+                    lightsToToggle[i].color = targetColor;
+        }
+        else
+        {
+            foreach (Light l in lightsToToggle)
+                if (l != null) l.enabled = false;
+        }
+
+        yield return new WaitForSeconds(delayBeforeEnemy);
+
+        SetEnemyVisible(true);
+
+        yield return new WaitForSeconds(enemyVisibleTime);
+
+        SetEnemyVisible(false);
+
+        yield return new WaitForSeconds(delayAfterEnemy);
+
+        if (useColorChange)
+        {
+            for (int i = 0; i < lightsToToggle.Length; i++)
+                if (lightsToToggle[i] != null)
+                    lightsToToggle[i].color = savedOriginalColors[i];
+        }
+        else
+        {
+            foreach (Light l in lightsToToggle)
+                if (l != null) l.enabled = true;
+        }
+    }
+
+    // -------------------
+    // EVENTO 2
+    // -------------------
+    private IEnumerator Event2()
+    {
+        if (disableFlashlight && playerFlashlight != null)
+            StartCoroutine(DisableFlashlightTemporarily());
+
+        if (affectPostProcessing)
+            StartCoroutine(HandlePostProcessing());
+
+        if (useScreenShake && screenShake != null)
+            screenShake.Shake(shakeDuration, shakeMagnitude);
+
+        if (event2UseColorChange)
+        {
+            for (int i = 0; i < lightsForEvent2.Length; i++)
+                if (lightsForEvent2[i] != null)
+                    lightsForEvent2[i].color = event2TargetColor;
+        }
+        else
+        {
+            foreach (Light l in lightsForEvent2)
+                if (l != null) l.enabled = false;
+        }
+
+        if (enemySpawnPoint != null && enemy != null)
+        {
+            enemy.transform.position = enemySpawnPoint.position;
+            enemy.transform.rotation = enemySpawnPoint.rotation;
+        }
+
+        SetEnemyVisible(true);
+
+        yield return new WaitForSeconds(event2VisibleTime);
+
+        if (event2UseColorChange)
+        {
+            for (int i = 0; i < lightsForEvent2.Length; i++)
+                if (lightsForEvent2[i] != null)
+                    lightsForEvent2[i].color = savedEvent2Colors[i];
+        }
+        else
+        {
+            foreach (Light l in lightsForEvent2)
+                if (l != null) l.enabled = true;
+        }
+    }
+
+    // -------------------
+    // AUXILIARES
+    // -------------------
+    private void SetEnemyVisible(bool visible)
+    {
+        if (enemyRenderers != null)
+            foreach (Renderer r in enemyRenderers) r.enabled = visible;
+
+        if (enemyNav != null) enemyNav.enabled = visible;
+
+        if (enemyScripts != null)
+            foreach (MonoBehaviour script in enemyScripts)
+                if (script != this) script.enabled = visible;
+    }
+
+    private IEnumerator DisableFlashlightTemporarily()
+    {
+        _flshOriginalState = playerFlashlight.activeSelf;
+        playerFlashlight.SetActive(false);
+        yield return new WaitForSeconds(flashlightDisableTime);
+        playerFlashlight.SetActive(_flshOriginalState);
+    }
+
+    private IEnumerator HandlePostProcessing()
+    {
+        if (delayBeforePost > 0f)
+            yield return new WaitForSeconds(delayBeforePost);
+
+        TogglePostProcessing(true);
+        yield return new WaitForSeconds(postActiveTime);
+        TogglePostProcessing(false);
+    }
+
+    private void TogglePostProcessing(bool activateAlt)
+    {
+        if (disablePostInstead)
+        {
+            if (postProcessingOriginal != null)
+                postProcessingOriginal.SetActive(!activateAlt);
+        }
+        else
+        {
+            if (postProcessingOriginal != null)
+                postProcessingOriginal.SetActive(!activateAlt);
+            if (alternatePostProcessing != null)
+                alternatePostProcessing.SetActive(activateAlt);
+        }
+        postIsActive = activateAlt;
     }
 }
 
