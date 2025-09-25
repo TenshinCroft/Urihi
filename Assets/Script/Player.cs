@@ -1,10 +1,35 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
+    [Header("Stamina UI")]
+    public GameObject staminaBarUI; // <- arraste o Panel ou BG no Inspector
+
+    private float tempoVisibilidadeStamina = 1.5f;
+    private float tempoEsconderStamina = 0f;
+
+
+    [Header("UI de Stamina")]
+    public UnityEngine.UI.Image staminaFillImage; // <- arraste no Inspector
+
+    [Header("Som de Stamina Zerada")]
+    public AudioClip somStaminaZerada;
+    private bool somStaminaTocado = false;
+    [Header("Stamina")]
+    public float staminaMax = 100f;
+    public float staminaAtual;
+    public float consumoStaminaPorSegundo = 15f;
+    public float recuperacaoStaminaPorSegundo = 10f;
+    public float recuperacaoStaminaLenta = 4f;
+    public float tempoDeRecuperacaoAposZerar = 2f;
+    public float velocidadeReduzidaSemStamina = 4f;
+    private bool staminaZerada = false;
+    private float timerRecuperacao = 0f;
     // ANIMAÇÃO
     private Animator _animator;
 
@@ -69,8 +94,8 @@ public class Player : MonoBehaviour
     // ===== AWAKE =====
     public void Awake()
     {
-        
-        
+
+
 
 
         _cntr = GetComponent<CharacterController>();
@@ -104,6 +129,8 @@ public class Player : MonoBehaviour
     // ===== START =====
     public void Start()
     {
+        staminaAtual = staminaMax;
+
         if (_pCam == null)
             _pCam = Camera.main;
 
@@ -120,7 +147,8 @@ public class Player : MonoBehaviour
     // ===== UPDATE =====
     public void Update()
     {
-       
+        AtualizarStamina();
+
         // Toggle do GameMode1
         if (_gmod1Pressed && _GameMode1Enabled)
         {
@@ -196,7 +224,7 @@ public class Player : MonoBehaviour
         _animator.SetBool("isWalking", isMoving && !_runPressed);
         _animator.SetBool("isRunning", isMoving && _runPressed);
 
-        
+
     }
 
     // ===== INTERAÇÃO =====
@@ -239,7 +267,7 @@ public class Player : MonoBehaviour
                     {
                         porta.AcionarPorta();
                         Debug.Log("Porta aberta: " + hit.collider.name);
-                        
+
                         if (_animator != null)
                             _animator.SetTrigger("openDoor");
                     }
@@ -303,7 +331,19 @@ public class Player : MonoBehaviour
     // ===== MOVIMENTO =====
     public void Run()
     {
-        _speed = _runPressed ? _velocidade * _multiplicadorDeVelocidade : _velocidade;
+        if (_runPressed && !staminaZerada)
+        {
+            _speed = _velocidade * _multiplicadorDeVelocidade;
+        }
+        else if (staminaZerada)
+        {
+            _speed = velocidadeReduzidaSemStamina;
+        }
+        else
+        {
+            _speed = _velocidade;
+        }
+
     }
 
     // ===== LANTERNA =====
@@ -371,4 +411,80 @@ public class Player : MonoBehaviour
             Gizmos.DrawRay(_pCam.transform.position, _pCam.transform.forward * _alcanceDeInteração);
         }
     }
+    private void AtualizarStamina()
+    {
+        bool estaCorrendo = _runPressed && _inpMove.magnitude > 0.1f && !_gmod1;
+
+        // Mostra a barra se estiver correndo
+        if (staminaBarUI != null)
+        {
+            if (estaCorrendo)
+            {
+                staminaBarUI.SetActive(true);
+                tempoEsconderStamina = tempoVisibilidadeStamina;
+            }
+            else
+            {
+                if (tempoEsconderStamina > 0f)
+                    tempoEsconderStamina -= Time.deltaTime;
+                else
+                    staminaBarUI.SetActive(false);
+            }
+        }
+
+        // SISTEMA DE STAMINA
+        if (staminaZerada)
+        {
+            _speed = velocidadeReduzidaSemStamina;
+
+            timerRecuperacao -= Time.deltaTime;
+
+            if (timerRecuperacao <= 0f)
+            {
+                staminaAtual += recuperacaoStaminaLenta * Time.deltaTime;
+
+                if (staminaAtual >= staminaMax * 0.25f)
+                {
+                    staminaZerada = false;
+                    somStaminaTocado = false;
+                }
+            }
+        }
+        else
+        {
+            if (estaCorrendo && _isOnG)
+            {
+                staminaAtual -= consumoStaminaPorSegundo * Time.deltaTime;
+
+                if (staminaAtual <= 0f)
+                {
+                    staminaAtual = 0f;
+                    staminaZerada = true;
+                    timerRecuperacao = tempoDeRecuperacaoAposZerar;
+
+                    if (!somStaminaTocado && somStaminaZerada != null)
+                    {
+                        AudioSource.PlayClipAtPoint(somStaminaZerada, transform.position);
+                        somStaminaTocado = true;
+                    }
+                }
+            }
+            else
+            {
+                if (staminaAtual < staminaMax)
+                {
+                    staminaAtual += recuperacaoStaminaPorSegundo * Time.deltaTime;
+                    staminaAtual = Mathf.Min(staminaAtual, staminaMax);
+                }
+            }
+        }
+
+        // Atualiza a barra (visual)
+        if (staminaFillImage != null)
+        {
+            staminaFillImage.fillAmount = staminaAtual / staminaMax;
+        }
+    }
 }
+
+
