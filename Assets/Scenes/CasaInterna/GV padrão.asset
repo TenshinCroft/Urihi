@@ -10,12 +10,41 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: Global Volume Profile
+  m_Name: "GV padr\xE3o"
   m_EditorClassIdentifier: 
   components:
   - {fileID: 6887238884231463193}
   - {fileID: 4303476565710555914}
   - {fileID: 7037355765172800282}
+  - {fileID: 3130018384764169899}
+--- !u!114 &3130018384764169899
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66f335fb1ffd8684294ad653bf1c7564, type: 3}
+  m_Name: ColorAdjustments
+  m_EditorClassIdentifier: 
+  active: 0
+  postExposure:
+    m_OverrideState: 1
+    m_Value: 6.91
+  contrast:
+    m_OverrideState: 1
+    m_Value: 23
+  colorFilter:
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+  hueShift:
+    m_OverrideState: 1
+    m_Value: 3
+  saturation:
+    m_OverrideState: 1
+    m_Value: 15
 --- !u!114 &4303476565710555914
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -87,4 +116,4 @@ MonoBehaviour:
     m_Value: {x: 1, y: 1, z: 1, w: 1}
   gain:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 1}
+    m_Value: {x: 1, y: 1, z: 1, w: -0.43765274}
