@@ -3319,7 +3319,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2839993640257526322, guid: e1e07beddb0cac1488251203d998d9fa, type: 3}
       propertyPath: _itensParaAbrir
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2929404726394090882, guid: e1e07beddb0cac1488251203d998d9fa, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -4037,7 +4037,6 @@ Transform:
   m_Children:
   - {fileID: 1085931277}
   - {fileID: 1600742500}
-  - {fileID: 406732283}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &273901142
@@ -6480,55 +6479,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6d72feb25d27a034fb065006578361ca, type: 3}
   m_PrefabInstance: {fileID: 1097691074}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &406732282
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 406732283}
-  - component: {fileID: 406732284}
-  m_Layer: 0
-  m_Name: GV alternativo1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &406732283
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 406732282}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 273585913}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &406732284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 406732282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IsGlobal: 1
-  priority: 0
-  blendDistance: 0
-  weight: 1
-  sharedProfile: {fileID: 11400000, guid: 331a6011a54fb2247860513785571f6d, type: 2}
 --- !u!1 &407626535
 GameObject:
   m_ObjectHideFlags: 0
@@ -17375,7 +17325,7 @@ GameObject:
   - component: {fileID: 1104262542}
   - component: {fileID: 1104262541}
   m_Layer: 0
-  m_Name: Evento 2
+  m_Name: TriggerEvent2()
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17429,7 +17379,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4b72db4363da614a849110e149aa60a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< Updated upstream
+
+
   eventToRun: 1
   enemy: {fileID: 652254078}
   playerFlashlight: {fileID: 1252692053}
@@ -17454,24 +17405,30 @@ MonoBehaviour:
   targetColor: {r: 1, g: 0, b: 0, a: 1}
   originalLightColor: {r: 1, g: 1, b: 1, a: 1}
   lightsForEvent2:
-=======
+
   enemy: {fileID: 0}
+
+  enemy: {fileID: 1599608323}
+
   lightsEvent1:
   - {fileID: 1862106846}
   - {fileID: 887544094}
   - {fileID: 121488383}
   lightsEvent2:
->>>>>>> Stashed changes
+
+
   - {fileID: 1862106846}
   - {fileID: 887544094}
   - {fileID: 994375006}
+  - {fileID: 1993146005}
   - {fileID: 121488383}
   - {fileID: 1795896219}
-  event2UseColorChange: 1
-  event2TargetColor: {r: 0.3207547, g: 0.01966893, b: 0.06689405, a: 1}
-  event2OriginalLightColor: {r: 1, g: 1, b: 1, a: 1}
-  enemySpawnPoint: {fileID: 1030049502}
-  event2VisibleTime: 5
+  eventAudio1: {fileID: 304044051}
+  eventAudio2: {fileID: 391827373}
+  enemyPostEvent1Position: {fileID: 1030049502}
+  enemyPostEvent2Position: {fileID: 0}
+  event1Duration: 3
+  event2Duration: 5
 --- !u!114 &1104262542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19083,8 +19040,9 @@ GameObject:
   - component: {fileID: 1244318929}
   - component: {fileID: 1244318928}
   - component: {fileID: 1244318927}
+  - component: {fileID: 1244318930}
   m_Layer: 0
-  m_Name: Evento 1
+  m_Name: EnemyEventTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19102,7 +19060,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4b72db4363da614a849110e149aa60a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< Updated upstream
+
   eventToRun: 0
   enemy: {fileID: 652254078}
   playerFlashlight: {fileID: 1252692053}
@@ -19119,31 +19077,29 @@ MonoBehaviour:
   shakeDuration: 2
   shakeMagnitude: 0.15
   lightsToToggle:
-=======
+
   enemy: {fileID: 0}
+
+  enemy: {fileID: 1599608323}
+
   lightsEvent1:
   - {fileID: 1862106846}
   - {fileID: 887544094}
   - {fileID: 121488383}
   lightsEvent2:
->>>>>>> Stashed changes
+
   - {fileID: 1862106846}
   - {fileID: 887544094}
   - {fileID: 994375006}
+  - {fileID: 1993146005}
   - {fileID: 121488383}
-  delayBeforeEnemy: 0
-  enemyVisibleTime: 2
-  delayAfterEnemy: 0
-  delayBeforeLight: 0
-  useColorChange: 1
-  targetColor: {r: 1, g: 0, b: 0, a: 1}
-  originalLightColor: {r: 1, g: 1, b: 1, a: 1}
-  lightsForEvent2: []
-  event2UseColorChange: 0
-  event2TargetColor: {r: 0, g: 0, b: 1, a: 1}
-  event2OriginalLightColor: {r: 1, g: 1, b: 1, a: 1}
-  enemySpawnPoint: {fileID: 0}
-  event2VisibleTime: 5
+  - {fileID: 1795896219}
+  eventAudio1: {fileID: 304044051}
+  eventAudio2: {fileID: 391827373}
+  enemyPostEvent1Position: {fileID: 1030049502}
+  enemyPostEvent2Position: {fileID: 0}
+  event1Duration: 3
+  event2Duration: 5
 --- !u!65 &1244318928
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19180,6 +19136,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1244318930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1244318926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d927a0834d269a04ab4ed704807bdab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 1244318927}
 --- !u!4 &1246776930 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c4963205a225e8546ab45d79c624160d, type: 3}
@@ -19285,12 +19254,13 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 552267852}
   m_SourcePrefab: {fileID: 100100000, guid: c4963205a225e8546ab45d79c624160d, type: 3}
-<<<<<<< Updated upstream
+
 --- !u!1 &1252692053 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2335377913290851792, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
   m_PrefabInstance: {fileID: 1476972790}
   m_PrefabAsset: {fileID: 0}
+
 --- !u!1 &1266670213 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 6d72feb25d27a034fb065006578361ca, type: 3}
@@ -19398,8 +19368,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-=======
->>>>>>> Stashed changes
+
 --- !u!1001 &1280874309
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23137,9 +23106,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8179845243717924264, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1235257255}
-    - targetCorrespondingSourceObject: {fileID: 5521177950812171724, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1807646160}
   m_SourcePrefab: {fileID: 100100000, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
 --- !u!4 &1481608181 stripped
 Transform:
@@ -24601,6 +24567,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7f96d3a3d7071f04aa4202d7becc937a, type: 3}
   m_PrefabInstance: {fileID: 1583836811}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1599608323 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 71db573f38573d840ae782e5956cd897, type: 3}
+  m_PrefabInstance: {fileID: 1197308838}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1600742499
 GameObject:
   m_ObjectHideFlags: 0
@@ -24612,7 +24583,7 @@ GameObject:
   - component: {fileID: 1600742500}
   - component: {fileID: 1600742501}
   m_Layer: 0
-  m_Name: "GV padr\xE3o"
+  m_Name: Global Volume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28492,23 +28463,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6ec86031311d2b14f8cb7a172229f5ed, type: 3}
   m_PrefabInstance: {fileID: 1749053262}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1807646153 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5521177950812171724, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
-  m_PrefabInstance: {fileID: 1476972790}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1807646160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1807646153}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19800769863e00846be008afbf9f714b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1826220885 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6ec86031311d2b14f8cb7a172229f5ed, type: 3}
