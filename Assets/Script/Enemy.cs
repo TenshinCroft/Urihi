@@ -1,8 +1,23 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
+    //============== ANIMAÇÕES ===================
+    public Animator anim;
+
+    public string walkParam = "IsWalking";
+    public string runParam = "IsRunning";
+    public string attackParam = "Attack";
+
+    [Header("Thresholds")]
+    public float walkSpeedThreshold = 0.1f;
+    public float runSpeedThreshold = 3.0f;
+
+   
+
+
     //============== REFERÊNCIAS =================
     [Header("Referências")]
     public GameObject _p;
@@ -36,21 +51,62 @@ public class Enemy : MonoBehaviour
     private int _curWp = 0;
     public bool _giz;
 
+    
+    public string attackStateName = "Attack";
+
     //============== INTERNOS ====================
     private NavMeshAgent _nav;
     public bool _playerVisible;
     public bool _IsPlayerInFOV;
 
+    // hashes para performance
+    private int walkHash;
+    private int runHash;
+    private int attackHash;
+    private bool hasWalkParam = false;
+    private bool hasRunParam = false;
+    private bool hasAttackParam = false;
+
+    private bool _attackInProgress = false;
+    private bool _attackStateEntered = false;
+    private float _attackFallbackTimer = 0f;
+    private float _attackFallbackTimeout = 3f;
+
+
     public void Awake()
     {
         _nav = GetComponent<NavMeshAgent>();
         _nav.updateRotation = true;
+
+        walkHash = Animator.StringToHash(walkParam ?? "");
+        runHash = Animator.StringToHash(runParam ?? "");
+        attackHash = Animator.StringToHash(attackParam ?? "");
+        if (anim != null)
+        {
+            hasWalkParam = HasAnimatorParameter(anim, walkParam, AnimatorControllerParameterType.Bool);
+            hasRunParam = HasAnimatorParameter(anim, runParam, AnimatorControllerParameterType.Bool);
+            hasAttackParam = HasAnimatorParameter(anim, attackParam, AnimatorControllerParameterType.Trigger);
+
+            if (!hasWalkParam)
+                Debug.LogWarning($"Animator NÃO possui o parâmetro boolean '{walkParam}'. Verifique o nome no Animator (Parameters).");
+            if (!hasRunParam)
+                Debug.LogWarning($"Animator NÃO possui o parâmetro boolean '{runParam}'. Verifique o nome no Animator (Parameters).");
+            if (!hasAttackParam)
+                Debug.LogWarning($"Animator NÃO possui o parâmetro trigger '{attackParam}'. Verifique o nome no Animator (Parameters).");
+        }
+        else
+        {
+            Debug.LogWarning("Animator não atribuído ou não encontrado no GameObject.");
+        }
+
     }
 
     public void Start()
     {
         if (_p.transform == null)
             Debug.LogError("O jogador não foi atribuído ao inimigo!");
+        if (anim != null && anim.applyRootMotion)
+            Debug.LogWarning("Recomendado: desmarcar 'Apply Root Motion' no Animator para que o NavMeshAgent controle a posição.");
     }
 
     public void Update()
@@ -109,7 +165,54 @@ public class Enemy : MonoBehaviour
 
         // aplica a velocidade no navmesh
         _nav.speed = _curSpeed;
+
+        // Atualiza parâmetros do Animator usando booleanos (Walk/Run)
+        if (anim != null)
+        {
+            bool isWalking = _curSpeed > walkSpeedThreshold && _curSpeed <= runSpeedThreshold;
+            bool isRunning = _curSpeed > runSpeedThreshold;
+
+            if (hasWalkParam) anim.SetBool(walkHash, isWalking);
+            if (hasRunParam) anim.SetBool(runHash, isRunning);
+        }
+        // checagem de término de ataque (sem coroutine)
+        if (_attackInProgress && anim != null)
+        {
+            AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
+
+            if (!_attackStateEntered)
+            {
+                if (info.IsName(attackStateName))
+                {
+                    _attackStateEntered = true;
+                    _attackFallbackTimer = 0f;
+                }
+                else
+                {
+                    _attackFallbackTimer += Time.deltaTime;
+                    if (_attackFallbackTimer >= _attackFallbackTimeout) EndAttack();
+                }
+            }
+            else
+            {
+                if (info.IsName(attackStateName) && info.normalizedTime >= 1f) EndAttack();
+                else
+                {
+                    _attackFallbackTimer += Time.deltaTime;
+                    if (_attackFallbackTimer >= _attackFallbackTimeout) EndAttack();
+                }
+            }
+        }
     }
+    private void EndAttack()
+    {
+        _plyAtq = false;
+        _attackInProgress = false;
+        _attackStateEntered = false;
+        _attackFallbackTimer = 0f;
+    }
+
+
 
     public void AttackPlayer()
     {
@@ -117,8 +220,23 @@ public class Enemy : MonoBehaviour
         _plyAtq = true;
         _nav.ResetPath();
         _curSpeed = 0f; // trava movimento quando atacar
-    }
 
+        if (anim != null && hasAttackParam)
+        {
+            anim.SetTrigger(attackHash);
+            _attackInProgress = true;
+            _attackStateEntered = false;
+            _attackFallbackTimer = 0f;
+        }
+        else
+        {
+            if (anim == null) Debug.LogWarning("Sem Animator: ataque será apenas lógico (sem animação).");
+            else Debug.LogWarning($"Parâmetro de ataque '{attackParam}' não encontrado no Animator; trigger ignorado.");
+            _plyAtq = false;
+        }
+
+    }
+   
     public void Patrol()
     {
         if (_waypoints.Length == 0) return;
@@ -152,7 +270,8 @@ public class Enemy : MonoBehaviour
             }
         }
     }
-
+    // alternativa: chamar a partir de um Animation Event no final da animação de ataque
+    public void OnAttackAnimationEnd() { EndAttack(); }
     public void OnDrawGizmos()
     {
         if (_giz)
@@ -174,5 +293,14 @@ public class Enemy : MonoBehaviour
             Vector3 to = _p.transform.position + Vector3.up * 1.5f;
             Gizmos.DrawLine(from, to);
         }
+    }
+    private bool HasAnimatorParameter(Animator a, string paramName, AnimatorControllerParameterType type)
+    {
+        if (a == null || string.IsNullOrEmpty(paramName)) return false;
+        foreach (var p in a.parameters)
+        {
+            if (p.name == paramName && p.type == type) return true;
+        }
+        return false;
     }
 }
