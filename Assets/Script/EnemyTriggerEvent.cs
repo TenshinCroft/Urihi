@@ -1,18 +1,18 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
 
 public class EnemyTriggerEvent : MonoBehaviour
 {
-    [Header("Configuração do Evento")]
+    [Header("ConfiguraÃ§Ã£o do Evento")]
     public EventType eventToRun = EventType.Event1;
     public enum EventType { Event1, Event2 }
 
-    [Header("Referências Gerais")]
+    [Header("ReferÃªncias Gerais")]
     public GameObject enemy;
     public GameObject playerFlashlight;
 
-    [Header("Configuração da Lanterna")]
+    [Header("ConfiguraÃ§Ã£o da Lanterna")]
     public bool disableFlashlight = false;
     public float flashlightDisableTime = 3f;
     private bool _flshOriginalState;
@@ -22,7 +22,7 @@ public class EnemyTriggerEvent : MonoBehaviour
     // ---------------------
     [Header("Post Processing")]
     public bool affectPostProcessing = false;
-    public bool disablePostInstead = false;   // se true, só desliga o volume
+    public bool disablePostInstead = false;   // se true, sÃ³ desliga o volume
     public GameObject postProcessingOriginal;
     public GameObject alternatePostProcessing;
 
