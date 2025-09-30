@@ -31,6 +31,12 @@ public class CollectibleItem : MonoBehaviour
                 {
                     Debug.Log("CutsceneController encontrado, iniciando cutscene...");
                     cutscene.IniciarCutscene();
+
+                    // NOVO: Feedback de item especial
+                    if (player != null)
+                    {
+                        player.ShowFeedback("Cassete Encontrada! O FIM está próximo...");
+                    }
                 }
 
                 _coletado = true;
@@ -41,7 +47,13 @@ public class CollectibleItem : MonoBehaviour
             //  Caso seja carta comum abre normalmente
             if (player != null && cartaUI != null)
             {
+                // NOVO: Feedback de carta para o jogador
+                player.ShowFeedback("Carta coletada. Pressione F para fechar.");
+
                 player.AbrirCarta(cartaUI);
+
+                // Remove a carta do mundo após a coleta
+                Destroy(gameObject);
             }
 
             _coletado = true;

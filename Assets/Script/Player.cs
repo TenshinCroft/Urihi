@@ -1,6 +1,10 @@
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using TMPro;
+using System.Collections;
+using System.Collections.Generic; // NOVO: Para usar a Lista
 
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
@@ -15,6 +19,12 @@ public class Player : MonoBehaviour
 
     [Tooltip("Imagem que aparece no canto da tela junto com qualquer carta")]
     public GameObject imagemExtraUI; // <- arraste no Inspector (Canvas)
+
+    // FEEDBACK UI
+    [Header("Feedback UI")]
+    public TMP_Text feedbackText; // O objeto de texto na UI para mensagens de feedback
+    public float feedbackDuration = 3f;
+    private Coroutine hideFeedbackCoroutine;
 
 
     // INTERAÇÃO
@@ -69,10 +79,6 @@ public class Player : MonoBehaviour
     // ===== AWAKE =====
     public void Awake()
     {
-        
-        
-
-
         _cntr = GetComponent<CharacterController>();
         _inpActions = new PlayerControls();
 
@@ -113,6 +119,10 @@ public class Player : MonoBehaviour
         if (imagemExtraUI != null)
             imagemExtraUI.SetActive(false); // começa desativada
 
+        // NOVO: Desativa o texto de feedback ao iniciar
+        if (feedbackText != null)
+            feedbackText.gameObject.SetActive(false);
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -120,7 +130,7 @@ public class Player : MonoBehaviour
     // ===== UPDATE =====
     public void Update()
     {
-       
+
         // Toggle do GameMode1
         if (_gmod1Pressed && _GameMode1Enabled)
         {
@@ -187,6 +197,36 @@ public class Player : MonoBehaviour
         CheckAnimations();
     }
 
+    // ===== FEEDBACK UI (NOVO MÉTODO) =====
+    public void ShowFeedback(string message)
+    {
+        if (feedbackText == null) return;
+
+        // Garante que a coroutine anterior seja parada para evitar conflito de tempo
+        if (hideFeedbackCoroutine != null)
+        {
+            StopCoroutine(hideFeedbackCoroutine);
+        }
+
+        // Mostra a mensagem
+        feedbackText.text = message;
+        feedbackText.gameObject.SetActive(true);
+
+        // Inicia a coroutine para esconder a mensagem após o tempo definido
+        hideFeedbackCoroutine = StartCoroutine(HideFeedbackAfterDelay(feedbackDuration));
+    }
+
+    private IEnumerator HideFeedbackAfterDelay(float delay)
+    {
+        // Usa WaitForSecondsRealtime para que o timer funcione mesmo se Time.timeScale for 0 (carta aberta)
+        yield return new WaitForSecondsRealtime(delay);
+
+        if (feedbackText != null)
+        {
+            feedbackText.gameObject.SetActive(false);
+        }
+    }
+
 
     // ===== ANIMAÇÕES =====
     private void CheckAnimations()
@@ -195,11 +235,9 @@ public class Player : MonoBehaviour
         bool isMoving = _inpMove.magnitude > 0.1f;
         _animator.SetBool("isWalking", isMoving && !_runPressed);
         _animator.SetBool("isRunning", isMoving && _runPressed);
-
-        
     }
 
-    // ===== INTERAÇÃO =====
+    // ===== INTERAÇÃO (ATUALIZADO) =====
     public void InteractWithObject()
     {
         Ray ray = new Ray(_pCam.transform.position, _pCam.transform.forward);
@@ -211,20 +249,28 @@ public class Player : MonoBehaviour
             if (hit.collider.CompareTag("Item"))
             {
                 _i += 1;
+                ShowFeedback(hit.collider.name + " Coletada"); // Feedback
                 Debug.Log("Item coletado: " + hit.collider.name);
                 Destroy(hit.collider.gameObject);
                 return;
             }
 
-            // CARTA
+            // CARTA (Agora usando Raycast - Se você usa CollectibleItem como Trigger, veja o segundo script)
             if (hit.collider.CompareTag("Carta"))
             {
                 Debug.Log("Interagiu com a Carta: " + hit.collider.name);
 
                 CollectibleItem carta = hit.collider.GetComponent<CollectibleItem>();
-                if (carta != null && carta.cartaUI != null)
+                if (carta != null)
                 {
-                    AbrirCarta(carta.cartaUI);
+                    // Chamamos a função do CollectibleItem para centralizar a lógica de coleta
+                    // e evitar duplicação com o trigger. Usamos o feedback aqui, mas o item ainda não se destrói
+                    // aqui se for um trigger.
+                    if (carta.cartaUI != null)
+                    {
+                        ShowFeedback("Pressione F para fechar a carta.");
+                        AbrirCarta(carta.cartaUI);
+                    }
                 }
                 return;
             }
@@ -238,13 +284,16 @@ public class Player : MonoBehaviour
                     if (_i >= porta._itensParaAbrir)
                     {
                         porta.AcionarPorta();
-                        Debug.Log("Porta aberta: " + hit.collider.name);
                         
+                        Debug.Log("Porta aberta: " + hit.collider.name);
+
                         if (_animator != null)
                             _animator.SetTrigger("openDoor");
                     }
                     else
                     {
+                        // Feedback de porta trancada/faltando itens
+                        ShowFeedback("Trancado...");
                         Debug.Log($"Precisa de {porta._itensParaAbrir} itens, você tem {_i}.");
                     }
                 }
@@ -258,6 +307,7 @@ public class Player : MonoBehaviour
                 if (pzt != null)
                 {
                     pzt._bool = true;
+                    ShowFeedback("Você ativou o Quadro!"); // Feedback de quadro
                 }
                 return;
             }
@@ -324,7 +374,6 @@ public class Player : MonoBehaviour
     }
 
     // ===== GAME MODE 1 (Noclip/Fly) =====
-    // ===== GAME MODE 1 (Noclip/Fly) =====
     public void gMode()
     {
         if (_gmod1)
@@ -359,8 +408,6 @@ public class Player : MonoBehaviour
             GetComponent<CapsuleCollider>().enabled = true;
         }
     }
-
-
 
     // ===== GIZMOS =====
     private void OnDrawGizmos()
