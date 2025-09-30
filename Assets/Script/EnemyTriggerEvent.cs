@@ -168,6 +168,16 @@ public class EnemyTriggerEvent : MonoBehaviour
             foreach (Light l in lightsToToggle)
                 if (l != null) l.enabled = true;
         }
+        if (enemy != null)
+        {
+            Enemy e = enemy.GetComponent<Enemy>();
+            if (e != null) e.footstepsEnabled = true;
+        }
+        if (enemy != null)
+        {
+            Enemy e = enemy.GetComponent<Enemy>();
+            if (e != null) e.footstepsEnabled = false;
+        }
     }
 
     // -------------------
@@ -195,6 +205,12 @@ public class EnemyTriggerEvent : MonoBehaviour
             foreach (Light l in lightsForEvent2)
                 if (l != null) l.enabled = false;
         }
+        if (enemy != null)
+        {
+            Enemy e = enemy.GetComponent<Enemy>();
+            if (e != null) e.footstepsEnabled = true;
+        }
+        ChaseMusicController.instance?.EnableMusicAfterEvent2();
 
         if (enemySpawnPoint != null && enemy != null)
         {

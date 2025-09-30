@@ -4,6 +4,9 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
+    [Header("Áudio do Inimigo")]
+    public AudioSource footstepAudio;
+    public bool footstepsEnabled = false;
     //============== ANIMAÇÕES ===================
     public Animator anim;
 
@@ -175,6 +178,14 @@ public class Enemy : MonoBehaviour
             if (hasWalkParam) anim.SetBool(walkHash, isWalking);
             if (hasRunParam) anim.SetBool(runHash, isRunning);
         }
+        if (_playerVisible)
+        {
+            ChaseMusicController.instance?.StartChase();
+        }
+        else
+        {
+            ChaseMusicController.instance?.StopChase();
+        }
         // checagem de término de ataque (sem coroutine)
         if (_attackInProgress && anim != null)
         {
@@ -201,6 +212,25 @@ public class Enemy : MonoBehaviour
                     _attackFallbackTimer += Time.deltaTime;
                     if (_attackFallbackTimer >= _attackFallbackTimeout) EndAttack();
                 }
+            }
+            if (footstepsEnabled && footstepAudio != null)
+            {
+                bool isWalking = _curSpeed > walkSpeedThreshold && _curSpeed <= runSpeedThreshold;
+                bool isRunning = _curSpeed > runSpeedThreshold;
+
+                if ((isWalking || isRunning) && !footstepAudio.isPlaying)
+                {
+                    footstepAudio.Play();
+                }
+                else if (!isWalking && !isRunning && footstepAudio.isPlaying)
+                {
+                    footstepAudio.Stop();
+                }
+            }
+            else if (footstepAudio != null && footstepAudio.isPlaying)
+            {
+                // se não estiver habilitado, garante que para
+                footstepAudio.Stop();
             }
         }
     }
