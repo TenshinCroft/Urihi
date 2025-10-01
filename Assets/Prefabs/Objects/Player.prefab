@@ -402,11 +402,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cartaAberta: 0
   imagemExtraUI: {fileID: 0}
+  feedbackText: {fileID: 0}
+  feedbackDuration: 3
   "_alcanceDeIntera\xE7\xE3o": 8
   "_mascaraDeIntera\xE7\xE3o":
     serializedVersion: 2
     m_Bits: 64
   _inimigo: {fileID: 0}
+  _GameMode1Enabled: 0
   _pCam: {fileID: 3099742786686974341}
   _velocidade: 12
   _multiplicadorDeVelocidade: 2
@@ -1038,6 +1041,18 @@ PrefabInstance:
     - target: {fileID: 4439847156220073005, guid: 9ff104113f6fd4a4383381f90997fa9b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5091768798213985998, guid: 9ff104113f6fd4a4383381f90997fa9b, type: 3}
+      propertyPath: m_Range
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8188228300191003988, guid: 9ff104113f6fd4a4383381f90997fa9b, type: 3}
+      propertyPath: m_Range
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 9204308629629778321, guid: 9ff104113f6fd4a4383381f90997fa9b, type: 3}
+      propertyPath: m_Range
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 9217930207688828346, guid: 9ff104113f6fd4a4383381f90997fa9b, type: 3}
       propertyPath: m_Name

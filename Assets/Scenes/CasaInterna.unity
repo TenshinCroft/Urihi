@@ -2607,7 +2607,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.1
+  m_Intensity: 1
   m_Range: 9.03
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -3817,8 +3817,8 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.1
-  m_Range: 9.03
+  m_Intensity: 1
+  m_Range: 40
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -3829,7 +3829,7 @@ Light:
     m_Strength: 1
     m_Bias: 0.05
     m_NormalBias: 0.4
-    m_NearPlane: 0.090299994
+    m_NearPlane: 0.1
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -4428,8 +4428,8 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.1
-  m_Range: 9.03
+  m_Intensity: 1
+  m_Range: 40
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -5306,8 +5306,8 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.1
-  m_Range: 9.03
+  m_Intensity: 1
+  m_Range: 40
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -5318,7 +5318,7 @@ Light:
     m_Strength: 1
     m_Bias: 0.05
     m_NormalBias: 0.4
-    m_NearPlane: 0.090299994
+    m_NearPlane: 0.1
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -11449,8 +11449,8 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.1
-  m_Range: 9.03
+  m_Intensity: 1
+  m_Range: 40
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -11461,7 +11461,7 @@ Light:
     m_Strength: 1
     m_Bias: 0.05
     m_NormalBias: 0.4
-    m_NearPlane: 0.090299994
+    m_NearPlane: 0.1
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -17451,7 +17451,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.1
+  m_Intensity: 1
   m_Range: 9.03
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -20110,8 +20110,8 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.1
-  m_Range: 9.03
+  m_Intensity: 1
+  m_Range: 40
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -22602,7 +22602,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1104262540}
   - component: {fileID: 1104262539}
-  - component: {fileID: 1104262542}
   - component: {fileID: 1104262541}
   m_Layer: 0
   m_Name: Evento 2
@@ -22659,52 +22658,65 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4b72db4363da614a849110e149aa60a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventToRun: 1
   enemy: {fileID: 652254078}
-  playerFlashlight: {fileID: 1252692053}
-  disableFlashlight: 0
-  flashlightDisableTime: 5
-  affectPostProcessing: 1
-  disablePostInstead: 0
-  postProcessingOriginal: {fileID: 1600742499}
-  alternatePostProcessing: {fileID: 406732282}
-  delayBeforePost: 0
-  postActiveTime: 5
+  flashlight: {fileID: 1252692053}
   screenShake: {fileID: 1807646160}
-  useScreenShake: 1
-  shakeDuration: 5
-  shakeMagnitude: 0.15
-  lightsToToggle: []
-  delayBeforeEnemy: 0.5
-  enemyVisibleTime: 2
-  delayAfterEnemy: 2
-  delayBeforeLight: 0
-  useColorChange: 0
-  targetColor: {r: 1, g: 0, b: 0, a: 1}
-  originalLightColor: {r: 1, g: 1, b: 1, a: 1}
-  lightsForEvent2:
-  - {fileID: 1862106846}
-  - {fileID: 887544094}
-  - {fileID: 994375006}
-  - {fileID: 121488383}
-  - {fileID: 1795896219}
-  event2UseColorChange: 1
-  event2TargetColor: {r: 0.3207547, g: 0.01966893, b: 0.06689405, a: 1}
-  event2OriginalLightColor: {r: 1, g: 1, b: 1, a: 1}
-  enemySpawnPoint: {fileID: 1030049502}
-  event2VisibleTime: 5
---- !u!114 &1104262542
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1104262537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fd9c920a8e11f24e9d5430edbfcb616, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  eventDuration: 4
+  useCustomDuration: 0
+  customDuration: 4
+  lightConfig:
+    lights:
+    - {fileID: 228705633}
+    - {fileID: 456934460}
+    - {fileID: 1862106846}
+    - {fileID: 887544094}
+    - {fileID: 994375006}
+    - {fileID: 1993146005}
+    - {fileID: 121488383}
+    - {fileID: 1795896219}
+    - {fileID: 292630792}
+    - {fileID: 1056504491}
+    - {fileID: 1404087723}
+    - {fileID: 562262680}
+    - {fileID: 1920499082}
+    - {fileID: 1928505275}
+    - {fileID: 205764332}
+    - {fileID: 852665661}
+    changeColor: 1
+    newColor: {r: 1, g: 0, b: 0, a: 1}
+    changeIntensity: 1
+    newIntensity: 1
+    changeRange: 1
+    newRange: 10
+    timerMode: 0
+    endMode: 1
+    origColors: []
+    origIntensities: []
+    origRanges: []
+  enemyConfig:
+    enableEnemy: 1
+    spawnPoint: {fileID: 1030049502}
+    appearDelay: 0
+    timerMode: 0
+    endMode: 2
+  flashlightConfig:
+    disableTemporarily: 1
+    timerMode: 0
+    disableTime: 4
+    endMode: 1
+  postConfig:
+    usePost: 1
+    disableInstead: 1
+    postOriginal: {fileID: 1085931276}
+    postAlt: {fileID: 406732282}
+    delay: 0
+    duration: 5
+    timerMode: 0
+    endMode: 0
+  shakeConfig:
+    enabled: 1
+    time: 4
+    strength: 0.3
 --- !u!1 &1104536338 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5898653232141146909, guid: 524cee88b97444c48a74804fa72cd209, type: 3}
@@ -25795,7 +25807,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1244318929}
   - component: {fileID: 1244318928}
-  - component: {fileID: 1244318927}
+  - component: {fileID: 1244318930}
   m_Layer: 0
   m_Name: Evento 1
   m_TagString: Untagged
@@ -25803,51 +25815,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1244318927
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1244318926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4b72db4363da614a849110e149aa60a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventToRun: 0
-  enemy: {fileID: 652254078}
-  playerFlashlight: {fileID: 1252692053}
-  disableFlashlight: 1
-  flashlightDisableTime: 2
-  affectPostProcessing: 1
-  disablePostInstead: 0
-  postProcessingOriginal: {fileID: 1600742499}
-  alternatePostProcessing: {fileID: 406732282}
-  delayBeforePost: 0
-  postActiveTime: 2
-  screenShake: {fileID: 1807646160}
-  useScreenShake: 1
-  shakeDuration: 2
-  shakeMagnitude: 0.15
-  lightsToToggle:
-  - {fileID: 1862106846}
-  - {fileID: 887544094}
-  - {fileID: 994375006}
-  - {fileID: 121488383}
-  delayBeforeEnemy: 0
-  enemyVisibleTime: 2
-  delayAfterEnemy: 0
-  delayBeforeLight: 0
-  useColorChange: 1
-  targetColor: {r: 1, g: 0, b: 0, a: 1}
-  originalLightColor: {r: 1, g: 1, b: 1, a: 1}
-  lightsForEvent2: []
-  event2UseColorChange: 0
-  event2TargetColor: {r: 0, g: 0, b: 1, a: 1}
-  event2OriginalLightColor: {r: 1, g: 1, b: 1, a: 1}
-  enemySpawnPoint: {fileID: 0}
-  event2VisibleTime: 5
 --- !u!65 &1244318928
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -25884,6 +25851,65 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1244318930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1244318926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4b72db4363da614a849110e149aa60a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 652254078}
+  flashlight: {fileID: 1252692053}
+  screenShake: {fileID: 1807646160}
+  eventDuration: 3
+  useCustomDuration: 0
+  customDuration: 3
+  lightConfig:
+    lights:
+    - {fileID: 1862106846}
+    - {fileID: 887544094}
+    - {fileID: 994375006}
+    - {fileID: 121488383}
+    changeColor: 1
+    newColor: {r: 1, g: 0, b: 0, a: 1}
+    changeIntensity: 1
+    newIntensity: 1
+    changeRange: 1
+    newRange: 10
+    timerMode: 1
+    endMode: 0
+    origColors: []
+    origIntensities: []
+    origRanges: []
+  enemyConfig:
+    enableEnemy: 1
+    spawnPoint: {fileID: 0}
+    appearDelay: 0
+    timerMode: 1
+    endMode: 0
+  flashlightConfig:
+    disableTemporarily: 1
+    timerMode: 1
+    disableTime: 3
+    endMode: 0
+  postConfig:
+    usePost: 1
+    disableInstead: 1
+    postOriginal: {fileID: 1600742499}
+    postAlt: {fileID: 406732282}
+    delay: 0
+    duration: 3
+    timerMode: 1
+    endMode: 0
+  shakeConfig:
+    enabled: 1
+    time: 3
+    strength: 0.3
 --- !u!4 &1246776930 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c4963205a225e8546ab45d79c624160d, type: 3}
@@ -28973,8 +28999,8 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.1
-  m_Range: 9.03
+  m_Intensity: 1
+  m_Range: 40
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -28985,7 +29011,7 @@ Light:
     m_Strength: 1
     m_Bias: 0.05
     m_NormalBias: 0.4
-    m_NearPlane: 0.090299994
+    m_NearPlane: 0.1
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -30529,7 +30555,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3325390696779830590, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_Range
-      value: 15
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 3325390696779830590, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_Intensity
@@ -37278,8 +37304,8 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.1
-  m_Range: 9.03
+  m_Intensity: 1
+  m_Range: 40
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -38729,7 +38755,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.1
+  m_Intensity: 1
   m_Range: 9.03
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -39918,8 +39944,8 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.1
-  m_Range: 9.03
+  m_Intensity: 1
+  m_Range: 40
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -39930,7 +39956,7 @@ Light:
     m_Strength: 1
     m_Bias: 0.05
     m_NormalBias: 0.4
-    m_NearPlane: 0.090299994
+    m_NearPlane: 0.1
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -40145,8 +40171,8 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.1
-  m_Range: 9.03
+  m_Intensity: 1
+  m_Range: 40
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -40157,7 +40183,7 @@ Light:
     m_Strength: 1
     m_Bias: 0.05
     m_NormalBias: 0.4
-    m_NearPlane: 0.090299994
+    m_NearPlane: 0.1
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -42163,7 +42189,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.1
+  m_Intensity: 1
   m_Range: 9.03
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
