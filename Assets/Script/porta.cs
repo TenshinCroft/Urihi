@@ -1,167 +1,137 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using System.Collections;
 
 public class porta : MonoBehaviour
 {
+    //====================== REFER√äNCIAS ======================
+    [Header("Refer√™ncias")]
+    public Transform _Porta;
+    public int _itensParaAbrir; // Pode ser usado para verificar invent√°rio ou condi√ß√£o
 
-        //====================== REFER NCIAS ======================
-        [Header("ReferÍncias")]
-        public Transform _Porta;
-        public int _itensParaAbrir; // O n˙mero necess·rio de itens (chaves, etc.)
-                                    // Adicione uma referÍncia ao invent·rio ou script que gerencia os itens.
-                                    // Exemplo:
-                                    // public Inventario _inventario; 
+    //====================== ESTADOS ======================
+    [Header("Estados")]
+    [HideInInspector]
+    private bool _prtAbr = false;
+    private bool _prtAnim = false;
+    private bool _jaDestrancou = false;
+    public bool _podeAbrir = true;
+    public bool _podeFechar = true;
 
-        //====================== ESTADOS ======================
-        [Header("Estados")]
-        [HideInInspector]
-        private bool _prtAbr = false;
-        private bool _prtAnim = false;
-        private bool _jaDestrancou = false;
-        public bool _podeAbrir = true;
-        public bool _podeFechar = true;
+    //====================== PAR√ÇMETROS ======================
+    [Header("Par√¢metros")]
+    public float _prtDur = 0.25f;
 
-        //====================== PAR¬METROS ======================
-        [Header("Par‚metros")]
-        public float _prtDur = 0.25f;
+    //====================== VARI√ÅVEIS INTERNAS ======================
+    private Quaternion _rotIni;
+    private Quaternion _rotAlv;
+    private float _tmpAnim;
 
-        //====================== VARI¡VEIS INTERNAS ======================
-        private Quaternion _rotIni;
-        private Quaternion _rotAlv;
-        private float _tmpAnim;
+    //====================== √ÅUDIO ======================
+    [Header("√Åudio")]
+    public AudioClip _somAbrir;
+    public AudioClip _somFechar;
+    public AudioClip _somDestrancar;
+    public AudioClip _somTrancada; // üîä NOVO: Som de porta trancada
+    public bool _temDestrancar = false;
+    private AudioSource _audioSource;
 
-        //====================== ¡UDIO ======================
-        [Header("¡udio")]
-        public AudioClip _somAbrir;
-        public AudioClip _somFechar;
-        public AudioClip _somDestrancar;
-        public bool _temDestrancar = false;
-        // NOVO: AudioClip para o som de porta trancada
-        public AudioClip _somTrancada;
-        private AudioSource _audioSource;
+    //====================== START ======================
+    void Start()
+    {
+        _audioSource = GetComponent<AudioSource>();
+    }
 
-        //====================== START ======================
-        void Start()
+    //====================== UPDATE ======================
+    void Update()
+    {
+        if (_prtAnim)
         {
-            _audioSource = GetComponent<AudioSource>();
-            // … bom garantir que a porta trancada sÛ possa ser destrancada se tiver um requisito.
-            if (_itensParaAbrir > 0)
+            _tmpAnim += Time.deltaTime;
+
+            float _t = Mathf.Clamp01(_tmpAnim / _prtDur);
+
+            _Porta.rotation = Quaternion.Slerp(_rotIni, _rotAlv, _t);
+
+            if (_t >= 1f)
             {
-                _temDestrancar = true;
+                _prtAnim = false;
+                _prtAbr = !_prtAbr;
             }
-        }
-
-        //====================== UPDATE ======================
-        void Update()
-        {
-            if (_prtAnim)
-            {
-                _tmpAnim += Time.deltaTime;
-
-                float _t = Mathf.Clamp01(_tmpAnim / _prtDur);
-
-                _Porta.rotation = Quaternion.Slerp(_rotIni, _rotAlv, _t);
-
-                if (_t >= 1f)
-                {
-                    _prtAnim = false;
-                    _prtAbr = !_prtAbr;
-                }
-            }
-        }
-
-        //====================== FUN«√O DE VERIFICA«√O DE ITENS ======================
-        // Esta funÁ„o deve retornar o n˙mero de itens que o jogador possui.
-        // VocÍ deve adapt·-la para o seu sistema de invent·rio.
-        private int VerificarItensNecessarios()
-        {
-            // **SUBSTITUA ESTE C”DIGO** pela lÛgica real do seu jogo.
-            // Por exemplo, se vocÍ tem um script de Inventario com uma funÁ„o GetItemCount("Chave"):
-            // if (_inventario != null)
-            // {
-            //     return _inventario.GetItemCount("Chave"); // Exemplo
-            // }
-            // Por enquanto, vamos retornar 0 para simular a falta do item.
-            return 0; // Altere isto!
-        }
-
-        //====================== ACIONAR PORTA ======================
-        public void AcionarPorta()
-        {
-            // 1. LÛgica de porta trancada/destrancada
-            if (_temDestrancar && !_jaDestrancou)
-            {
-                // Verifica se o jogador tem os itens necess·rios
-                if (VerificarItensNecessarios() >= _itensParaAbrir)
-                {
-                    // Se tiver os itens, inicia a corrotina para destrancar e abrir
-                    StartCoroutine(DestrancarEPermitirAbrir());
-                    return;
-                }
-                else
-                {
-                    // NOVO: Toca o som de porta trancada
-                    if (_audioSource != null && _somTrancada != null)
-                    {
-                        _audioSource.PlayOneShot(_somTrancada);
-                        // Opcional: Adicionar feedback visual ou de texto aqui (ex: "Trancada!")
-                    }
-                    return; // Impede a continuaÁ„o e abertura
-                }
-            }
-
-            // 2. LÛgica de Abertura (se estiver destrancada ou n„o exigir itens)
-            if (_podeAbrir && !_prtAbr)
-            {
-                if (_prtAnim) return;
-
-                _prtAnim = true;
-                _tmpAnim = 0f;
-                _rotIni = _Porta.rotation;
-
-                // Assumindo que a porta abre 90 graus no eixo Y (ajuste conforme necess·rio)
-                float _angY = 90f;
-                _rotAlv = _rotIni * Quaternion.Euler(0f, _angY, 0f);
-
-                if (_audioSource != null && _somAbrir != null)
-                {
-                    _audioSource.PlayOneShot(_somAbrir);
-                }
-            }
-            // 3. LÛgica de Fechamento
-            else if (_podeFechar && _prtAbr)
-            {
-                if (_prtAnim) return;
-
-                _prtAnim = true;
-                _tmpAnim = 0f;
-                _rotIni = _Porta.rotation;
-
-                // Assumindo que a porta fecha -90 graus no eixo Y (ajuste conforme necess·rio)
-                float _angY = -90f;
-                _rotAlv = _rotIni * Quaternion.Euler(0f, _angY, 0f);
-
-                if (_audioSource != null && _somFechar != null)
-                {
-                    _audioSource.PlayOneShot(_somFechar);
-                }
-            }
-        }
-
-        //====================== CORROTINA: DESTRANCAR ======================
-        IEnumerator DestrancarEPermitirAbrir()
-        {
-            if (_audioSource != null && _somDestrancar != null)
-            {
-                _audioSource.PlayOneShot(_somDestrancar);
-                yield return new WaitForSeconds(_somDestrancar.length);
-            }
-
-            _jaDestrancou = true;
-
-            // Tenta abrir a porta logo apÛs destrancar
-            AcionarPorta();
         }
     }
 
+    //====================== ACIONAR PORTA ======================
+    public void AcionarPorta()
+    {
+        // Verifica se precisa destrancar e ainda n√£o destrancou
+        if (_temDestrancar && !_jaDestrancou)
+        {
+            // Verifica se o player tem os itens necess√°rios
+            Player player = FindObjectOfType<Player>();
+            if (player != null && player._i >= _itensParaAbrir)
+            {
+                StartCoroutine(DestrancarEPermitirAbrir());
+            }
+            else
+            {
+                // Toca som de porta trancada
+                if (_audioSource != null && _somTrancada != null)
+                {
+                    _audioSource.PlayOneShot(_somTrancada);
+                }
+            }
 
+            return;
+        }
+
+        // Porta est√° fechada e pode abrir
+        if (_podeAbrir && !_prtAbr)
+        {
+            if (_prtAnim) return;
+
+            _prtAnim = true;
+            _tmpAnim = 0f;
+            _rotIni = _Porta.rotation;
+
+            float _angY = 90f;
+            _rotAlv = _rotIni * Quaternion.Euler(0f, _angY, 0f);
+
+            if (_audioSource != null && _somAbrir != null)
+            {
+                _audioSource.PlayOneShot(_somAbrir);
+            }
+        }
+
+        // Porta est√° aberta e pode fechar
+        else if (_podeFechar && _prtAbr)
+        {
+            if (_prtAnim) return;
+
+            _prtAnim = true;
+            _tmpAnim = 0f;
+            _rotIni = _Porta.rotation;
+
+            float _angY = -90f;
+            _rotAlv = _rotIni * Quaternion.Euler(0f, _angY, 0f);
+
+            if (_audioSource != null && _somFechar != null)
+            {
+                _audioSource.PlayOneShot(_somFechar);
+            }
+        }
+    }
+
+    //====================== CORROTINA: DESTRANCAR ======================
+    IEnumerator DestrancarEPermitirAbrir()
+    {
+        if (_audioSource != null && _somDestrancar != null)
+        {
+            _audioSource.PlayOneShot(_somDestrancar);
+            yield return new WaitForSeconds(_somDestrancar.length);
+        }
+
+        _jaDestrancou = true;
+
+        AcionarPorta(); // Tenta abrir a porta ap√≥s destrancar
+    }
+}
