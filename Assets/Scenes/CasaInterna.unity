@@ -23778,13 +23778,13 @@ MonoBehaviour:
     - {fileID: 205764332}
     - {fileID: 852665661}
     lightMode: 1
+    endMode: 2
     changeColor: 1
     newColor: {r: 1, g: 0, b: 0, a: 1}
     changeIntensity: 1
     newIntensity: 1
     changeRange: 1
     newRange: 10
-    endMode: 0
     timerMode: 0
     origColors: []
     origIntensities: []
@@ -27089,7 +27089,7 @@ MonoBehaviour:
   mainCamera: {fileID: 1807646153}
   primaryDuration: 2.5
   secondaryDuration: 3
-  repeatableEvent: 1
+  repeatableEvent: 0
   lightConfig:
     lights:
     - {fileID: 1862106846}
@@ -27097,13 +27097,13 @@ MonoBehaviour:
     - {fileID: 994375006}
     - {fileID: 121488383}
     lightMode: 1
+    endMode: 0
     changeColor: 1
     newColor: {r: 1, g: 0, b: 0, a: 1}
     changeIntensity: 1
-    newIntensity: 1
+    newIntensity: 0.25
     changeRange: 1
-    newRange: 10
-    endMode: 0
+    newRange: 5
     timerMode: 0
     origColors: []
     origIntensities: []

@@ -121,6 +121,18 @@ public class EnemyTriggerEvent : MonoBehaviour
         SaveLightState(lightConfig);
     }
 
+    private void OnValidate()
+    {
+        // Garante que, se repeatableEvent for ativado no inspector,
+        // o evento pode ser reutilizado
+        if (repeatableEvent)
+        {
+            _alreadyPlayed = false;
+            if (TryGetComponent<Collider>(out Collider col))
+                col.enabled = true;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
