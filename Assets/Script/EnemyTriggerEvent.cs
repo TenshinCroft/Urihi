@@ -2,16 +2,21 @@
 using System.Collections;
 using UnityEngine.AI;
 
-public enum EffectMode { None, Color, Off }
+public enum LightMode { None, Color, Off }
+public enum LightEndMode { None, Color, Off }
 public enum TimerMode { Primary, Secondary }
 public enum FlashlightEndMode { Normal, Off, On }
-public enum EnemyEndMode { Off, On } // Mudança aplicada aqui
+public enum EnemyEndMode { Off, On }
+
+public enum PostProcessMode { None, Change, Off }
+public enum PostProcessEndMode { None, Change, Off }
 
 [System.Serializable]
 public class LightConfig
 {
     public Light[] lights;
-    public EffectMode lightMode = EffectMode.None;
+    public LightMode lightMode = LightMode.None;
+    public LightEndMode endMode = LightEndMode.None;
 
     public bool changeColor = false;
     public Color newColor = Color.red;
@@ -22,7 +27,6 @@ public class LightConfig
     public bool changeRange = false;
     public float newRange = 10f;
 
-    public EffectMode endMode = EffectMode.None;
     public TimerMode timerMode = TimerMode.Primary;
 
     [HideInInspector] public Color[] origColors;
@@ -51,12 +55,11 @@ public class FlashlightConfig
 [System.Serializable]
 public class PostProcessConfig
 {
-    public bool usePost = false;
-    public bool disableInstead = false;
+    public PostProcessMode mode = PostProcessMode.None;
+    public PostProcessEndMode endMode = PostProcessEndMode.None;
     public GameObject postOriginal;
     public GameObject postAlt;
     public float delay = 0f;
-    public EffectMode endMode = EffectMode.None;
     public TimerMode timerMode = TimerMode.Primary;
 }
 
@@ -120,10 +123,13 @@ public class EnemyTriggerEvent : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && (!_alreadyPlayed || repeatableEvent))
+        if (other.CompareTag("Player"))
         {
-            StartCoroutine(RunEvent());
-            GetComponent<Collider>().enabled = false;
+            if (!_alreadyPlayed || repeatableEvent)
+            {
+                StartCoroutine(RunEvent());
+                GetComponent<Collider>().enabled = false;
+            }
         }
     }
 
@@ -134,7 +140,7 @@ public class EnemyTriggerEvent : MonoBehaviour
         if (flashlightConfig.mode != FlashlightConfig.FlashlightMode.Normal && flashlightScript != null)
             StartCoroutine(HandleFlashlight(duration));
 
-        if (postConfig.usePost) StartCoroutine(HandlePost(duration));
+        if (postConfig.mode != PostProcessMode.None) StartCoroutine(HandlePost(duration));
 
         if (shakeConfig.enabled && screenShake != null) StartCoroutine(HandleShake(duration));
 
@@ -158,23 +164,54 @@ public class EnemyTriggerEvent : MonoBehaviour
         HandleEndModes(lightConfig, flashlightConfig, enemyConfig, postConfig);
 
         _alreadyPlayed = true;
+
+        if (repeatableEvent)
+        {
+            yield return new WaitForSeconds(0.1f);
+            _alreadyPlayed = false;
+            GetComponent<Collider>().enabled = true;
+        }
     }
 
     private void HandleEndModes(LightConfig lightCfg, FlashlightConfig flashCfg, EnemyConfig enemyCfg, PostProcessConfig postCfg)
     {
-        if (lightCfg.endMode == EffectMode.None) RestoreLights(lightCfg);
-        else if (lightCfg.endMode == EffectMode.Off) TurnLightsOff(lightCfg);
+        // Luz
+        if (lightCfg.endMode == LightEndMode.None) RestoreLights(lightCfg);
+        else if (lightCfg.endMode == LightEndMode.Off) TurnLightsOff(lightCfg);
+        // Color = mantém mudanças aplicadas durante o evento
 
+        // Lanterna
         if (flashCfg.endMode == FlashlightEndMode.Off && playerScript != null)
             playerScript._lntrOn = false;
         else if (flashCfg.endMode == FlashlightEndMode.On && playerScript != null)
             playerScript._lntrOn = true;
 
+        // Inimigo
         if (enemyCfg.endMode == EnemyEndMode.Off) SetEnemyVisible(false);
         else if (enemyCfg.endMode == EnemyEndMode.On) SetEnemyVisible(true);
 
-        if (postCfg.endMode == EffectMode.Off && postCfg.postOriginal != null)
-            postCfg.postOriginal.SetActive(false);
+        // Post Process
+        if (postCfg.endMode != PostProcessEndMode.None)
+            HandlePostEndMode();
+    }
+
+    private void HandlePostEndMode()
+    {
+        if (postConfig.endMode == PostProcessEndMode.None)
+        {
+            if (postConfig.postOriginal != null) postConfig.postOriginal.SetActive(true);
+            if (postConfig.postAlt != null) postConfig.postAlt.SetActive(false);
+        }
+        else if (postConfig.endMode == PostProcessEndMode.Change)
+        {
+            if (postConfig.postOriginal != null) postConfig.postOriginal.SetActive(false);
+            if (postConfig.postAlt != null) postConfig.postAlt.SetActive(true);
+        }
+        else if (postConfig.endMode == PostProcessEndMode.Off)
+        {
+            if (postConfig.postOriginal != null) postConfig.postOriginal.SetActive(false);
+            if (postConfig.postAlt != null) postConfig.postAlt.SetActive(false);
+        }
     }
 
     private void SaveLightState(LightConfig lightCfg)
@@ -199,13 +236,22 @@ public class EnemyTriggerEvent : MonoBehaviour
 
     private void ApplyLightChanges(LightConfig lightCfg)
     {
+        if (lightCfg.lightMode == LightMode.None) return;
+
         foreach (Light l in lightCfg.lights)
         {
             if (l == null) continue;
-            if (lightCfg.changeColor) l.color = lightCfg.newColor;
-            if (lightCfg.changeIntensity) l.intensity = lightCfg.newIntensity;
-            if (lightCfg.changeRange) l.range = lightCfg.newRange;
-            if (lightCfg.lightMode == EffectMode.Off) l.enabled = false;
+            if (lightCfg.lightMode == LightMode.Color)
+            {
+                if (lightCfg.changeColor) l.color = lightCfg.newColor;
+                if (lightCfg.changeIntensity) l.intensity = lightCfg.newIntensity;
+                if (lightCfg.changeRange) l.range = lightCfg.newRange;
+                l.enabled = true;
+            }
+            else if (lightCfg.lightMode == LightMode.Off)
+            {
+                l.enabled = false;
+            }
         }
     }
 
@@ -258,26 +304,22 @@ public class EnemyTriggerEvent : MonoBehaviour
     private IEnumerator HandlePost(float duration)
     {
         if (postConfig.delay > 0f) yield return new WaitForSeconds(postConfig.delay);
-        TogglePost(true);
+
+        if (postConfig.mode == PostProcessMode.Change)
+            TogglePost(true);
+        else if (postConfig.mode == PostProcessMode.Off && postConfig.postOriginal != null)
+            postConfig.postOriginal.SetActive(false);
 
         float waitTime = (postConfig.timerMode == TimerMode.Secondary) ? secondaryDuration : duration;
         yield return new WaitForSeconds(waitTime);
 
-        TogglePost(false);
+        HandlePostEndMode();
     }
 
     private void TogglePost(bool alt)
     {
-        if (postConfig.disableInstead)
-        {
-            if (postConfig.postOriginal != null)
-                postConfig.postOriginal.SetActive(!alt);
-        }
-        else
-        {
-            if (postConfig.postOriginal != null) postConfig.postOriginal.SetActive(!alt);
-            if (postConfig.postAlt != null) postConfig.postAlt.SetActive(alt);
-        }
+        if (postConfig.postOriginal != null) postConfig.postOriginal.SetActive(!alt);
+        if (postConfig.postAlt != null) postConfig.postAlt.SetActive(alt);
     }
 
     private IEnumerator HandleShake(float duration)

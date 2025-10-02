@@ -23777,7 +23777,7 @@ MonoBehaviour:
     - {fileID: 1928505275}
     - {fileID: 205764332}
     - {fileID: 852665661}
-    lightMode: 0
+    lightMode: 1
     changeColor: 1
     newColor: {r: 1, g: 0, b: 0, a: 1}
     changeIntensity: 1
@@ -23799,12 +23799,11 @@ MonoBehaviour:
     mode: 1
     endMode: 1
   postConfig:
-    usePost: 1
-    disableInstead: 0
+    mode: 1
+    endMode: 0
     postOriginal: {fileID: 1600742499}
     postAlt: {fileID: 406732282}
     delay: 0
-    endMode: 0
     timerMode: 0
   shakeConfig:
     enabled: 1
@@ -27097,7 +27096,7 @@ MonoBehaviour:
     - {fileID: 887544094}
     - {fileID: 994375006}
     - {fileID: 121488383}
-    lightMode: 0
+    lightMode: 1
     changeColor: 1
     newColor: {r: 1, g: 0, b: 0, a: 1}
     changeIntensity: 1
@@ -27119,12 +27118,11 @@ MonoBehaviour:
     mode: 1
     endMode: 0
   postConfig:
-    usePost: 1
-    disableInstead: 0
+    mode: 1
+    endMode: 0
     postOriginal: {fileID: 1600742499}
     postAlt: {fileID: 406732282}
     delay: 0
-    endMode: 0
     timerMode: 0
   shakeConfig:
     enabled: 1
