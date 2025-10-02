@@ -57,8 +57,6 @@ public class PostProcessConfig
 {
     public PostProcessMode mode = PostProcessMode.None;
     public PostProcessEndMode endMode = PostProcessEndMode.None;
-    public GameObject postOriginal;
-    public GameObject postAlt;
     public float delay = 0f;
     public TimerMode timerMode = TimerMode.Primary;
 }
@@ -98,6 +96,7 @@ public class EnemyTriggerEvent : MonoBehaviour
     private lanterna flashlightScript;
     private Player playerScript;
     private ScreenShake screenShake;
+    private PostProcessController postController;
 
     private void Awake()
     {
@@ -114,6 +113,8 @@ public class EnemyTriggerEvent : MonoBehaviour
         {
             flashlightScript = mainCamera.GetComponent<lanterna>();
             screenShake = mainCamera.GetComponent<ScreenShake>();
+            postController = mainCamera.GetComponent<PostProcessController>();
+
             if (flashlightScript != null && flashlightScript._pObj != null)
                 playerScript = flashlightScript._pObj.GetComponent<Player>();
         }
@@ -123,8 +124,6 @@ public class EnemyTriggerEvent : MonoBehaviour
 
     private void OnValidate()
     {
-        // Garante que, se repeatableEvent for ativado no inspector,
-        // o evento pode ser reutilizado
         if (repeatableEvent)
         {
             _alreadyPlayed = false;
@@ -152,9 +151,11 @@ public class EnemyTriggerEvent : MonoBehaviour
         if (flashlightConfig.mode != FlashlightConfig.FlashlightMode.Normal && flashlightScript != null)
             StartCoroutine(HandleFlashlight(duration));
 
-        if (postConfig.mode != PostProcessMode.None) StartCoroutine(HandlePost(duration));
+        if (postConfig.mode != PostProcessMode.None)
+            StartCoroutine(HandlePost(duration));
 
-        if (shakeConfig.enabled && screenShake != null) StartCoroutine(HandleShake(duration));
+        if (shakeConfig.enabled && screenShake != null)
+            StartCoroutine(HandleShake(duration));
 
         if (lightConfig.lights.Length > 0)
             ApplyLightChanges(lightConfig);
@@ -190,7 +191,6 @@ public class EnemyTriggerEvent : MonoBehaviour
         // Luz
         if (lightCfg.endMode == LightEndMode.None) RestoreLights(lightCfg);
         else if (lightCfg.endMode == LightEndMode.Off) TurnLightsOff(lightCfg);
-        // Color = mantém mudanças aplicadas durante o evento
 
         // Lanterna
         if (flashCfg.endMode == FlashlightEndMode.Off && playerScript != null)
@@ -209,21 +209,14 @@ public class EnemyTriggerEvent : MonoBehaviour
 
     private void HandlePostEndMode()
     {
+        if (postController == null) return;
+
         if (postConfig.endMode == PostProcessEndMode.None)
-        {
-            if (postConfig.postOriginal != null) postConfig.postOriginal.SetActive(true);
-            if (postConfig.postAlt != null) postConfig.postAlt.SetActive(false);
-        }
+            postController.SetOriginal();
         else if (postConfig.endMode == PostProcessEndMode.Change)
-        {
-            if (postConfig.postOriginal != null) postConfig.postOriginal.SetActive(false);
-            if (postConfig.postAlt != null) postConfig.postAlt.SetActive(true);
-        }
+            postController.SetAlt(true);
         else if (postConfig.endMode == PostProcessEndMode.Off)
-        {
-            if (postConfig.postOriginal != null) postConfig.postOriginal.SetActive(false);
-            if (postConfig.postAlt != null) postConfig.postAlt.SetActive(false);
-        }
+            postController.SetOff();
     }
 
     private void SaveLightState(LightConfig lightCfg)
@@ -315,23 +308,19 @@ public class EnemyTriggerEvent : MonoBehaviour
 
     private IEnumerator HandlePost(float duration)
     {
+        if (postController == null) yield break;
+
         if (postConfig.delay > 0f) yield return new WaitForSeconds(postConfig.delay);
 
         if (postConfig.mode == PostProcessMode.Change)
-            TogglePost(true);
-        else if (postConfig.mode == PostProcessMode.Off && postConfig.postOriginal != null)
-            postConfig.postOriginal.SetActive(false);
+            postController.SetAlt(true);
+        else if (postConfig.mode == PostProcessMode.Off)
+            postController.SetOff();
 
         float waitTime = (postConfig.timerMode == TimerMode.Secondary) ? secondaryDuration : duration;
         yield return new WaitForSeconds(waitTime);
 
         HandlePostEndMode();
-    }
-
-    private void TogglePost(bool alt)
-    {
-        if (postConfig.postOriginal != null) postConfig.postOriginal.SetActive(!alt);
-        if (postConfig.postAlt != null) postConfig.postAlt.SetActive(alt);
     }
 
     private IEnumerator HandleShake(float duration)
