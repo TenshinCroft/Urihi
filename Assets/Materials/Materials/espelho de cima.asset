@@ -6,14 +6,14 @@ CustomRenderTexture:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Custom Render Texture
+  m_Name: espelho de cima
   m_ImageContentsHash:
     serializedVersion: 2
     Hash: 00000000000000000000000000000000
   m_IsAlphaChannelOptional: 0
   serializedVersion: 6
-  m_Width: 256
-  m_Height: 256
+  m_Width: 1024
+  m_Height: 1024
   m_AntiAliasing: 1
   m_MipCount: -1
   m_DepthStencilFormat: 94
@@ -21,7 +21,7 @@ CustomRenderTexture:
   m_MipMap: 0
   m_GenerateMips: 1
   m_SRGB: 0
-  m_UseDynamicScale: 0
+  m_UseDynamicScale: 1
   m_UseDynamicScaleExplicit: 0
   m_BindMS: 0
   m_EnableCompatibleFormat: 1
@@ -42,8 +42,8 @@ CustomRenderTexture:
   m_InitMaterial: {fileID: 0}
   m_InitColor: {r: 1, g: 1, b: 1, a: 1}
   m_InitTexture: {fileID: 8600000}
-  m_UpdateMode: 0
-  m_InitializationMode: 2
+  m_UpdateMode: 1
+  m_InitializationMode: 1
   m_UpdateZoneSpace: 0
   m_CurrentUpdateZoneSpace: 0
   m_UpdateZones: []
