@@ -9,8 +9,12 @@ using System.Collections.Generic; // NOVO: Para usar a Lista
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
+    private bool isFeedbackActive = false;
     // ANIMAÇÃO
     private Animator _animator;
+
+    [Header("Dica de Interação")]
+    public TMP_Text interactionHintText;
 
     // CARTA
     [Header("Carta")]
@@ -110,6 +114,9 @@ public class Player : MonoBehaviour
     // ===== START =====
     public void Start()
     {
+        if (interactionHintText != null)
+            interactionHintText.gameObject.SetActive(false);
+
         if (_pCam == null)
             _pCam = Camera.main;
 
@@ -195,6 +202,43 @@ public class Player : MonoBehaviour
         _cntr.Move(_vel * Time.deltaTime);
 
         CheckAnimations();
+        CheckForInteractable();
+    }
+
+    private void CheckForInteractable()
+    {
+       
+        // Se carta está aberta, GM1 ativo ou feedback ativo, esconde dica
+        if (cartaAberta || _gmod1 || isFeedbackActive)
+        {
+            if (interactionHintText != null)
+                interactionHintText.gameObject.SetActive(false);
+            return;
+        }
+
+        Ray ray = new Ray(_pCam.transform.position, _pCam.transform.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, _alcanceDeInteração, _mascaraDeInteração, QueryTriggerInteraction.Collide))
+        {
+            // Tags interagíveis
+            if (hit.collider.CompareTag("Item") ||
+                hit.collider.CompareTag("Carta") ||
+                hit.collider.CompareTag("Porta") ||
+                hit.collider.CompareTag("Quadro"))
+            {
+                if (interactionHintText != null)
+                {
+                    interactionHintText.text = "Pressione LMB";
+                    interactionHintText.gameObject.SetActive(true);
+                }
+                return;
+            }
+        }
+
+        // Se não estiver olhando para nada interagível
+        if (interactionHintText != null)
+            interactionHintText.gameObject.SetActive(false);
     }
 
     // ===== FEEDBACK UI (NOVO MÉTODO) =====
@@ -202,29 +246,25 @@ public class Player : MonoBehaviour
     {
         if (feedbackText == null) return;
 
-        // Garante que a coroutine anterior seja parada para evitar conflito de tempo
         if (hideFeedbackCoroutine != null)
-        {
             StopCoroutine(hideFeedbackCoroutine);
-        }
 
-        // Mostra a mensagem
         feedbackText.text = message;
         feedbackText.gameObject.SetActive(true);
 
-        // Inicia a coroutine para esconder a mensagem após o tempo definido
+        isFeedbackActive = true; // <-- ATIVA
+
         hideFeedbackCoroutine = StartCoroutine(HideFeedbackAfterDelay(feedbackDuration));
     }
 
     private IEnumerator HideFeedbackAfterDelay(float delay)
     {
-        // Usa WaitForSecondsRealtime para que o timer funcione mesmo se Time.timeScale for 0 (carta aberta)
         yield return new WaitForSecondsRealtime(delay);
 
         if (feedbackText != null)
-        {
             feedbackText.gameObject.SetActive(false);
-        }
+
+        isFeedbackActive = false; // <-- DESATIVA quando some
     }
 
 
