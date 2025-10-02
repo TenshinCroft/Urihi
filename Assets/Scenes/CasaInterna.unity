@@ -11971,6 +11971,7 @@ Transform:
   - {fileID: 1679051824}
   - {fileID: 1182221241}
   - {fileID: 757958437}
+  - {fileID: 1970848474}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &558668767
@@ -27335,7 +27336,7 @@ MonoBehaviour:
     changeIntensity: 1
     newIntensity: 1
     changeRange: 1
-    newRange: 10
+    newRange: 15
     timerMode: 1
     endMode: 0
     origColors: []
@@ -43357,7 +43358,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1173167576}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 552702605}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -43393,7 +43394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -48039,7 +48040,6 @@ SceneRoots:
   - {fileID: 987660804}
   - {fileID: 273585913}
   - {fileID: 552702605}
-  - {fileID: 1970848474}
   - {fileID: 410131732}
   - {fileID: 1961382332}
   - {fileID: 1697014700}
