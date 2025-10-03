@@ -3,51 +3,48 @@ using UnityEngine;
 public class PuzzleTrigger : MonoBehaviour
 {
     [Header("Referências")]
-    public GameObject _puzzleUI; // painel do puzzle (Canvas)
+    public GameObject puzzleUI;
 
-    public bool _isPlayerNear = false;
-    public bool _bool = false;
+    [HideInInspector] public bool _bool = false;
+    private bool isOpen = false;
 
-    void Update()
+    private void Update()
     {
-        // verifica se o player está perto e apertou a tecla
-        //if (_isPlayerNear && Input.GetKeyDown(KeyCode.F))
-        if (Input.GetKeyDown(KeyCode.F))
+        // Não permite abrir ou fechar puzzle se o jogo estiver pausado
+        if (SettingsMenu.isPaused) return;
+
+        if (_bool && !isOpen) OpenPuzzle();
+
+        if (_bool && isOpen && Input.GetKeyDown(KeyCode.F))
         {
-            //_bool = !_bool;
+            ClosePuzzle();
             _bool = false;
-            //if (_bool)
-            //{
-            //    AbrirPuzzle();
-            //}
-            //else
-            //{
-            //    FecharPuzzle();
-            //}
-        }
-        if (_bool)
-        {
-            AbrirPuzzle();
-        }
-        else
-        {
-            FecharPuzzle();
         }
     }
 
-    void AbrirPuzzle()
+    public void OpenPuzzle()
     {
-        _puzzleUI.SetActive(true);
-        Cursor.lockState = CursorLockMode.None; // libera cursor
+        if (puzzleUI != null) puzzleUI.SetActive(true);
+        isOpen = true;
+        Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        Time.timeScale = 0f; // pausa o jogo
+        Debug.Log("Puzzle aberto!");
+    }
+
+    public void ClosePuzzle()
+    {
+        if (puzzleUI != null) puzzleUI.SetActive(false);
+        isOpen = false;
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Debug.Log("Puzzle fechado!");
     }
 
     public void FecharPuzzle()
     {
-        _puzzleUI.SetActive(false);
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        Time.timeScale = 1f;
+        if (isOpen) ClosePuzzle();
+        _bool = false;
     }
 }

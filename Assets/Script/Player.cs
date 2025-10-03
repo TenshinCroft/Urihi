@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
     private bool _gmod1Pressed;
     private bool _giz;
     public bool _GameMode1Enabled = false;
-    private bool _gmod1;
+    public bool _gmod1;
     public Camera _pCam;
 
     // MOVIMENTO
@@ -137,44 +137,38 @@ public class Player : MonoBehaviour
     // ===== UPDATE =====
     public void Update()
     {
-
         // Toggle do GameMode1
         if (_gmod1Pressed && _GameMode1Enabled)
         {
             _gmod1 = !_gmod1;
             _lntPressed = false;
         }
-        _gmod1Pressed = false; // <- importante: reseta o clique
+        _gmod1Pressed = false;
 
-        // Se o GM1 for desativado de fora, força sair do modo
         if (!_GameMode1Enabled && _gmod1)
-        {
             _gmod1 = false;
-        }
 
-        gMode();
+        gMode(); // GM1 agora não desativa rotação da câmera
 
+        // Carta aberta
         if (cartaAberta)
         {
             if (Keyboard.current.fKey.wasPressedThisFrame)
-            {
                 FecharCarta();
-            }
             return;
         }
 
+        if (_inimigo != null && _inimigo.GetComponent<Enemy>()._plyAtq)
+            _inpActions.Disable();
+        else
+            _inpActions.Enable();
+
+        if (SettingsMenu.isPaused) return; // pausa movimentação, inputs e shake
+
         Run();
 
-        if (_inimigo != null)
-        {
-            if (_inimigo.gameObject.GetComponent<Enemy>()._plyAtq)
-                _inpActions.Disable();
-        }
-
         _isOnG = Physics.CheckSphere(_gCheck.position, _distanciaDoChão, _chão);
-
-        if (_isOnG && _vel.y < 0f)
-            _vel.y = -2f;
+        if (_isOnG && _vel.y < 0f) _vel.y = -2f;
 
         _m = transform.right * _inpMove.x + transform.forward * _inpMove.y;
         _cntrMult = _isOnG ? 1f : _velocidadeNoAr;
@@ -204,6 +198,7 @@ public class Player : MonoBehaviour
         CheckAnimations();
         CheckForInteractable();
     }
+
 
     private void CheckForInteractable()
     {
@@ -418,32 +413,22 @@ public class Player : MonoBehaviour
     {
         if (_gmod1)
         {
-            // desliga colisão e gravidade
             _cntr.enabled = false;
             GetComponent<CapsuleCollider>().enabled = false;
-            _vel = Vector3.zero; // reseta velocidade
+            _vel = Vector3.zero;
 
             Vector3 dir = Vector3.zero;
-
-            // movimento com WASD
             dir += transform.forward * _inpMove.y;
             dir += transform.right * _inpMove.x;
 
-            // subir com espaço
-            if (Keyboard.current.spaceKey.isPressed)
-                dir += Vector3.up;
+            if (Keyboard.current.spaceKey.isPressed) dir += Vector3.up;
+            if (Keyboard.current.leftShiftKey.isPressed) dir += Vector3.down;
 
-            // descer com shift
-            if (Keyboard.current.leftShiftKey.isPressed)
-                dir += Vector3.down;
-
-            // velocidade do fly
             float flySpeed = _velocidade * 2f;
             transform.position += dir.normalized * flySpeed * Time.deltaTime;
         }
         else
         {
-            // ativa de volta o CharacterController
             if (!_cntr.enabled) _cntr.enabled = true;
             GetComponent<CapsuleCollider>().enabled = true;
         }

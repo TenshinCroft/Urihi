@@ -4,15 +4,15 @@ using System.Collections;
 public class ScreenShake : MonoBehaviour
 {
     private Vector3 _originalPos;
+    private Coroutine _shakeCoroutine;
 
-    private void Awake()
-    {
-        _originalPos = transform.localPosition;
-    }
+    private void Awake() => _originalPos = transform.localPosition;
 
     public void Shake(float duration, float magnitude)
     {
-        StartCoroutine(DoShake(duration, magnitude));
+        if (SettingsMenu.isPaused) return;
+        if (_shakeCoroutine != null) StopCoroutine(_shakeCoroutine);
+        _shakeCoroutine = StartCoroutine(DoShake(duration, magnitude));
     }
 
     private IEnumerator DoShake(float duration, float magnitude)
@@ -21,6 +21,12 @@ public class ScreenShake : MonoBehaviour
 
         while (elapsed < duration)
         {
+            if (SettingsMenu.isPaused)
+            {
+                yield return null;
+                continue;
+            }
+
             float offsetX = Random.Range(-1f, 1f) * magnitude;
             float offsetY = Random.Range(-1f, 1f) * magnitude;
 

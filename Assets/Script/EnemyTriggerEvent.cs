@@ -17,8 +17,7 @@ public class LightConfig
     public Light[] lights;
     public LightMode lightMode = LightMode.None;
     public LightEndMode endMode = LightEndMode.None;
-
-    public bool changeColor = false;
+public bool changeColor = false;
     public Color newColor = Color.red;
 
     public bool changeIntensity = false;
@@ -32,6 +31,7 @@ public class LightConfig
     [HideInInspector] public Color[] origColors;
     [HideInInspector] public float[] origIntensities;
     [HideInInspector] public float[] origRanges;
+
 }
 
 [System.Serializable]
@@ -74,8 +74,7 @@ public class EnemyTriggerEvent : MonoBehaviour
     [Header("Geral")]
     public GameObject enemy;
     public GameObject mainCamera;
-
-    [Header("Duração do Evento")]
+[Header("Duração do Evento")]
     public float primaryDuration = 5f;
     public float secondaryDuration = 3f;
     public bool repeatableEvent = false;
@@ -113,7 +112,11 @@ public class EnemyTriggerEvent : MonoBehaviour
         {
             flashlightScript = mainCamera.GetComponent<lanterna>();
             screenShake = mainCamera.GetComponent<ScreenShake>();
-            postController = mainCamera.GetComponent<PostProcessController>();
+            postController = mainCamera.GetComponentInChildren<PostProcessController>();
+
+            // fallback se não achar no mainCamera
+            if (postController == null)
+                postController = FindObjectOfType<PostProcessController>();
 
             if (flashlightScript != null && flashlightScript._pObj != null)
                 playerScript = flashlightScript._pObj.GetComponent<Player>();
@@ -188,22 +191,22 @@ public class EnemyTriggerEvent : MonoBehaviour
 
     private void HandleEndModes(LightConfig lightCfg, FlashlightConfig flashCfg, EnemyConfig enemyCfg, PostProcessConfig postCfg)
     {
-        // Luz
+        // luzes
         if (lightCfg.endMode == LightEndMode.None) RestoreLights(lightCfg);
         else if (lightCfg.endMode == LightEndMode.Off) TurnLightsOff(lightCfg);
 
-        // Lanterna
+        // lanterna do player
         if (flashCfg.endMode == FlashlightEndMode.Off && playerScript != null)
             playerScript._lntrOn = false;
         else if (flashCfg.endMode == FlashlightEndMode.On && playerScript != null)
             playerScript._lntrOn = true;
 
-        // Inimigo
+        // inimigo
         if (enemyCfg.endMode == EnemyEndMode.Off) SetEnemyVisible(false);
         else if (enemyCfg.endMode == EnemyEndMode.On) SetEnemyVisible(true);
 
-        // Post Process
-        if (postCfg.endMode != PostProcessEndMode.None)
+        // post processing — sempre tratar se o evento mexeu com ele
+        if (postCfg.mode != PostProcessMode.None)
             HandlePostEndMode();
     }
 
@@ -330,4 +333,5 @@ public class EnemyTriggerEvent : MonoBehaviour
         screenShake.Shake(waitTime, shakeConfig.strength);
         yield return new WaitForSeconds(waitTime);
     }
+
 }

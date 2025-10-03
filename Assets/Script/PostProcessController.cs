@@ -1,21 +1,42 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 public class PostProcessController : MonoBehaviour
 {
     [Header("Referências de Post Processing")]
-    public GameObject postOriginal;   // Perfil normal
-    public GameObject postAlt;        // Perfil alternativo
+    public GameObject postOriginal;
+    public GameObject postAlt;
 
     private bool _isAlt = false;
-    private MotionBlur motionBlur;
+    private MotionBlur motionBlurOriginal;
+    private MotionBlur motionBlurAlt;
 
     private void Awake()
     {
         if (postOriginal != null) postOriginal.SetActive(true);
         if (postAlt != null) postAlt.SetActive(false);
 
-        motionBlur = GetComponent<MotionBlur>(); // se tiver MotionBlur na Main Camera
+        if (postOriginal != null)
+        {
+            Volume vol = postOriginal.GetComponent<Volume>();
+            if (vol != null && vol.profile != null)
+                vol.profile.TryGet(out motionBlurOriginal);
+            
+        }
+
+        if (postAlt != null)
+        {
+            Volume vol = postAlt.GetComponent<Volume>();
+            if (vol != null && vol.profile != null)
+                vol.profile.TryGet(out motionBlurAlt);
+        }
+    }
+
+    public void EnableMotionBlur(bool enabled)
+    {
+        if (motionBlurOriginal != null) motionBlurOriginal.active = enabled;
+        if (motionBlurAlt != null) motionBlurAlt.active = enabled;
     }
 
     public void SetOriginal()
@@ -37,15 +58,8 @@ public class PostProcessController : MonoBehaviour
         _isAlt = false;
         if (postOriginal != null) postOriginal.SetActive(false);
         if (postAlt != null) postAlt.SetActive(false);
+        EnableMotionBlur(false);
     }
 
-    public bool IsAltActive()
-    {
-        return _isAlt;
-    }
-
-    public void EnableMotionBlur(bool enabled)
-    {
-        if (motionBlur != null) motionBlur.enabled = enabled;
-    }
+    public bool IsAltActive() => _isAlt;
 }
