@@ -264,9 +264,9 @@ public class Enemy : MonoBehaviour
             else Debug.LogWarning($"Parâmetro de ataque '{attackParam}' não encontrado no Animator; trigger ignorado.");
             _plyAtq = false;
         }
-
     }
-   
+
+
     public void Patrol()
     {
         if (_waypoints.Length == 0) return;
