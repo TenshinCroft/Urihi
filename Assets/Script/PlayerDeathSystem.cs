@@ -34,6 +34,32 @@ public class PlayerDeathSystem : MonoBehaviour
 
     private void Awake()
     {
+        if (restartButton != null)
+            restartButton.gameObject.SetActive(false);
+
+        if (quitButton != null)
+            quitButton.gameObject.SetActive(false);
+
+        if (gameOverText != null)
+        {
+            gameOverText.alpha = 0f;
+            gameOverText.gameObject.SetActive(false);
+        }
+
+        if (blackScreen != null)
+        {
+            blackScreen.alpha = 0f;
+            blackScreen.gameObject.SetActive(false);
+        }
+        if (restartButton != null)
+        {
+            restartButton.gameObject.SetActive(false);
+        }
+
+        if (quitButton != null)
+        {
+            quitButton.gameObject.SetActive(false);
+        }
         // Get references
         if (playerCamera == null)
             playerCamera = Camera.main;
@@ -140,7 +166,7 @@ public class PlayerDeathSystem : MonoBehaviour
 
     private IEnumerator AnimateDeathUI()
     {
-        // 1. Fade in black screen
+        // 1. Fade in tela preta
         if (blackScreen != null)
         {
             blackScreen.gameObject.SetActive(true);
@@ -150,9 +176,11 @@ public class PlayerDeathSystem : MonoBehaviour
                 blackScreen.alpha += blackScreenFadeSpeed * Time.unscaledDeltaTime;
                 yield return null;
             }
+
+            blackScreen.alpha = 1f; // Garante que está completamente preto
         }
 
-        // 2. Wait and show "Você morreu" text
+        // 2. Espera um pouco para mostrar o texto "Você morreu"
         yield return new WaitForSecondsRealtime(textAppearDelay);
 
         if (gameOverText != null)
@@ -164,9 +192,11 @@ public class PlayerDeathSystem : MonoBehaviour
                 gameOverText.alpha += 2f * Time.unscaledDeltaTime;
                 yield return null;
             }
+
+            gameOverText.alpha = 1f;
         }
 
-        // 3. Wait and show buttons
+        // 3. Espera antes de mostrar os botões
         yield return new WaitForSecondsRealtime(buttonsAppearDelay - textAppearDelay);
 
         if (restartButton != null)
@@ -175,14 +205,26 @@ public class PlayerDeathSystem : MonoBehaviour
         if (quitButton != null)
             quitButton.gameObject.SetActive(true);
 
-        // Enable cursor for UI interaction
+        // Garantir que os botões estejam interativos
+        EnableCanvasGroup(restartButton.GetComponent<CanvasGroup>());
+        EnableCanvasGroup(quitButton.GetComponent<CanvasGroup>());
+
+        // 4. Liberar cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        // Pause the game
+        // 5. Pausar o jogo no final
         Time.timeScale = 0f;
     }
-
+    private void EnableCanvasGroup(CanvasGroup cg)
+    {
+        if (cg != null)
+        {
+            cg.alpha = 1f;
+            cg.interactable = true;
+            cg.blocksRaycasts = true;
+        }
+    }
     public void RestartGame()
     {
         Time.timeScale = 1f;
