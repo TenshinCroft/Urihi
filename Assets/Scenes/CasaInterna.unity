@@ -1730,6 +1730,11 @@ MonoBehaviour:
   itemName: Chave
   collectSound: {fileID: 8300000, guid: 89b005fa25e3edd4d8ac107a1d82ef8d, type: 3}
   cartaUI: {fileID: 0}
+  endsGame: 0
+  telaPretalFinal: {fileID: 0}
+  fadeToBlackDuration: 2
+  waitTimeBeforeEnd: 3
+  menuSceneName: tela inicio
 --- !u!82 &67204064
 AudioSource:
   m_ObjectHideFlags: 0
@@ -21892,6 +21897,11 @@ MonoBehaviour:
   itemName: Chave
   collectSound: {fileID: 8300000, guid: 89b005fa25e3edd4d8ac107a1d82ef8d, type: 3}
   cartaUI: {fileID: 0}
+  endsGame: 0
+  telaPretalFinal: {fileID: 0}
+  fadeToBlackDuration: 2
+  waitTimeBeforeEnd: 3
+  menuSceneName: tela inicio
 --- !u!65 &936300702
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -30067,6 +30077,7 @@ MonoBehaviour:
   blackScreenFadeSpeed: 1
   textAppearDelay: 1.5
   buttonsAppearDelay: 2.5
+  menuSceneName: tela inicio
 --- !u!1 &1243208774
 GameObject:
   m_ObjectHideFlags: 0
@@ -32691,7 +32702,7 @@ Transform:
   m_GameObject: {fileID: 1367221742}
   serializedVersion: 2
   m_LocalRotation: {x: -0.2697536, y: -0.6536307, z: -0.6536306, w: 0.2697536}
-  m_LocalPosition: {x: 0.584, y: 0.024, z: 0.073}
+  m_LocalPosition: {x: 0.628, y: 0.024, z: -0.199}
   m_LocalScale: {x: 49.145275, y: 49.145275, z: 49.145275}
   m_ConstrainProportionsScale: 0
   m_Children: []

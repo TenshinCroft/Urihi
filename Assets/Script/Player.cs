@@ -282,15 +282,27 @@ public class Player : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, _alcanceDeInteração, _mascaraDeInteração, QueryTriggerInteraction.Collide))
         {
+            
             // ITEM
             if (hit.collider.CompareTag("Item"))
             {
-                _i += 1;
-                ShowFeedback(hit.collider.name + " Coletada"); // Feedback
-                Debug.Log("Item coletado: " + hit.collider.name);
-                Destroy(hit.collider.gameObject);
+                // Verifica se tem CollectibleItem para lógica especial
+                CollectibleItem collectible = hit.collider.GetComponent<CollectibleItem>();
+                if (collectible != null)
+                {
+                    collectible.ColetarItem(this); // Chama a lógica especial
+                }
+                else
+                {
+                    // Item comum sem CollectibleItem
+                    _i += 1;
+                    ShowFeedback(hit.collider.name + " Coletada");
+                    Debug.Log("Item coletado: " + hit.collider.name);
+                    Destroy(hit.collider.gameObject);
+                }
                 return;
             }
+
 
             // CARTA (Agora usando Raycast - Se você usa CollectibleItem como Trigger, veja o segundo script)
             if (hit.collider.CompareTag("Carta"))

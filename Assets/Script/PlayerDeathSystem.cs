@@ -28,6 +28,9 @@ public class PlayerDeathSystem : MonoBehaviour
     public float textAppearDelay = 1.5f;
     public float buttonsAppearDelay = 2.5f;
 
+    [Header("Scene Names")]
+    public string menuSceneName = "tela inicio";
+
     private bool isDead = false;
     private Player playerScript;
     private PlayerLook playerLook;
@@ -53,7 +56,24 @@ public class PlayerDeathSystem : MonoBehaviour
         // Auto-find UI elements
         AutoFindUIReferences();
 
-        // Setup audio - Use the DeathSound GameObject
+        // Setup audio
+        SetupDeathAudio();
+
+        // Setup button events
+        SetupButtonEvents();
+
+        Debug.Log("PlayerDeathSystem initialized successfully");
+    }
+
+    private void Start()
+    {
+        // Initialize UI state
+        InitializeUIState();
+    }
+
+    private void SetupDeathAudio()
+    {
+        // Try to find DeathSound GameObject
         GameObject deathSoundObj = GameObject.Find("DeathSound");
         if (deathSoundObj != null)
         {
@@ -64,26 +84,26 @@ public class PlayerDeathSystem : MonoBehaviour
             }
         }
 
+        // Create AudioSource if not found
         if (deathAudioSource == null)
         {
             deathAudioSource = gameObject.AddComponent<AudioSource>();
             deathAudioSource.playOnAwake = false;
             deathAudioSource.spatialBlend = 0f;
         }
+    }
 
-        // Setup button events
+    private void SetupButtonEvents()
+    {
         if (restartButton != null)
             restartButton.onClick.AddListener(RestartGame);
 
         if (quitButton != null)
-            quitButton.onClick.AddListener(QuitGame);
-
-        Debug.Log("PlayerDeathSystem initialized successfully");
+            quitButton.onClick.AddListener(QuitToMenu);
     }
 
-    private void Start()
+    private void InitializeUIState()
     {
-        // Initialize UI state
         if (deathUI != null)
             deathUI.SetActive(false);
 
@@ -219,10 +239,6 @@ public class PlayerDeathSystem : MonoBehaviour
             deathAudioSource.Play();
             Debug.Log("Death sound played");
         }
-        else
-        {
-            Debug.LogWarning("Death sound or audio source is missing!");
-        }
 
         // 3. Lock camera on enemy
         Debug.Log("Starting camera lock on enemy");
@@ -332,20 +348,58 @@ public class PlayerDeathSystem : MonoBehaviour
 
     public void RestartGame()
     {
-        Debug.Log("Restarting game");
+        Debug.Log("=== REINICIANDO JOGO COM MYSCENEMANAGER ===");
+
+        // Reset all states before restart
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SettingsMenu.isPaused = false;
+
+        // Reset cursor
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        // Use the existing MySceneManager to reload the scene
+        if (MySceneManager._inst != null)
+        {
+            Debug.Log("Usando MySceneManager.ReloadScene()");
+            MySceneManager._inst.ReloadScene();
+        }
+        else
+        {
+            Debug.LogWarning("MySceneManager não encontrado, usando SceneManager diretamente");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
-    public void QuitGame()
+    public void QuitToMenu()
     {
-        Debug.Log("Quitting game");
-        Time.timeScale = 1f;
+        Debug.Log("=== VOLTANDO PARA O MENU ===");
 
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+        // Reset all game states
+        Time.timeScale = 1f;
+        SettingsMenu.isPaused = false;
+
+        // Reset cursor
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        // Use the existing MySceneManager to go to menu
+        if (MySceneManager._inst != null)
+        {
+            Debug.Log("Usando MySceneManager.LoadScene() para ir ao menu");
+            MySceneManager._inst.LoadScene(menuSceneName);
+        }
+        else
+        {
+            Debug.LogWarning("MySceneManager não encontrado, usando SceneManager diretamente");
+            SceneManager.LoadScene(menuSceneName);
+        }
+    }
+
+    // For debugging
+    [ContextMenu("Force Restart Game")]
+    public void ForceRestartGame()
+    {
+        RestartGame();
     }
 }
