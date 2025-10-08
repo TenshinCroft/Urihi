@@ -162,6 +162,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""dfac53b6-68c9-4fa1-8a3f-5bbbc5676779"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -340,6 +349,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""GAMEMODE1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3cf411ca-6bb1-4be9-a7f4-41c2fcea1894"",
+                    ""path"": ""<Keyboard>/rightBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -368,6 +388,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Lanterna = m_Player.FindAction("Lanterna", throwIfNotFound: true);
         m_Player_FecharCarta = m_Player.FindAction("FecharCarta", throwIfNotFound: true);
         m_Player_GAMEMODE1 = m_Player.FindAction("GAMEMODE1", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -456,6 +477,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Lanterna;
     private readonly InputAction m_Player_FecharCarta;
     private readonly InputAction m_Player_GAMEMODE1;
+    private readonly InputAction m_Player_Pause;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -499,6 +521,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/GAMEMODE1".
         /// </summary>
         public InputAction @GAMEMODE1 => m_Wrapper.m_Player_GAMEMODE1;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Pause".
+        /// </summary>
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -549,6 +575,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @GAMEMODE1.started += instance.OnGAMEMODE1;
             @GAMEMODE1.performed += instance.OnGAMEMODE1;
             @GAMEMODE1.canceled += instance.OnGAMEMODE1;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         /// <summary>
@@ -584,6 +613,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @GAMEMODE1.started -= instance.OnGAMEMODE1;
             @GAMEMODE1.performed -= instance.OnGAMEMODE1;
             @GAMEMODE1.canceled -= instance.OnGAMEMODE1;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         /// <summary>
@@ -693,5 +725,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnGAMEMODE1(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Pause" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPause(InputAction.CallbackContext context);
     }
 }

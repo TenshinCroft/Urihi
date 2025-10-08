@@ -10,8 +10,13 @@ public class ScreenShake : MonoBehaviour
 
     public void Shake(float duration, float magnitude)
     {
-        if (SettingsMenu.isPaused) return;
-        if (_shakeCoroutine != null) StopCoroutine(_shakeCoroutine);
+        // só chacoalha se efeitos estiverem ativos e jogo não estiver pausado
+        if (SettingsMenu.isPaused || !SettingsMenu.effectsEnabled)
+            return;
+
+        if (_shakeCoroutine != null)
+            StopCoroutine(_shakeCoroutine);
+
         _shakeCoroutine = StartCoroutine(DoShake(duration, magnitude));
     }
 
@@ -21,7 +26,7 @@ public class ScreenShake : MonoBehaviour
 
         while (elapsed < duration)
         {
-            if (SettingsMenu.isPaused)
+            if (SettingsMenu.isPaused || !SettingsMenu.effectsEnabled)
             {
                 yield return null;
                 continue;
@@ -38,4 +43,6 @@ public class ScreenShake : MonoBehaviour
 
         transform.localPosition = _originalPos;
     }
+
+
 }

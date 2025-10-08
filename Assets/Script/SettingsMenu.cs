@@ -1,120 +1,187 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class SettingsMenu : MonoBehaviour
 {
-    [Header("UI Elements")]
+    [Header("Referências de UI")]
+    public GameObject optionsMenu;
     public Slider sensitivitySlider;
     public Slider volumeSlider;
     public Toggle effectsToggle;
-    public GameObject panel;
 
-    [Header("References")]
-    public Camera mainCamera;
+    [Header("Referências externas")]
+    public PlayerLook playerLook;
+    public AudioMixer audioMixer;
+    public PostProcessController postProcessController;
+    public ScreenShake screenShake;
 
-    private ScreenShake screenShake;
-    private PostProcessController postController;
-
-    // flags globais
     public static bool isPaused = false;
-    public static bool effectsAllowed = true;
+    public static bool effectsEnabled = true;
 
     private void Awake()
     {
-        if (mainCamera != null)
+        Debug.Log("SettingsMenu Awake");
+
+        if (optionsMenu != null)
         {
-            screenShake = mainCamera.GetComponent<ScreenShake>();
-            postController = mainCamera.GetComponentInChildren<PostProcessController>();
+            optionsMenu.gameObject.SetActive(false);
+            sensitivitySlider.gameObject.SetActive(false);
+            volumeSlider.gameObject.SetActive(false);
+            effectsToggle.gameObject.SetActive(false);
+            Debug.Log("optionsMenu inicializado como inativo");
         }
-    }
+        else
+        {
+            Debug.LogWarning("optionsMenu NÃO está referenciado no Inspector!");
+        }
 
-    private void Start()
-    {
-        // Carrega valores salvos ou defaults
-        float savedSensitivity = PlayerPrefs.GetFloat("Sensitivity", 1f);
-        float savedVolume = PlayerPrefs.GetFloat("Volume", 1f);
-        bool savedEffects = PlayerPrefs.GetInt("Effects", 1) == 1; // default ON
+        if (sensitivitySlider != null)
+        {
+            sensitivitySlider.onValueChanged.AddListener(SetSensitivity);
+            if (playerLook != null)
+            {
+                sensitivitySlider.value = playerLook.mouseSensitivity;
+                Debug.Log("sensitivitySlider inicializado com valor: " + playerLook.mouseSensitivity);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("sensitivitySlider NÃO está referenciado no Inspector!");
+        }
 
-        // Aplica nos sliders/toggle
-        sensitivitySlider.value = savedSensitivity;
-        volumeSlider.value = savedVolume;
-        effectsToggle.isOn = savedEffects;
+        if (volumeSlider != null)
+        {
+            volumeSlider.onValueChanged.AddListener(SetVolume);
+            Debug.Log("volumeSlider referenciado");
+        }
+        else
+        {
+            Debug.LogWarning("volumeSlider NÃO está referenciado no Inspector!");
+        }
 
-        ApplySensitivity(savedSensitivity);
-        ApplyVolume(savedVolume);
-        ApplyEffects(savedEffects);
+        if (effectsToggle != null)
+        {
+            effectsToggle.onValueChanged.AddListener(SetEffects);
+            effectsToggle.isOn = true;
+            effectsEnabled = true;
+            Debug.Log("effectsToggle inicializado como ON");
+        }
+        else
+        {
+            Debug.LogWarning("effectsToggle NÃO está referenciado no Inspector!");
+        }
 
-        // Começa com menu fechado
-        SetUIActive(false);
+        isPaused = false;
+        Time.timeScale = 1f;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        // listeners
-        sensitivitySlider.onValueChanged.AddListener(ApplySensitivity);
-        volumeSlider.onValueChanged.AddListener(ApplyVolume);
-        effectsToggle.onValueChanged.AddListener(ApplyEffects);
     }
 
     private void Update()
     {
-        // Toggle menu com ESC
+        // Detecta a tecla ESC para abrir/fechar o menu
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            ToggleMenu();
+            Debug.Log("ESC pressionado, toggle pause");
+            TogglePause();
         }
     }
 
-    public void ToggleMenu()
+    public void TogglePause()
     {
-        bool active = panel.activeSelf;
-        SetUIActive(!active);
-        PauseGame(!active);
+        if (isPaused)
+        {
+            Debug.Log("Resuming game");
+            ResumeGame();
+        }
+        else
+        {
+            Debug.Log("Pausing game");
+            PauseGame();
+        }
     }
 
-    public void ApplySensitivity(float value)
+    private void PauseGame()
     {
-        PlayerPrefs.SetFloat("Sensitivity", value);
-        // Aqui você aplicaria ao seu input de camera/player
+        isPaused = true;
+        Time.timeScale = 0f;
+
+        if (optionsMenu != null)
+        {
+            optionsMenu.gameObject.SetActive(true);
+            sensitivitySlider.gameObject.SetActive(true);
+            volumeSlider.gameObject.SetActive(true);
+            effectsToggle.gameObject.SetActive(true);
+            Debug.Log("Menu ativado com filhos visíveis");
+        }
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
-    public void ApplyVolume(float value)
+    public void ResumeGame()
     {
-        PlayerPrefs.SetFloat("Volume", value);
-        // Aqui você aplicaria ao seu AudioListener ou mixer
+        isPaused = false;
+        Time.timeScale = 1f;
+
+        if (optionsMenu != null)
+        {
+            // Mantém o Canvas ativo, mas desativa os filhos
+            optionsMenu.gameObject.SetActive(false);
+            sensitivitySlider.gameObject.SetActive(false);
+            volumeSlider.gameObject.SetActive(false);
+            effectsToggle.gameObject.SetActive(false);
+            Debug.Log("Filhos do menu desativados");
+        }
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
-    public void ApplyEffects(bool enabled)
+    // Função para ativar/desativar todos os filhos de um GameObject
+    private void SetChildrenActive(GameObject parent, bool active)
     {
-        effectsAllowed = enabled;
-        PlayerPrefs.SetInt("Effects", enabled ? 1 : 0);
-
-        if (screenShake != null)
-            screenShake.enabled = enabled && !isPaused;
-
-        if (postController != null)
-            postController.EnableMotionBlur(enabled && !isPaused);
+        for (int i = 0; i < parent.transform.childCount; i++)
+        {
+            parent.transform.GetChild(i).gameObject.SetActive(active);
+        }
     }
 
-    private void SetUIActive(bool active)
+    public void SetSensitivity(float value)
     {
-        if (panel != null)
-            panel.SetActive(active);
-        if (sensitivitySlider != null)
-            sensitivitySlider.gameObject.SetActive(active);
-        if (volumeSlider != null)
-            volumeSlider.gameObject.SetActive(active);
-        if (effectsToggle != null)
-            effectsToggle.gameObject.SetActive(active);
-
-        Cursor.visible = active;
-        Cursor.lockState = active ? CursorLockMode.None : CursorLockMode.Locked;
+        if (playerLook != null)
+        {
+            playerLook.mouseSensitivity = value;
+            Debug.Log("Sensibilidade ajustada para " + value);
+        }
     }
 
-    private void PauseGame(bool pause)
+    public void SetVolume(float value)
     {
-        isPaused = pause;
-        ApplyEffects(effectsAllowed); // atualiza efeitos conforme pause
-        Time.timeScale = pause ? 0f : 1f; // pausa física do jogo
+        if (audioMixer != null)
+        {
+            audioMixer.SetFloat("MasterVolume", Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20);
+            Debug.Log("Volume ajustado para " + value);
+        }
+    }
+
+    public void SetEffects(bool enabled)
+    {
+        effectsEnabled = enabled;
+        Debug.Log("Effects toggled: " + enabled);
+
+        if (postProcessController != null)
+            postProcessController.EnableMotionBlur(enabled);
+
+        if (!enabled && screenShake != null)
+            screenShake.StopAllCoroutines();
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Quit game called");
+        Application.Quit();
     }
 }
