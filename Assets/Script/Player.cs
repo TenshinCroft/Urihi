@@ -172,7 +172,8 @@ public class Player : MonoBehaviour
 
         _m = transform.right * _inpMove.x + transform.forward * _inpMove.y;
         _cntrMult = _isOnG ? 1f : _velocidadeNoAr;
-        _cntr.Move(_m * _speed * _cntrMult * Time.deltaTime);
+        if (_cntr.enabled)
+            _cntr.Move(_m * _speed * _cntrMult * Time.deltaTime);
 
         if (_jPressed && _isOnG)
         {
@@ -193,7 +194,8 @@ public class Player : MonoBehaviour
         }
 
         _vel.y += -_g * Time.deltaTime;
-        _cntr.Move(_vel * Time.deltaTime);
+        if (_cntr.enabled)
+            _cntr.Move(_vel * Time.deltaTime);
 
         CheckAnimations();
         CheckForInteractable();

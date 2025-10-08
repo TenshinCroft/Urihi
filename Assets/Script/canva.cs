@@ -1,61 +1,43 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 public class canva : MonoBehaviour
 {
-    public GameObject win; // arrasta o canvas aqui no inspector
+    [Header("Victory Settings")]
+    public GameObject win; // Canvas de vitória
+    public int itemsToWin = 9;
 
-    public GameObject lose; // arrasta o canvas aqui no inspector
-
-    public int contador = 0;
-
-
-
+    [Header("References")]
     public GameObject _player;
-
     public GameObject inimigo;
 
+    private int contador = 0;
+    private bool gameEnded = false;
+
     void Update()
-
     {
+        // Se o jogo já terminou, não fazer mais nada
+        if (gameEnded) return;
 
-        contador = _player.GetComponent<Player>()._i;
-
-        // Verifica se chegou no 7 e o canvas ainda tá escondido
-
-        if (contador >= 9 && !win.activeSelf)
-
+        // Atualizar contador de itens do player
+        if (_player != null && _player.GetComponent<Player>() != null)
         {
+            contador = _player.GetComponent<Player>()._i;
+        }
 
+        // Verificar condição de vitória
+        if (contador >= itemsToWin && win != null && !win.activeSelf)
+        {
             win.SetActive(true);
-
-            Debug.Log("Venceu");
+            gameEnded = true;
+            Debug.Log("Venceu!");
 
             if (inimigo != null)
-
             {
-
                 Destroy(inimigo);
-
             }
-
         }
 
-        if (inimigo != null)
-
-        {
-
-            if (inimigo.gameObject.GetComponent<Enemy>()._plyAtq && !lose.activeSelf)
-
-            {
-
-                lose.SetActive(true);
-
-                Debug.Log("perdeu");
-
-            }
-
-        }
-
+        // REMOVIDO: A detecção de morte agora é feita pelo PlayerDeathSystem
+        // Isso evita conflitos e duplicação de lógica
     }
 }
