@@ -5434,6 +5434,10 @@ PrefabInstance:
       propertyPath: m_Intensity
       value: 8.33
       objectReference: {fileID: 0}
+    - target: {fileID: 5163657387420047753, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.95
+      objectReference: {fileID: 0}
     - target: {fileID: 5436129738889304456, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_RenderPostProcessing
       value: 1
@@ -5660,7 +5664,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 298150658}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 9000000, guid: f46a3da804e19654aaf135653e8212d0, type: 2}
   m_Controller: {fileID: 9100000, guid: 26f76c260e5b1f0418630422057e347f, type: 2}
   m_CullingMode: 0
