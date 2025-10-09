@@ -3,8 +3,9 @@ using UnityEngine;
 public class QuadroPieceCollectable : MonoBehaviour
 {
     [HideInInspector] public QuadroPieceManager manager;
+    [HideInInspector] public QuadroPieceManager_Fixed managerFixed;
 
-    [Header("Configurações de Interação")]
+    [Header("Configuraï¿½ï¿½es de Interaï¿½ï¿½o")]
     [SerializeField] private float distanciaMaxima = 8f;
     [SerializeField] private LayerMask layerInteracao = -1;
 
@@ -13,7 +14,7 @@ public class QuadroPieceCollectable : MonoBehaviour
 
     void Start()
     {
-        // Encontra a câmera do player
+        // Encontra a cï¿½mera do player
         if (playerCamera == null)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -28,29 +29,42 @@ public class QuadroPieceCollectable : MonoBehaviour
             }
         }
 
-        // Remove o trigger do collider se existir
+        // Configura o collider corretamente
         Collider col = GetComponent<Collider>();
         if (col != null)
         {
-            col.isTrigger = false; // Não usa mais trigger
+            col.isTrigger = false; // Nï¿½o usa trigger, funciona com raycast
         }
 
-        // Configura a tag da peça
+        // Garante que a peï¿½a tenha a tag e layer corretas
         if (!gameObject.CompareTag("Item"))
         {
-            gameObject.tag = "Item"; // Usa a mesma tag dos outros itens
+            gameObject.tag = "Item";
+        }
+        
+        int interactionLayer = LayerMask.NameToLayer("Interaï¿½ï¿½o");
+        if (gameObject.layer != interactionLayer)
+        {
+            gameObject.layer = interactionLayer;
+        }
+
+        // Se nÃ£o tem manager, tenta encontrar automaticamente
+        if (manager == null && managerFixed == null)
+        {
+            manager = FindObjectOfType<QuadroPieceManager>();
+            managerFixed = FindObjectOfType<QuadroPieceManager_Fixed>();
         }
     }
 
     void Update()
     {
-        if (playerCamera == null || manager == null) return;
+        if (playerCamera == null || (manager == null && managerFixed == null)) return;
 
-        // Verifica se o player está olhando para esta peça
+        // Verifica se o player estï¿½ olhando para esta peï¿½a
         VerificarInteracao();
 
         // Verifica clique do mouse
-        if (podeInteragir && Input.GetMouseButtonDown(0)) // Botão esquerdo do mouse
+        if (podeInteragir && Input.GetMouseButtonDown(0)) // Botï¿½o esquerdo do mouse
         {
             ColetarPeca();
         }
@@ -58,13 +72,13 @@ public class QuadroPieceCollectable : MonoBehaviour
 
     void VerificarInteracao()
     {
-        // Raycast da câmera
+        // Raycast da cï¿½mera
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, distanciaMaxima, layerInteracao))
         {
-            // Verifica se está olhando para esta peça
+            // Verifica se estï¿½ olhando para esta peï¿½a
             if (hit.collider.gameObject == gameObject)
             {
                 podeInteragir = true;
@@ -92,7 +106,7 @@ public class QuadroPieceCollectable : MonoBehaviour
             Player playerScript = player.GetComponent<Player>();
             if (playerScript != null && playerScript.interactionHintText != null)
             {
-                playerScript.interactionHintText.text = "Clique para coletar peça";
+                playerScript.interactionHintText.text = "Clique para coletar peï¿½a";
                 playerScript.interactionHintText.gameObject.SetActive(true);
             }
         }
@@ -114,6 +128,7 @@ public class QuadroPieceCollectable : MonoBehaviour
 
     void ColetarPeca()
     {
+        // Chama o manager que estiver disponÃ­vel
         if (manager != null)
         {
             // Feedback para o player
@@ -123,18 +138,34 @@ public class QuadroPieceCollectable : MonoBehaviour
                 Player playerScript = player.GetComponent<Player>();
                 if (playerScript != null)
                 {
-                    playerScript.ShowFeedback($"Peça do quadro coletada!");
+                    playerScript.ShowFeedback($"PeÃ§a do quadro coletada!");
                 }
             }
 
-            // Chama o manager para processar a coleta
+            // Chama o manager original para processar a coleta
             manager.ColetarPeca(gameObject);
+        }
+        else if (managerFixed != null)
+        {
+            // Feedback para o player
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                Player playerScript = player.GetComponent<Player>();
+                if (playerScript != null)
+                {
+                    playerScript.ShowFeedback($"PeÃ§a do quadro coletada!");
+                }
+            }
+
+            // Chama o manager corrigido para processar a coleta
+            managerFixed.ColetarPeca(gameObject);
         }
     }
 
     void OnDestroy()
     {
-        // Esconde a dica quando a peça é destruída
+        // Esconde a dica quando a peï¿½a ï¿½ destruï¿½da
         EsconderDicaInteracao();
     }
 }

@@ -84,7 +84,19 @@ public class CollectibleItem : MonoBehaviour
 
         if (isPuzzlePiece)
         {
-            // ... (Lógica do puzzle) ...
+            // Registra a peça no PuzzleItemManager
+            PuzzleItemManager puzzleManager = PuzzleItemManager.Instance;
+            if (puzzleManager != null)
+            {
+                puzzleManager.CollectPuzzlePiece(itemName);
+            }
+            
+            // Feedback para o player
+            if (player != null)
+            {
+                player.ShowFeedback($"Peça do puzzle coletada! ({itemName})");
+            }
+            
             Destroy(gameObject);
             return;
         }

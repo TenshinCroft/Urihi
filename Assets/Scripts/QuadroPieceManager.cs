@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 public class QuadroPieceManager : MonoBehaviour
 {
-    [Header("Configurações dos Colliders")]
+    [Header("Configuraï¿½ï¿½es dos Colliders")]
     [SerializeField] private Vector3 tamanhoCollider = new Vector3(0.5f, 0.5f, 0.5f);
     [SerializeField] private bool usarTamanhoAutomatico = true;
     [SerializeField] private float fatorReducao = 0.8f;
 
-    [Header("Configurações do Sistema")]
+    [Header("Configuraï¿½ï¿½es do Sistema")]
     [SerializeField] private int totalPecas = 8;
     [SerializeField] private int pecasColetadas = 0;
 
@@ -45,7 +45,7 @@ public class QuadroPieceManager : MonoBehaviour
         InicializarChave();
         AtualizarUI();
 
-        // Desativa todas as peças no início
+        // Desativa todas as peï¿½as no inï¿½cio
         if (!sistemaAtivado)
         {
             DesativarTodasPecas();
@@ -61,29 +61,71 @@ public class QuadroPieceManager : MonoBehaviour
 
     void EncontrarPecasNaCena()
     {
-        // Encontra todas as peças que já estão na cena
+        // Encontra todas as peï¿½as que jï¿½ estï¿½o na cena
         pecasQuadro.Clear();
 
         for (int i = 1; i <= totalPecas; i++)
         {
-            GameObject peca = GameObject.Find("Peça " + i);
+            GameObject peca = GameObject.Find("Peï¿½a " + i);
             if (peca != null)
             {
                 pecasQuadro.Add(peca);
-                Debug.Log($"Encontrada peça: {peca.name}");
+                
+                // CORRIGE as tags e layers das peï¿½as encontradas
+                CorrigirConfiguracaodePeca(peca);
+                
+                Debug.Log($"Encontrada e corrigida peï¿½a: {peca.name}");
             }
             else
             {
-                Debug.LogWarning($"Peça {i} não encontrada na cena!");
+                Debug.LogWarning($"Peï¿½a {i} nï¿½o encontrada na cena!");
             }
         }
 
-        Debug.Log($"Total de peças encontradas: {pecasQuadro.Count}");
+        Debug.Log($"Total de peï¿½as encontradas: {pecasQuadro.Count}");
+    }
+    
+    void CorrigirConfiguracaodePeca(GameObject peca)
+    {
+        // Corrige a tag para "Item"
+        if (!peca.CompareTag("Item"))
+        {
+            peca.tag = "Item";
+            Debug.Log($"Tag da peï¿½a {peca.name} corrigida para 'Item'");
+        }
+        
+        // Corrige a layer para "Interaï¿½ï¿½o"
+        int interactionLayer = LayerMask.NameToLayer("Interaï¿½ï¿½o");
+        if (peca.layer != interactionLayer)
+        {
+            peca.layer = interactionLayer;
+            Debug.Log($"Layer da peï¿½a {peca.name} corrigida para 'Interaï¿½ï¿½o'");
+        }
+        
+        // Remove o CollectibleItem se existir (conflito com o sistema)
+        CollectibleItem collectibleItem = peca.GetComponent<CollectibleItem>();
+        if (collectibleItem != null)
+        {
+            // Preserva informaï¿½ï¿½es importantes antes de remover
+            string itemName = collectibleItem.itemName;
+            AudioClip collectSound = collectibleItem.collectSound;
+            
+            // Remove o componente conflitante
+            DestroyImmediate(collectibleItem);
+            Debug.Log($"Componente CollectibleItem removido da peï¿½a {peca.name}");
+        }
+        
+        // Garante que tenha um collider configurado corretamente
+        Collider col = peca.GetComponent<Collider>();
+        if (col != null)
+        {
+            col.isTrigger = false; // Nï¿½o deve ser trigger para o sistema de raycast
+        }
     }
 
     void InicializarChave()
     {
-        // Se não foi definida no inspector, busca automaticamente
+        // Se nï¿½o foi definida no inspector, busca automaticamente
         if (chaveRecompensa == null)
         {
             chaveRecompensa = GameObject.Find("Chave do Quarto");
@@ -95,7 +137,7 @@ public class QuadroPieceManager : MonoBehaviour
             chaveRecompensa.SetActive(false);
         }
 
-        // Se não foi definido local de drop, usa a posição do puzzle
+        // Se nï¿½o foi definido local de drop, usa a posiï¿½ï¿½o do puzzle
         if (localDropChave == null)
         {
             GameObject puzzleQuadro = GameObject.Find("Quadro");
@@ -112,13 +154,13 @@ public class QuadroPieceManager : MonoBehaviour
 
     System.Collections.IEnumerator MonitorarSegundoEvento()
     {
-        // Espera até o segundo evento ser ativado
+        // Espera atï¿½ o segundo evento ser ativado
         while (segundoEvento != null && segundoEvento.GetComponent<Collider>().enabled)
         {
             yield return new WaitForSeconds(0.5f);
         }
 
-        // Aguarda um tempo após o segundo evento
+        // Aguarda um tempo apï¿½s o segundo evento
         yield return new WaitForSeconds(2f);
 
         AtivarSistemaPecas();
@@ -130,7 +172,7 @@ public class QuadroPieceManager : MonoBehaviour
 
         sistemaAtivado = true;
 
-        // Ativa todas as peças e configura elas para serem coletáveis
+        // Ativa todas as peï¿½as e configura elas para serem coletï¿½veis
         foreach (GameObject peca in pecasQuadro)
         {
             if (peca != null)
@@ -143,21 +185,21 @@ public class QuadroPieceManager : MonoBehaviour
         // Mostra mensagem para o player
         if (legendaTexto != null)
         {
-            legendaTexto.text = "Peças do quadro apareceram pela casa! Colete todas elas.";
+            legendaTexto.text = "Peï¿½as do quadro apareceram pela casa! Colete todas elas.";
             StartCoroutine(EsconderMensagemTemporaria(3f));
         }
 
         AtualizarUI();
 
-        Debug.Log("Sistema de peças do quadro ativado!");
+        Debug.Log("Sistema de peï¿½as do quadro ativado!");
     }
 
     void ConfigurarPeca(GameObject peca)
     {
-        // Configura layer de interação
-        peca.layer = LayerMask.NameToLayer("Interação");
+        // Configura layer de interaï¿½ï¿½o
+        peca.layer = LayerMask.NameToLayer("Interaï¿½ï¿½o");
 
-        // Adiciona o componente de peça coletável
+        // Adiciona o componente de peï¿½a coletï¿½vel
         QuadroPieceCollectable collectible = peca.GetComponent<QuadroPieceCollectable>();
         if (collectible == null)
         {
@@ -168,12 +210,12 @@ public class QuadroPieceManager : MonoBehaviour
         // Adiciona efeito visual
         AdicionarEfeitoVisual(peca);
 
-        Debug.Log($"Peça {peca.name} configurada para coleta!");
+        Debug.Log($"Peï¿½a {peca.name} configurada para coleta!");
     }
 
     void AdicionarEfeitoVisual(GameObject peca)
     {
-        // Adiciona uma luz para destacar a peça
+        // Adiciona uma luz para destacar a peï¿½a
         Light luz = peca.GetComponentInChildren<Light>();
         if (luz == null)
         {
@@ -223,7 +265,7 @@ public class QuadroPieceManager : MonoBehaviour
             Instantiate(efeitoColeta, peca.transform.position, Quaternion.identity);
         }
 
-        // Desativa a peça (ao invés de destruir para manter referências)
+        // Desativa a peï¿½a (ao invï¿½s de destruir para manter referï¿½ncias)
         peca.SetActive(false);
 
         AtualizarUI();
@@ -234,14 +276,14 @@ public class QuadroPieceManager : MonoBehaviour
             CompletarPuzzle();
         }
 
-        Debug.Log($"Peça {peca.name} coletada! {pecasColetadas}/{totalPecas}");
+        Debug.Log($"Peï¿½a {peca.name} coletada! {pecasColetadas}/{totalPecas}");
     }
 
     void AtualizarUI()
     {
         if (legendaTexto != null && sistemaAtivado)
         {
-            legendaTexto.text = $"Peças coletadas: {pecasColetadas}/{totalPecas}";
+            legendaTexto.text = $"Peï¿½as coletadas: {pecasColetadas}/{totalPecas}";
 
             if (legendaCanvas != null)
             {
@@ -254,7 +296,7 @@ public class QuadroPieceManager : MonoBehaviour
     {
         puzzleCompleto = true;
 
-        // Som de conclusão
+        // Som de conclusï¿½o
         if (somPuzzleCompleto != null)
         {
             AudioSource.PlayClipAtPoint(somPuzzleCompleto, transform.position);
@@ -263,7 +305,7 @@ public class QuadroPieceManager : MonoBehaviour
         // Atualiza UI
         if (legendaTexto != null)
         {
-            legendaTexto.text = "Todas as peças coletadas! Uma chave foi liberada.";
+            legendaTexto.text = "Todas as peï¿½as coletadas! Uma chave foi liberada.";
             StartCoroutine(EsconderMensagemTemporaria(4f));
         }
 
@@ -284,7 +326,7 @@ public class QuadroPieceManager : MonoBehaviour
 
             chaveRecompensa.SetActive(true);
 
-            // ADICIONE ESTE BLOCO PARA CONFIGURAR A CHAVE COMO COLETÁVEL
+            // ADICIONE ESTE BLOCO PARA CONFIGURAR A CHAVE COMO COLETï¿½VEL
             CollectibleItem chaveCollectible = chaveRecompensa.GetComponent<CollectibleItem>();
             if (chaveCollectible == null)
             {
@@ -296,7 +338,7 @@ public class QuadroPieceManager : MonoBehaviour
             chaveCollectible.isKey = true;
             chaveCollectible.isPuzzlePiece = false;
 
-            // Configurar a tag para ser coletável
+            // Configurar a tag para ser coletï¿½vel
             chaveRecompensa.tag = "Item";
 
             Rigidbody rbChave = chaveRecompensa.GetComponent<Rigidbody>();
@@ -372,11 +414,20 @@ public class QuadroPieceManager : MonoBehaviour
         }
     }
 
-    // Métodos para testes
-    [ContextMenu("Ativar Sistema de Peças")]
+    // Mï¿½todos para testes
+    [ContextMenu("Ativar Sistema de Peï¿½as")]
     public void AtivarManualmente()
     {
         AtivarSistemaPecas();
+    }
+
+    [ContextMenu("Forï¿½ar Ativaï¿½ï¿½o das Peï¿½as Agora")]
+    public void ForcaAtivacaoAgora()
+    {
+        // Forï¿½a a ativaï¿½ï¿½o imediata sem esperar eventos
+        sistemaAtivado = false; // Reset o estado
+        AtivarSistemaPecas();
+        Debug.Log("Sistema de peï¿½as ativado forï¿½adamente!");
     }
 
     [ContextMenu("Resetar Sistema")]
@@ -386,7 +437,7 @@ public class QuadroPieceManager : MonoBehaviour
         sistemaAtivado = false;
         puzzleCompleto = false;
 
-        // Reativa todas as peças
+        // Reativa todas as peï¿½as
         foreach (GameObject peca in pecasQuadro)
         {
             if (peca != null)

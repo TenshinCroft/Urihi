@@ -3,6 +3,26 @@ using System.Collections.Generic;
 
 public class PuzzleItemManager : MonoBehaviour
 {
+    // Adicione este método ao PuzzleItemManager.cs
+    [ContextMenu("Reset Collected Pieces")]
+    public void ResetCollectedPieces()
+    {
+        collectedPieces.Clear();
+        Debug.Log("PuzzleItemManager resetado! Todas as peças foram removidas da lista.");
+    }
+
+    // Também adicione este método para debug
+    [ContextMenu("Show Current Status")]
+    public void ShowCurrentStatus()
+    {
+        Debug.Log($"Peças coletadas: {collectedPieces.Count}/{totalPiecesRequired}");
+        foreach (string piece in collectedPieces)
+        {
+            Debug.Log($"- {piece}");
+        }
+        Debug.Log($"Pode usar puzzle: {CanUsePuzzle()}");
+    }
+
     [Header("Configuração do Puzzle")]
     public int totalPiecesRequired = 8;
     public string[] puzzlePieceNames = new string[8]
@@ -33,6 +53,10 @@ public class PuzzleItemManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+
+            // RESET automático a cada nova execução
+            collectedPieces.Clear();
+            Debug.Log("PuzzleItemManager iniciado - lista de peças resetada");
         }
         else if (instance != this)
         {

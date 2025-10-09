@@ -3655,6 +3655,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: "Pe\xE7a 3"
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b4e0bcb28e9efb54d9d9cbedba480928, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b4e0bcb28e9efb54d9d9cbedba480928, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b4e0bcb28e9efb54d9d9cbedba480928, type: 3}
+      propertyPath: m_TagString
+      value: Item
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -7687,24 +7699,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 306803163}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a103771402c3f64ba05875e4bd83649, type: 3}
+  m_Script: {fileID: 11500000, guid: 989ba19e17df5d24a9531511cbcc8cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: "Pe\xE7a 3"
-  collectSound: {fileID: 0}
-  cartaUI: {fileID: 0}
-  isPuzzlePiece: 1
-  isKey: 0
-  endsGame: 0
-  telaPretalFinal: {fileID: 0}
-  fadeToBlackDuration: 2
-  textosFinais:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  delayEntreTextos: 2
-  textFadeDuration: 1.5
-  menuSceneName: tela inicio
+  manager: {fileID: 0}
+  managerFixed: {fileID: 0}
+  distanciaMaxima: 8
+  layerInteracao:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!4 &307724166 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: db430550006e50743a356f39fb473511, type: 3}
@@ -7891,24 +7894,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 311617277}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a103771402c3f64ba05875e4bd83649, type: 3}
+  m_Script: {fileID: 11500000, guid: 989ba19e17df5d24a9531511cbcc8cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: "Pe\xE7a 8"
-  collectSound: {fileID: 0}
-  cartaUI: {fileID: 0}
-  isPuzzlePiece: 1
-  isKey: 0
-  endsGame: 0
-  telaPretalFinal: {fileID: 0}
-  fadeToBlackDuration: 2
-  textosFinais:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  delayEntreTextos: 2
-  textFadeDuration: 1.5
-  menuSceneName: tela inicio
+  manager: {fileID: 0}
+  managerFixed: {fileID: 0}
+  distanciaMaxima: 8
+  layerInteracao:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &316113664 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 73f433711a97e534c904d12e5b65c2b2, type: 3}
@@ -7949,24 +7943,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 316113664}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a103771402c3f64ba05875e4bd83649, type: 3}
+  m_Script: {fileID: 11500000, guid: 989ba19e17df5d24a9531511cbcc8cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: "Pe\xE7a 4"
-  collectSound: {fileID: 0}
-  cartaUI: {fileID: 0}
-  isPuzzlePiece: 1
-  isKey: 0
-  endsGame: 0
-  telaPretalFinal: {fileID: 0}
-  fadeToBlackDuration: 2
-  textosFinais:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  delayEntreTextos: 2
-  textFadeDuration: 1.5
-  menuSceneName: tela inicio
+  manager: {fileID: 0}
+  managerFixed: {fileID: 0}
+  distanciaMaxima: 8
+  layerInteracao:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1001 &316191189
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9504,6 +9489,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: "Pe\xE7a 7"
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 37df66a2abfbe41488485de2ffacebf2, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 37df66a2abfbe41488485de2ffacebf2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 37df66a2abfbe41488485de2ffacebf2, type: 3}
+      propertyPath: m_TagString
+      value: Item
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -9516,7 +9513,7 @@ PrefabInstance:
       addedObject: {fileID: 2052565011}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 37df66a2abfbe41488485de2ffacebf2, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2052565017}
+      addedObject: {fileID: 2052565023}
   m_SourcePrefab: {fileID: 100100000, guid: 37df66a2abfbe41488485de2ffacebf2, type: 3}
 --- !u!1001 &359953158
 PrefabInstance:
@@ -10923,7 +10920,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 402804447}
-  - component: {fileID: 402804446}
+  - component: {fileID: 402804448}
+  - component: {fileID: 402804449}
   m_Layer: 0
   m_Name: ManagerPecas
   m_TagString: Untagged
@@ -10931,34 +10929,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &402804446
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 402804445}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74d4762c9353f9746ac242e2ed26ecc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tamanhoCollider: {x: 0.5, y: 0.5, z: 0.5}
-  usarTamanhoAutomatico: 1
-  fatorReducao: 0.8
-  totalPecas: 8
-  pecasColetadas: 0
-  segundoEvento: {fileID: 1104262541}
-  legendaTexto: {fileID: 604685407}
-  legendaCanvas: {fileID: 1122011523}
-  chaveRecompensa: {fileID: 0}
-  localDropChave: {fileID: 0}
-  forcaDropChave: 5
-  somColetarPeca: {fileID: 0}
-  somPuzzleCompleto: {fileID: 0}
-  somDropChave: {fileID: 0}
-  efeitoColeta: {fileID: 0}
-  efeitoDropChave: {fileID: 0}
 --- !u!4 &402804447
 Transform:
   m_ObjectHideFlags: 0
@@ -10974,6 +10944,57 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &402804448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 402804445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dff184a834c3b040b59950b82eaab57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tamanhoCollider: {x: 0.5, y: 0.5, z: 0.5}
+  usarTamanhoAutomatico: 1
+  fatorReducao: 0.8
+  totalPecas: 8
+  pecasColetadas: 0
+  segundoEvento: {fileID: 1104262541}
+  legendaTexto: {fileID: 0}
+  legendaCanvas: {fileID: 0}
+  chaveRecompensa: {fileID: 0}
+  localDropChave: {fileID: 0}
+  forcaDropChave: 5
+  somColetarPeca: {fileID: 0}
+  somPuzzleCompleto: {fileID: 0}
+  somDropChave: {fileID: 0}
+  efeitoColeta: {fileID: 0}
+  efeitoDropChave: {fileID: 0}
+--- !u!114 &402804449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 402804445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 391d600e290139548b9078efd9e84806, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalPiecesRequired: 8
+  puzzlePieceNames:
+  - "Pe\xE7a 1"
+  - "Pe\xE7a 2"
+  - "Pe\xE7a 3"
+  - "Pe\xE7a 4"
+  - "Pe\xE7a 5"
+  - "Pe\xE7a 6"
+  - "Pe\xE7a 7"
+  - "Pe\xE7a 8"
+  puzzleQuadro: {fileID: 769026068}
 --- !u!1 &404179058
 GameObject:
   m_ObjectHideFlags: 0
@@ -15313,7 +15334,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: example
+  m_text: "Pe\uFFFDas coletadas: 0/8"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -19185,6 +19206,17 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 100
   m_TargetDisplay: 0
+--- !u!114 &769026068 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8486220561509188228, guid: 3657d3aa9037c1b439e7cbea15ed8e41, type: 3}
+  m_PrefabInstance: {fileID: 485895893}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10b6f0bda9f1053419a5ce3249ee97ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &769223051 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2353377972431730167, guid: e1e07beddb0cac1488251203d998d9fa, type: 3}
@@ -19494,6 +19526,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: "Pe\xE7a 1"
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d71faaa1a1a60f849ba72a5e200a71f1, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d71faaa1a1a60f849ba72a5e200a71f1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d71faaa1a1a60f849ba72a5e200a71f1, type: 3}
+      propertyPath: m_TagString
+      value: Item
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -19506,7 +19550,7 @@ PrefabInstance:
       addedObject: {fileID: 1631768248}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d71faaa1a1a60f849ba72a5e200a71f1, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1631768254}
+      addedObject: {fileID: 1631768260}
   m_SourcePrefab: {fileID: 100100000, guid: d71faaa1a1a60f849ba72a5e200a71f1, type: 3}
 --- !u!1 &783213986
 GameObject:
@@ -24747,7 +24791,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7f36c863456256643b9a1bfa6ddd2dc3, type: 3}
   m_PrefabInstance: {fileID: 1000991778}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &977536090
+--- !u!114 &977536096
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -24756,24 +24800,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 977536083}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a103771402c3f64ba05875e4bd83649, type: 3}
+  m_Script: {fileID: 11500000, guid: 989ba19e17df5d24a9531511cbcc8cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: "Pe\xE7a 5"
-  collectSound: {fileID: 0}
-  cartaUI: {fileID: 0}
-  isPuzzlePiece: 1
-  isKey: 0
-  endsGame: 0
-  telaPretalFinal: {fileID: 0}
-  fadeToBlackDuration: 2
-  textosFinais:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  delayEntreTextos: 2
-  textFadeDuration: 1.5
-  menuSceneName: tela inicio
+  manager: {fileID: 0}
+  managerFixed: {fileID: 0}
+  distanciaMaxima: 8
+  layerInteracao:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &977683191
 GameObject:
   m_ObjectHideFlags: 0
@@ -24892,7 +24927,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cc8d1c2d9f5cdb949873c4ae528c8ad4, type: 3}
   m_PrefabInstance: {fileID: 1035859375}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &985944319
+--- !u!114 &985944325
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -24901,24 +24936,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 985944312}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a103771402c3f64ba05875e4bd83649, type: 3}
+  m_Script: {fileID: 11500000, guid: 989ba19e17df5d24a9531511cbcc8cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: "Pe\xE7a 6"
-  collectSound: {fileID: 0}
-  cartaUI: {fileID: 0}
-  isPuzzlePiece: 1
-  isKey: 0
-  endsGame: 0
-  telaPretalFinal: {fileID: 0}
-  fadeToBlackDuration: 2
-  textosFinais:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  delayEntreTextos: 2
-  textFadeDuration: 1.5
-  menuSceneName: tela inicio
+  manager: {fileID: 0}
+  managerFixed: {fileID: 0}
+  distanciaMaxima: 8
+  layerInteracao:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &986265618
 GameObject:
   m_ObjectHideFlags: 0
@@ -25691,6 +25717,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: "Pe\xE7a 5"
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7f36c863456256643b9a1bfa6ddd2dc3, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7f36c863456256643b9a1bfa6ddd2dc3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7f36c863456256643b9a1bfa6ddd2dc3, type: 3}
+      propertyPath: m_TagString
+      value: Item
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -25703,7 +25741,7 @@ PrefabInstance:
       addedObject: {fileID: 977536084}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7f36c863456256643b9a1bfa6ddd2dc3, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 977536090}
+      addedObject: {fileID: 977536096}
   m_SourcePrefab: {fileID: 100100000, guid: 7f36c863456256643b9a1bfa6ddd2dc3, type: 3}
 --- !u!4 &1003558343 stripped
 Transform:
@@ -26421,6 +26459,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: "Pe\xE7a 6"
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cc8d1c2d9f5cdb949873c4ae528c8ad4, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cc8d1c2d9f5cdb949873c4ae528c8ad4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cc8d1c2d9f5cdb949873c4ae528c8ad4, type: 3}
+      propertyPath: m_TagString
+      value: Item
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -26433,7 +26483,7 @@ PrefabInstance:
       addedObject: {fileID: 985944313}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cc8d1c2d9f5cdb949873c4ae528c8ad4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 985944319}
+      addedObject: {fileID: 985944325}
   m_SourcePrefab: {fileID: 100100000, guid: cc8d1c2d9f5cdb949873c4ae528c8ad4, type: 3}
 --- !u!4 &1039054981 stripped
 Transform:
@@ -32324,24 +32374,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1271757733}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a103771402c3f64ba05875e4bd83649, type: 3}
+  m_Script: {fileID: 11500000, guid: 989ba19e17df5d24a9531511cbcc8cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: "Pe\xE7a 2"
-  collectSound: {fileID: 0}
-  cartaUI: {fileID: 0}
-  isPuzzlePiece: 1
-  isKey: 0
-  endsGame: 0
-  telaPretalFinal: {fileID: 0}
-  fadeToBlackDuration: 2
-  textosFinais:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  delayEntreTextos: 2
-  textFadeDuration: 1.5
-  menuSceneName: tela inicio
+  manager: {fileID: 0}
+  managerFixed: {fileID: 0}
+  distanciaMaxima: 8
+  layerInteracao:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1001 &1277152818
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37044,7 +37085,7 @@ PrefabInstance:
       objectReference: {fileID: 1418200781}
     - target: {fileID: 1211437056013951622, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: _GameMode1Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1211437056013951622, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: interactionHintText
@@ -37872,6 +37913,18 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 4e7e9205ff47b8a4f8a373d1fe16de96, type: 3}
       propertyPath: m_Name
       value: "Pe\xE7a 2"
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4e7e9205ff47b8a4f8a373d1fe16de96, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4e7e9205ff47b8a4f8a373d1fe16de96, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4e7e9205ff47b8a4f8a373d1fe16de96, type: 3}
+      propertyPath: m_TagString
+      value: Item
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -38861,6 +38914,18 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 73f433711a97e534c904d12e5b65c2b2, type: 3}
       propertyPath: m_Name
       value: "Pe\xE7a 4"
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 73f433711a97e534c904d12e5b65c2b2, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 73f433711a97e534c904d12e5b65c2b2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 73f433711a97e534c904d12e5b65c2b2, type: 3}
+      propertyPath: m_TagString
+      value: Item
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -40938,7 +41003,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d71faaa1a1a60f849ba72a5e200a71f1, type: 3}
   m_PrefabInstance: {fileID: 783147687}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1631768254
+--- !u!114 &1631768260
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40947,24 +41012,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1631768247}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a103771402c3f64ba05875e4bd83649, type: 3}
+  m_Script: {fileID: 11500000, guid: 989ba19e17df5d24a9531511cbcc8cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: "Pe\xE7a 1"
-  collectSound: {fileID: 0}
-  cartaUI: {fileID: 0}
-  isPuzzlePiece: 1
-  isKey: 0
-  endsGame: 0
-  telaPretalFinal: {fileID: 0}
-  fadeToBlackDuration: 2
-  textosFinais:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  delayEntreTextos: 2
-  textFadeDuration: 1.5
-  menuSceneName: tela inicio
+  manager: {fileID: 0}
+  managerFixed: {fileID: 0}
+  distanciaMaxima: 8
+  layerInteracao:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1001 &1632643590
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42200,6 +42256,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: "Pe\xE7a 8"
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1dbe28b8b3dcf5b4f98e387039c61e2c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1dbe28b8b3dcf5b4f98e387039c61e2c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1dbe28b8b3dcf5b4f98e387039c61e2c, type: 3}
+      propertyPath: m_TagString
+      value: Item
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -42630,6 +42698,53 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1414882687}
   m_SourcePrefab: {fileID: 100100000, guid: 48203134fdb5ade439a8badac8e23499, type: 3}
+--- !u!1 &1713388705
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1713388707}
+  - component: {fileID: 1713388706}
+  m_Layer: 0
+  m_Name: Scriptdebug
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1713388706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713388705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d965b99c3c4d4441b5b5dcc737e537e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  puzzleManager: {fileID: 0}
+  usarAtribuicaoManual: 1
+  puzzleManagerFixed: {fileID: 0}
+--- !u!4 &1713388707
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713388705}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10.215042, y: 13.221533, z: 25.044844}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1717004437 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8984652641353644813, guid: 524cee88b97444c48a74804fa72cd209, type: 3}
@@ -50489,7 +50604,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2839993640257526322, guid: e1e07beddb0cac1488251203d998d9fa, type: 3}
       propertyPath: _itensParaAbrir
-      value: 2
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2929404726394090882, guid: e1e07beddb0cac1488251203d998d9fa, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -52872,7 +52987,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 37df66a2abfbe41488485de2ffacebf2, type: 3}
   m_PrefabInstance: {fileID: 358096975}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2052565017
+--- !u!114 &2052565023
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -52881,24 +52996,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2052565010}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a103771402c3f64ba05875e4bd83649, type: 3}
+  m_Script: {fileID: 11500000, guid: 989ba19e17df5d24a9531511cbcc8cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: "Pe\xE7a 7"
-  collectSound: {fileID: 0}
-  cartaUI: {fileID: 0}
-  isPuzzlePiece: 1
-  isKey: 0
-  endsGame: 0
-  telaPretalFinal: {fileID: 0}
-  fadeToBlackDuration: 2
-  textosFinais:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  delayEntreTextos: 2
-  textFadeDuration: 1.5
-  menuSceneName: tela inicio
+  manager: {fileID: 0}
+  managerFixed: {fileID: 0}
+  distanciaMaxima: 8
+  layerInteracao:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &2052700603 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9152363913774390056, guid: 44189c1e5284baa4d956107d27b6606b, type: 3}
@@ -55277,3 +55383,4 @@ SceneRoots:
   - {fileID: 402804447}
   - {fileID: 828894004}
   - {fileID: 5806634}
+  - {fileID: 1713388707}
