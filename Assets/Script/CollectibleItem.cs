@@ -14,13 +14,16 @@ public class CollectibleItem : MonoBehaviour
     [Header("Puzzle Settings")]
     public bool isPuzzlePiece = false;
 
+    [Header("Key Settings")]
+    public bool isKey = false; // Nova opção para marcar se é uma chave
+
     [Header("Game End Settings")]
-    public bool endsGame = false; // Marque true para itens que finalizam o jogo
-    public Image telaPretalFinal; // Arraste uma imagem preta do Canvas
+    public bool endsGame = false;
+    public Image telaPretalFinal;
     public float fadeToBlackDuration = 2f;
 
     [Header("Textos Finais")]
-    public TextMeshProUGUI[] textosFinais = new TextMeshProUGUI[3]; // Arraste os 3 textos aqui
+    public TextMeshProUGUI[] textosFinais = new TextMeshProUGUI[3];
     public float delayEntreTextos = 2f;
     public float textFadeDuration = 1.5f;
 
@@ -74,6 +77,7 @@ public class CollectibleItem : MonoBehaviour
         // Toca som na posição do item
         if (collectSound != null)
             AudioSource.PlayClipAtPoint(collectSound, transform.position);
+
         // Verificar se é uma peça do puzzle
         if (isPuzzlePiece)
         {
@@ -81,19 +85,34 @@ public class CollectibleItem : MonoBehaviour
             if (manager != null)
             {
                 manager.CollectPuzzlePiece(itemName);
+
+                if (player != null)
+                {
+                    int collected = manager.GetCollectedPiecesCount();
+                    int total = manager.totalPiecesRequired;
+                    player.ShowFeedback($"Peça do quadro coletada! ({collected}/{total})");
+
+                    if (manager.AreAllPiecesCollected())
+                    {
+                        player.ShowFeedback("Todas as peças coletadas! O puzzle do quadro está liberado!");
+                    }
+                }
             }
 
             Destroy(gameObject);
             return;
         }
 
-        // Verificar se é a chave do quarto - deve desaparecer
-        if (itemName == "Chave do Quarto" || itemName == "ChaveQuarto")
+        // Verificar se é uma chave (do piano, quadro, ou qualquer outra)
+        if (isKey || itemName.ToLower().Contains("chave") || itemName.ToLower().Contains("key"))
         {
-            Debug.Log("Chave do quarto coletada! Desbloqueando acesso...");
+            Debug.Log($"Chave coletada: {itemName}");
+
             if (player != null)
             {
-                player.ShowFeedback("Chave do quarto coletada!");
+                player._i += 1; // INCREMENTA o contador de chaves/itens do player
+                player.ShowFeedback($"{itemName} coletada! ({player._i} chaves)");
+                Debug.Log($"Player agora tem {player._i} chaves/itens");
             }
 
             Destroy(gameObject);
@@ -265,7 +284,7 @@ public class CollectibleItem : MonoBehaviour
         {
             // Se não tiver cena de menu definida, fecha o jogo
 #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
+            UnityEditor.EditorApplication.isPlaying = false;
 #else
             Application.Quit();
 #endif

@@ -284,6 +284,21 @@ public class QuadroPieceManager : MonoBehaviour
 
             chaveRecompensa.SetActive(true);
 
+            // ADICIONE ESTE BLOCO PARA CONFIGURAR A CHAVE COMO COLETÁVEL
+            CollectibleItem chaveCollectible = chaveRecompensa.GetComponent<CollectibleItem>();
+            if (chaveCollectible == null)
+            {
+                chaveCollectible = chaveRecompensa.AddComponent<CollectibleItem>();
+            }
+
+            // Configura a chave como uma chave normal que incrementa o contador
+            chaveCollectible.itemName = "Chave do Quadro";
+            chaveCollectible.isKey = true;
+            chaveCollectible.isPuzzlePiece = false;
+
+            // Configurar a tag para ser coletável
+            chaveRecompensa.tag = "Item";
+
             Rigidbody rbChave = chaveRecompensa.GetComponent<Rigidbody>();
             if (rbChave != null)
             {
@@ -316,6 +331,7 @@ public class QuadroPieceManager : MonoBehaviour
             Debug.Log("Chave dropada com sucesso!");
         }
     }
+
 
     System.Collections.IEnumerator AnimarLuzChave(Light luz)
     {
