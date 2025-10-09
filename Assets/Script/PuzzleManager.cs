@@ -3,7 +3,7 @@ using UnityEngine;
 public class PuzzleManager : MonoBehaviour
 {
     [Header("Configurações")]
-    public int _totalPieces; // total de peças no puzzle
+    public int _totalPieces= 8; // total de peças no puzzle
     private int _placedPieces = 0;
 
     [Header("Referências")]

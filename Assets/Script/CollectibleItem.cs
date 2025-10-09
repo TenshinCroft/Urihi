@@ -11,6 +11,9 @@ public class CollectibleItem : MonoBehaviour
     public AudioClip collectSound;
     public GameObject cartaUI;
 
+    [Header("Puzzle Settings")]
+    public bool isPuzzlePiece = false;
+
     [Header("Game End Settings")]
     public bool endsGame = false; // Marque true para itens que finalizam o jogo
     public Image telaPretalFinal; // Arraste uma imagem preta do Canvas
@@ -71,6 +74,31 @@ public class CollectibleItem : MonoBehaviour
         // Toca som na posição do item
         if (collectSound != null)
             AudioSource.PlayClipAtPoint(collectSound, transform.position);
+        // Verificar se é uma peça do puzzle
+        if (isPuzzlePiece)
+        {
+            PuzzleItemManager manager = PuzzleItemManager.Instance;
+            if (manager != null)
+            {
+                manager.CollectPuzzlePiece(itemName);
+            }
+
+            Destroy(gameObject);
+            return;
+        }
+
+        // Verificar se é a chave do quarto - deve desaparecer
+        if (itemName == "Chave do Quarto" || itemName == "ChaveQuarto")
+        {
+            Debug.Log("Chave do quarto coletada! Desbloqueando acesso...");
+            if (player != null)
+            {
+                player.ShowFeedback("Chave do quarto coletada!");
+            }
+
+            Destroy(gameObject);
+            return;
+        }
 
         // Caso seja o Cassete inicia cutscene original
         if (itemName == "Cassete")
