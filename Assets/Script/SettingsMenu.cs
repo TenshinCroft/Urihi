@@ -4,13 +4,13 @@ using UnityEngine.Audio;
 
 public class SettingsMenu : MonoBehaviour
 {
-    [Header("Referências de UI")]
+    [Header("Referï¿½ncias de UI")]
     public GameObject optionsMenu;
     public Slider sensitivitySlider;
     public Slider volumeSlider;
     public Toggle effectsToggle;
 
-    [Header("Referências externas")]
+    [Header("Referï¿½ncias externas")]
     public PlayerLook playerLook;
     public AudioMixer audioMixer;
     public PostProcessController postProcessController;
@@ -33,7 +33,7 @@ public class SettingsMenu : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("optionsMenu NÃO está referenciado no Inspector!");
+            Debug.LogWarning("optionsMenu Nï¿½O estï¿½ referenciado no Inspector!");
         }
 
         if (sensitivitySlider != null)
@@ -47,17 +47,19 @@ public class SettingsMenu : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("sensitivitySlider NÃO está referenciado no Inspector!");
+            Debug.LogWarning("sensitivitySlider Nï¿½O estï¿½ referenciado no Inspector!");
         }
 
         if (volumeSlider != null)
         {
             volumeSlider.onValueChanged.AddListener(SetVolume);
-            Debug.Log("volumeSlider referenciado");
+            // Inicializa o slider com o volume atual do AudioListener
+            volumeSlider.value = AudioListener.volume;
+            Debug.Log("volumeSlider referenciado e inicializado com valor: " + AudioListener.volume);
         }
         else
         {
-            Debug.LogWarning("volumeSlider NÃO está referenciado no Inspector!");
+            Debug.LogWarning("volumeSlider Nï¿½O estï¿½ referenciado no Inspector!");
         }
 
         if (effectsToggle != null)
@@ -69,7 +71,7 @@ public class SettingsMenu : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("effectsToggle NÃO está referenciado no Inspector!");
+            Debug.LogWarning("effectsToggle Nï¿½O estï¿½ referenciado no Inspector!");
         }
 
         isPaused = false;
@@ -114,7 +116,7 @@ public class SettingsMenu : MonoBehaviour
             sensitivitySlider.gameObject.SetActive(true);
             volumeSlider.gameObject.SetActive(true);
             effectsToggle.gameObject.SetActive(true);
-            Debug.Log("Menu ativado com filhos visíveis");
+            Debug.Log("Menu ativado com filhos visï¿½veis");
         }
 
         Cursor.lockState = CursorLockMode.None;
@@ -128,7 +130,7 @@ public class SettingsMenu : MonoBehaviour
 
         if (optionsMenu != null)
         {
-            // Mantém o Canvas ativo, mas desativa os filhos
+            // Mantï¿½m o Canvas ativo, mas desativa os filhos
             optionsMenu.gameObject.SetActive(false);
             sensitivitySlider.gameObject.SetActive(false);
             volumeSlider.gameObject.SetActive(false);
@@ -140,7 +142,7 @@ public class SettingsMenu : MonoBehaviour
         Cursor.visible = false;
     }
 
-    // Função para ativar/desativar todos os filhos de um GameObject
+    // Funï¿½ï¿½o para ativar/desativar todos os filhos de um GameObject
     private void SetChildrenActive(GameObject parent, bool active)
     {
         for (int i = 0; i < parent.transform.childCount; i++)
@@ -160,10 +162,14 @@ public class SettingsMenu : MonoBehaviour
 
     public void SetVolume(float value)
     {
+        // Controla o volume global do Unity (0.0 a 1.0)
+        AudioListener.volume = value;
+        Debug.Log("Volume ajustado para " + value);
+        
+        // Se o audioMixer estiver configurado, tambÃ©m controla pelo mixer
         if (audioMixer != null)
         {
             audioMixer.SetFloat("MasterVolume", Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20);
-            Debug.Log("Volume ajustado para " + value);
         }
     }
 

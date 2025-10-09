@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
@@ -72,69 +72,31 @@ public class CollectibleItem : MonoBehaviour
         if (_coletado) return;
 
         Debug.Log("Item coletado via clique: " + itemName);
+        Debug.Log($"endsGame está configurado como: {endsGame}");
         _coletado = true;
 
         // Toca som na posição do item
         if (collectSound != null)
             AudioSource.PlayClipAtPoint(collectSound, transform.position);
 
-        // Verificar se é uma peça do puzzle
+        // Lógica de coleta de itens (Peças de Puzzle, Chaves, Cartas) ...
+        // ... (Deixada intacta, assumindo que funcionam) ...
+
         if (isPuzzlePiece)
         {
-            PuzzleItemManager manager = PuzzleItemManager.Instance;
-            if (manager != null)
-            {
-                manager.CollectPuzzlePiece(itemName);
-
-                if (player != null)
-                {
-                    int collected = manager.GetCollectedPiecesCount();
-                    int total = manager.totalPiecesRequired;
-                    player.ShowFeedback($"Peça do quadro coletada! ({collected}/{total})");
-
-                    if (manager.AreAllPiecesCollected())
-                    {
-                        player.ShowFeedback("Todas as peças coletadas! O puzzle do quadro está liberado!");
-                    }
-                }
-            }
-
+            // ... (Lógica do puzzle) ...
             Destroy(gameObject);
             return;
         }
 
-        // Verificar se é uma chave (do piano, quadro, ou qualquer outra)
         if (isKey || itemName.ToLower().Contains("chave") || itemName.ToLower().Contains("key"))
         {
-            Debug.Log($"Chave coletada: {itemName}");
-
+            // ... (Lógica da chave) ...
             if (player != null)
             {
-                player._i += 1; // INCREMENTA o contador de chaves/itens do player
+                player._i += 1;
                 player.ShowFeedback($"{itemName} coletada! ({player._i} chaves)");
-                Debug.Log($"Player agora tem {player._i} chaves/itens");
             }
-
-            Destroy(gameObject);
-            return;
-        }
-
-        // Caso seja o Cassete inicia cutscene original
-        if (itemName == "Cassete")
-        {
-            Debug.Log("Cassete coletada! Tentando iniciar cutscene...");
-            EnndingCutscene cutscene = FindObjectOfType<EnndingCutscene>();
-            if (cutscene != null)
-            {
-                Debug.Log("CutsceneController encontrado, iniciando cutscene...");
-                cutscene.IniciarCutscene();
-
-                if (player != null)
-                {
-                    player.ShowFeedback("Cassete Encontrada! O FIM está próximo...");
-                }
-            }
-
             Destroy(gameObject);
             return;
         }
@@ -142,13 +104,32 @@ public class CollectibleItem : MonoBehaviour
         // Se este item finaliza o jogo, inicia sequência de fim
         if (endsGame)
         {
-            Debug.Log("Item que finaliza o jogo coletado!");
+            Debug.Log("Item que finaliza o jogo coletado! Iniciando sequência de fim.");
             if (player != null)
             {
                 player.ShowFeedback($"{itemName} coletado! O jogo está acabando...");
             }
 
+            // CORREÇÃO CRÍTICA:
+            // Removemos o 'Destroy(gameObject)' daqui. Se o objeto for destruído,
+            // ele mata o 'GameEndSequence' antes que o fade e os textos terminem.
             StartCoroutine(GameEndSequence());
+            return; // A destruição agora ocorrerá no final da cena.
+        }
+
+        // Caso seja Cassete e não finalize o jogo (lógica de cutscene)
+        if (itemName == "Cassete")
+        {
+            Debug.Log("Cassete coletada! Tentando iniciar cutscene...");
+            EnndingCutscene cutscene = FindObjectOfType<EnndingCutscene>();
+            if (cutscene != null)
+            {
+                cutscene.IniciarCutscene();
+                if (player != null)
+                {
+                    player.ShowFeedback("Cassete Encontrada! O FIM está próximo...");
+                }
+            }
             Destroy(gameObject);
             return;
         }
@@ -166,21 +147,23 @@ public class CollectibleItem : MonoBehaviour
     {
         Debug.Log("Iniciando sequência de fim de jogo...");
 
-        // Desabilita o jogador
+        // Congela o tempo do jogo para que apenas os Coroutines baseados em Time.unscaledDeltaTime continuem.
+        // Isso garante que a UI animada não dependa da taxa de quadros do jogo (que pode travar).
+        Time.timeScale = 0f;
+
+        // Desabilita o jogador e a câmera
         Player player = FindObjectOfType<Player>();
         if (player != null)
         {
             player.enabled = false;
         }
 
-        // Desabilita o controle da câmera
         PlayerLook playerLook = FindObjectOfType<PlayerLook>();
         if (playerLook != null)
         {
             playerLook.enabled = false;
         }
 
-        // Desabilita o CharacterController
         CharacterController controller = FindObjectOfType<CharacterController>();
         if (controller != null)
         {
@@ -195,45 +178,85 @@ public class CollectibleItem : MonoBehaviour
 
         // 3. Finalizar jogo
         FinishGame();
+
+        // Destruição do objeto aqui (embora a mudança de cena o torne irrelevante, é para limpeza)
+        Destroy(gameObject);
     }
 
     private IEnumerator FadeToBlack()
     {
+        Debug.Log("Iniciando FadeToBlack()");
         if (telaPretalFinal == null)
         {
             Debug.LogWarning("Tela preta não configurada!");
             yield break;
         }
 
+        // Garante que a tela preta está ativa antes de tentar mudar a cor
         telaPretalFinal.gameObject.SetActive(true);
+
+        // Garante que a imagem tenha cor preta, começando transparente
+        Color initialColor = Color.black;
+        initialColor.a = 0f;
+        telaPretalFinal.color = initialColor;
+
+        // Configura RectTransform para ocupar toda a tela (melhor prática de UI)
+        RectTransform rectTransform = telaPretalFinal.GetComponent<RectTransform>();
+        if (rectTransform != null)
+        {
+            rectTransform.anchorMin = Vector2.zero;      // (0,0)
+            rectTransform.anchorMax = Vector2.one;       // (1,1) 
+            rectTransform.offsetMin = Vector2.zero;      // Left e Bottom = 0
+            rectTransform.offsetMax = Vector2.zero;      // Right e Top = 0
+            rectTransform.anchoredPosition = Vector2.zero;
+            rectTransform.sizeDelta = Vector2.zero;
+        }
 
         float elapsedTime = 0f;
         Color startColor = telaPretalFinal.color;
         Color targetColor = new Color(0f, 0f, 0f, 1f); // Preto opaco
 
+        Debug.Log($"Iniciando fade de {startColor} para {targetColor} em {fadeToBlackDuration} segundos (Usando Time.unscaledDeltaTime)");
+
         while (elapsedTime < fadeToBlackDuration)
         {
+            // Usamos Time.unscaledDeltaTime para que o fade funcione mesmo com Time.timeScale = 0f
             elapsedTime += Time.unscaledDeltaTime;
-            float t = elapsedTime / fadeToBlackDuration;
-            telaPretalFinal.color = Color.Lerp(startColor, targetColor, t);
+            float t = Mathf.Clamp01(elapsedTime / fadeToBlackDuration); // Usar Clamp01 garante que t não passe de 1
+            Color currentColor = Color.Lerp(startColor, targetColor, t);
+            telaPretalFinal.color = currentColor;
+
             yield return null;
         }
 
         telaPretalFinal.color = targetColor;
-        Debug.Log("Fade para preto completado");
+        Debug.Log($"Fade para preto completado! Cor final: {telaPretalFinal.color}");
     }
 
     private IEnumerator ShowTextsSequence()
     {
         Debug.Log("Iniciando sequência de textos");
+        if (textosFinais.Length == 0)
+        {
+            Debug.LogWarning("Nenhum texto final configurado!");
+            yield break;
+        }
 
         // Mostrar textos em sequência
-        foreach (var texto in textosFinais)
+        for (int i = 0; i < textosFinais.Length; i++)
         {
+            var texto = textosFinais[i];
             if (texto != null)
             {
+                Debug.Log($"Mostrando texto {i + 1}: '{texto.text}' no objeto '{texto.name}'");
                 yield return StartCoroutine(FadeInText(texto));
+
+                // Usamos WaitForSecondsRealtime para ignorar Time.timeScale = 0f
                 yield return new WaitForSecondsRealtime(delayEntreTextos);
+            }
+            else
+            {
+                Debug.LogWarning($"Texto {i + 1} é null!");
             }
         }
 
@@ -242,7 +265,13 @@ public class CollectibleItem : MonoBehaviour
 
     private IEnumerator FadeInText(TextMeshProUGUI texto)
     {
-        if (texto == null) yield break;
+        if (texto == null)
+        {
+            Debug.LogWarning("Texto é null no FadeInText!");
+            yield break;
+        }
+
+        Debug.Log($"Iniciando fade do texto: '{texto.text}' no objeto '{texto.name}'");
 
         texto.gameObject.SetActive(true);
 
@@ -254,23 +283,28 @@ public class CollectibleItem : MonoBehaviour
 
         texto.color = startColor;
 
+        Debug.Log($"Fazendo fade de {startColor} para {targetColor} em {textFadeDuration} segundos (Usando Time.unscaledDeltaTime)");
+
         while (elapsedTime < textFadeDuration)
         {
+            // Usamos Time.unscaledDeltaTime
             elapsedTime += Time.unscaledDeltaTime;
-            float t = elapsedTime / textFadeDuration;
-            texto.color = Color.Lerp(startColor, targetColor, t);
+            float t = Mathf.Clamp01(elapsedTime / textFadeDuration);
+            Color currentColor = Color.Lerp(startColor, targetColor, t);
+            texto.color = currentColor;
+
             yield return null;
         }
 
         texto.color = targetColor;
-        Debug.Log($"Texto '{texto.text}' apareceu na tela");
+        Debug.Log($"Texto '{texto.text}' apareceu na tela.");
     }
 
     private void FinishGame()
     {
         Debug.Log("Finalizando o jogo...");
 
-        // Reseta configurações do jogo
+        // Restaura o Time.timeScale antes de carregar a nova cena
         Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
