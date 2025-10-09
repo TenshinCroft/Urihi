@@ -228,6 +228,61 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2112242878}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5806632
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5806634}
+  - component: {fileID: 5806633}
+  m_Layer: 0
+  m_Name: PuzzleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &5806633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5806632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 391d600e290139548b9078efd9e84806, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalPiecesRequired: 8
+  puzzlePieceNames:
+  - "Pe\xE7a 1"
+  - "Pe\xE7a 2"
+  - "Pe\xE7a 3"
+  - "Pe\xE7a 4"
+  - "Pe\xE7a 5"
+  - "Pe\xE7a 6"
+  - "Pe\xE7a 7"
+  - "Pe\xE7a 8"
+  puzzleQuadro: {fileID: 485895895}
+--- !u!4 &5806634
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5806632}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 18.164059, y: 12.034797, z: 29.120571}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &14387299 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7205729287571511534, guid: 6e670366724fc9b4c81573ee3f414464, type: 3}
@@ -1731,6 +1786,7 @@ MonoBehaviour:
   collectSound: {fileID: 8300000, guid: 89b005fa25e3edd4d8ac107a1d82ef8d, type: 3}
   cartaUI: {fileID: 0}
   isPuzzlePiece: 0
+  isKey: 1
   endsGame: 0
   telaPretalFinal: {fileID: 0}
   fadeToBlackDuration: 2
@@ -3609,6 +3665,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b4e0bcb28e9efb54d9d9cbedba480928, type: 3}
       insertIndex: -1
       addedObject: {fileID: 306803164}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b4e0bcb28e9efb54d9d9cbedba480928, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 306803166}
   m_SourcePrefab: {fileID: 100100000, guid: b4e0bcb28e9efb54d9d9cbedba480928, type: 3}
 --- !u!1 &140220066 stripped
 GameObject:
@@ -5607,6 +5666,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3918639005336955294, guid: 385dac9099e634448b4857ee17855671, type: 3}
   m_PrefabInstance: {fileID: 286558109}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &217255154 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6516377059032592993, guid: 3657d3aa9037c1b439e7cbea15ed8e41, type: 3}
+  m_PrefabInstance: {fileID: 485895893}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &227546237 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5259622511579178232, guid: bd3bb66a07874ab46a148c166d6ee3e5, type: 3}
@@ -7478,6 +7542,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b4e0bcb28e9efb54d9d9cbedba480928, type: 3}
   m_PrefabInstance: {fileID: 139673875}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &306803166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306803163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a103771402c3f64ba05875e4bd83649, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: "Pe\xE7a 3"
+  collectSound: {fileID: 0}
+  cartaUI: {fileID: 0}
+  isPuzzlePiece: 1
+  isKey: 0
+  endsGame: 0
+  telaPretalFinal: {fileID: 0}
+  fadeToBlackDuration: 2
+  textosFinais:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  delayEntreTextos: 2
+  textFadeDuration: 1.5
+  menuSceneName: tela inicio
 --- !u!4 &307724166 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: db430550006e50743a356f39fb473511, type: 3}
@@ -7655,6 +7746,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1dbe28b8b3dcf5b4f98e387039c61e2c, type: 3}
   m_PrefabInstance: {fileID: 1678794872}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &311617280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 311617277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a103771402c3f64ba05875e4bd83649, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: "Pe\xE7a 8"
+  collectSound: {fileID: 0}
+  cartaUI: {fileID: 0}
+  isPuzzlePiece: 1
+  isKey: 0
+  endsGame: 0
+  telaPretalFinal: {fileID: 0}
+  fadeToBlackDuration: 2
+  textosFinais:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  delayEntreTextos: 2
+  textFadeDuration: 1.5
+  menuSceneName: tela inicio
 --- !u!1 &316113664 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 73f433711a97e534c904d12e5b65c2b2, type: 3}
@@ -7686,6 +7804,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 73f433711a97e534c904d12e5b65c2b2, type: 3}
   m_PrefabInstance: {fileID: 1549621391}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &316113667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316113664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a103771402c3f64ba05875e4bd83649, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: "Pe\xE7a 4"
+  collectSound: {fileID: 0}
+  cartaUI: {fileID: 0}
+  isPuzzlePiece: 1
+  isKey: 0
+  endsGame: 0
+  telaPretalFinal: {fileID: 0}
+  fadeToBlackDuration: 2
+  textosFinais:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  delayEntreTextos: 2
+  textFadeDuration: 1.5
+  menuSceneName: tela inicio
 --- !u!1001 &316191189
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9233,6 +9378,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 37df66a2abfbe41488485de2ffacebf2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2052565011}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 37df66a2abfbe41488485de2ffacebf2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2052565017}
   m_SourcePrefab: {fileID: 100100000, guid: 37df66a2abfbe41488485de2ffacebf2, type: 3}
 --- !u!1001 &359953158
 PrefabInstance:
@@ -12578,19 +12726,45 @@ PrefabInstance:
       propertyPath: m_Name
       value: Puzzle do Quadro
       objectReference: {fileID: 0}
+    - target: {fileID: 8486220561509188228, guid: 3657d3aa9037c1b439e7cbea15ed8e41, type: 3}
+      propertyPath: puzzleUI
+      value: 
+      objectReference: {fileID: 1251325216}
+    - target: {fileID: 8486220561509188228, guid: 3657d3aa9037c1b439e7cbea15ed8e41, type: 3}
+      propertyPath: puzzleItemManager
+      value: 
+      objectReference: {fileID: 5806633}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4117767102749282982, guid: 3657d3aa9037c1b439e7cbea15ed8e41, type: 3}
       insertIndex: -1
       addedObject: {fileID: 936300705}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6516377059032592993, guid: 3657d3aa9037c1b439e7cbea15ed8e41, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 485895895}
   m_SourcePrefab: {fileID: 100100000, guid: 3657d3aa9037c1b439e7cbea15ed8e41, type: 3}
 --- !u!4 &485895894 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4117767102749282982, guid: 3657d3aa9037c1b439e7cbea15ed8e41, type: 3}
   m_PrefabInstance: {fileID: 485895893}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &485895895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 217255154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10b6f0bda9f1053419a5ce3249ee97ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  puzzleUI: {fileID: 0}
+  puzzleItemManager: {fileID: 5806633}
+  _bool: 0
 --- !u!1 &487783405
 GameObject:
   m_ObjectHideFlags: 0
@@ -19194,6 +19368,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d71faaa1a1a60f849ba72a5e200a71f1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1631768248}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d71faaa1a1a60f849ba72a5e200a71f1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1631768254}
   m_SourcePrefab: {fileID: 100100000, guid: d71faaa1a1a60f849ba72a5e200a71f1, type: 3}
 --- !u!1 &783213986
 GameObject:
@@ -20455,7 +20632,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0.64666724, g: 0.7207546, b: 0.27606258, a: 1}
   m_Intensity: 1
-  m_Range: 1.76
+  m_Range: 1.783189
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -20517,7 +20694,7 @@ Transform:
   m_GameObject: {fileID: 828894001}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 47.43, y: 2.5432165, z: -0.15}
+  m_LocalPosition: {x: 47.43, y: 2.25, z: -0.15}
   m_LocalScale: {x: 2.0889, y: 2.0889, z: 2.0889}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23197,10 +23374,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a103771402c3f64ba05875e4bd83649, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Chave
+  itemName: ChaveQuarto
   collectSound: {fileID: 8300000, guid: 89b005fa25e3edd4d8ac107a1d82ef8d, type: 3}
   cartaUI: {fileID: 0}
   isPuzzlePiece: 0
+  isKey: 1
   endsGame: 0
   telaPretalFinal: {fileID: 0}
   fadeToBlackDuration: 2
@@ -24433,6 +24611,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7f36c863456256643b9a1bfa6ddd2dc3, type: 3}
   m_PrefabInstance: {fileID: 1000991778}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &977536090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977536083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a103771402c3f64ba05875e4bd83649, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: "Pe\xE7a 5"
+  collectSound: {fileID: 0}
+  cartaUI: {fileID: 0}
+  isPuzzlePiece: 1
+  isKey: 0
+  endsGame: 0
+  telaPretalFinal: {fileID: 0}
+  fadeToBlackDuration: 2
+  textosFinais:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  delayEntreTextos: 2
+  textFadeDuration: 1.5
+  menuSceneName: tela inicio
 --- !u!1 &977683191
 GameObject:
   m_ObjectHideFlags: 0
@@ -24551,6 +24756,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cc8d1c2d9f5cdb949873c4ae528c8ad4, type: 3}
   m_PrefabInstance: {fileID: 1035859375}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &985944319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 985944312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a103771402c3f64ba05875e4bd83649, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: "Pe\xE7a 6"
+  collectSound: {fileID: 0}
+  cartaUI: {fileID: 0}
+  isPuzzlePiece: 1
+  isKey: 0
+  endsGame: 0
+  telaPretalFinal: {fileID: 0}
+  fadeToBlackDuration: 2
+  textosFinais:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  delayEntreTextos: 2
+  textFadeDuration: 1.5
+  menuSceneName: tela inicio
 --- !u!1 &986265618
 GameObject:
   m_ObjectHideFlags: 0
@@ -25333,6 +25565,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7f36c863456256643b9a1bfa6ddd2dc3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 977536084}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7f36c863456256643b9a1bfa6ddd2dc3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 977536090}
   m_SourcePrefab: {fileID: 100100000, guid: 7f36c863456256643b9a1bfa6ddd2dc3, type: 3}
 --- !u!4 &1003558343 stripped
 Transform:
@@ -26060,6 +26295,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cc8d1c2d9f5cdb949873c4ae528c8ad4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 985944313}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cc8d1c2d9f5cdb949873c4ae528c8ad4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 985944319}
   m_SourcePrefab: {fileID: 100100000, guid: cc8d1c2d9f5cdb949873c4ae528c8ad4, type: 3}
 --- !u!4 &1039054981 stripped
 Transform:
@@ -31900,6 +32138,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 552267852}
   m_SourcePrefab: {fileID: 100100000, guid: c4963205a225e8546ab45d79c624160d, type: 3}
+--- !u!1 &1251325216 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 86715634860418777, guid: 3657d3aa9037c1b439e7cbea15ed8e41, type: 3}
+  m_PrefabInstance: {fileID: 485895893}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1251450419 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1cb253fac4d32024bba977d7827dd241, type: 3}
@@ -31936,6 +32179,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4e7e9205ff47b8a4f8a373d1fe16de96, type: 3}
   m_PrefabInstance: {fileID: 1511116091}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1271757736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271757733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a103771402c3f64ba05875e4bd83649, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: "Pe\xE7a 2"
+  collectSound: {fileID: 0}
+  cartaUI: {fileID: 0}
+  isPuzzlePiece: 1
+  isKey: 0
+  endsGame: 0
+  telaPretalFinal: {fileID: 0}
+  fadeToBlackDuration: 2
+  textosFinais:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  delayEntreTextos: 2
+  textFadeDuration: 1.5
+  menuSceneName: tela inicio
 --- !u!1001 &1277152818
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37608,6 +37878,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4e7e9205ff47b8a4f8a373d1fe16de96, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1271757734}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4e7e9205ff47b8a4f8a373d1fe16de96, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1271757736}
   m_SourcePrefab: {fileID: 100100000, guid: 4e7e9205ff47b8a4f8a373d1fe16de96, type: 3}
 --- !u!4 &1512107086 stripped
 Transform:
@@ -38458,6 +38731,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 73f433711a97e534c904d12e5b65c2b2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 316113665}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 73f433711a97e534c904d12e5b65c2b2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 316113667}
   m_SourcePrefab: {fileID: 100100000, guid: 73f433711a97e534c904d12e5b65c2b2, type: 3}
 --- !u!1 &1554825532
 GameObject:
@@ -40521,6 +40797,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d71faaa1a1a60f849ba72a5e200a71f1, type: 3}
   m_PrefabInstance: {fileID: 783147687}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1631768254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1631768247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a103771402c3f64ba05875e4bd83649, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: "Pe\xE7a 1"
+  collectSound: {fileID: 0}
+  cartaUI: {fileID: 0}
+  isPuzzlePiece: 1
+  isKey: 0
+  endsGame: 0
+  telaPretalFinal: {fileID: 0}
+  fadeToBlackDuration: 2
+  textosFinais:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  delayEntreTextos: 2
+  textFadeDuration: 1.5
+  menuSceneName: tela inicio
 --- !u!1001 &1632643590
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41766,6 +42069,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1dbe28b8b3dcf5b4f98e387039c61e2c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 311617278}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1dbe28b8b3dcf5b4f98e387039c61e2c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 311617280}
   m_SourcePrefab: {fileID: 100100000, guid: 1dbe28b8b3dcf5b4f98e387039c61e2c, type: 3}
 --- !u!1 &1681435319 stripped
 GameObject:
@@ -52521,6 +52827,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 37df66a2abfbe41488485de2ffacebf2, type: 3}
   m_PrefabInstance: {fileID: 358096975}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2052565017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2052565010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a103771402c3f64ba05875e4bd83649, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: "Pe\xE7a 7"
+  collectSound: {fileID: 0}
+  cartaUI: {fileID: 0}
+  isPuzzlePiece: 1
+  isKey: 0
+  endsGame: 0
+  telaPretalFinal: {fileID: 0}
+  fadeToBlackDuration: 2
+  textosFinais:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  delayEntreTextos: 2
+  textFadeDuration: 1.5
+  menuSceneName: tela inicio
 --- !u!1 &2052700603 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9152363913774390056, guid: 44189c1e5284baa4d956107d27b6606b, type: 3}
@@ -54894,3 +55227,4 @@ SceneRoots:
   - {fileID: 1678794872}
   - {fileID: 402804447}
   - {fileID: 828894004}
+  - {fileID: 5806634}
