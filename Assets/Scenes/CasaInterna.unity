@@ -36711,15 +36711,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6395852715717099113, guid: 29f0aadb859155741a84213227a85c16, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.45
+      value: 0.17
       objectReference: {fileID: 0}
     - target: {fileID: 6395852715717099113, guid: 29f0aadb859155741a84213227a85c16, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.45
+      value: 0.17
       objectReference: {fileID: 0}
     - target: {fileID: 6395852715717099113, guid: 29f0aadb859155741a84213227a85c16, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.45
+      value: 0.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 6395852715717099113, guid: 29f0aadb859155741a84213227a85c16, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -37092,7 +37096,7 @@ PrefabInstance:
       objectReference: {fileID: 1418200781}
     - target: {fileID: 1211437056013951622, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: _GameMode1Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1211437056013951622, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: interactionHintText
