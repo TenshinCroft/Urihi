@@ -84,7 +84,25 @@ public class CollectibleItem : MonoBehaviour
 
         if (isPuzzlePiece)
         {
-            // ... (Lógica do puzzle) ...
+            // Notifica o sistema de peças do quadro
+            QuadroPieceManager quadroManager = FindObjectOfType<QuadroPieceManager>();
+            if (quadroManager != null)
+            {
+                quadroManager.ColetarPeca(gameObject);
+            }
+
+            // Também notifica o PuzzleItemManager
+            PuzzleItemManager puzzleManager = PuzzleItemManager.Instance;
+            if (puzzleManager != null)
+            {
+                puzzleManager.CollectPuzzlePieceFromCollectible(itemName);
+            }
+
+            if (player != null)
+            {
+                player.ShowFeedback($"{itemName} coletada!");
+            }
+
             Destroy(gameObject);
             return;
         }

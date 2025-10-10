@@ -986,7 +986,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -3651,9 +3651,25 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7029948723529949830, guid: b4e0bcb28e9efb54d9d9cbedba480928, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b4e0bcb28e9efb54d9d9cbedba480928, type: 3}
       propertyPath: m_Name
       value: "Pe\xE7a 3"
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b4e0bcb28e9efb54d9d9cbedba480928, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b4e0bcb28e9efb54d9d9cbedba480928, type: 3}
+      propertyPath: m_TagString
+      value: Item
+      objectReference: {fileID: 0}
+    - target: {fileID: 8821623529969584324, guid: b4e0bcb28e9efb54d9d9cbedba480928, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4447,7 +4463,7 @@ GameObject:
   - component: {fileID: 168579370}
   - component: {fileID: 168579372}
   - component: {fileID: 168579371}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "luz pe\xE7a 5"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9504,6 +9520,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: "Pe\xE7a 7"
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 37df66a2abfbe41488485de2ffacebf2, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 37df66a2abfbe41488485de2ffacebf2, type: 3}
+      propertyPath: m_TagString
+      value: Item
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -9673,7 +9697,7 @@ GameObject:
   - component: {fileID: 370083417}
   - component: {fileID: 370083419}
   - component: {fileID: 370083418}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "luz pe\xE7a 3"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10838,7 +10862,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 3.7539012
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -15288,11 +15312,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1122011527}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 15.9, y: -291.3}
-  m_SizeDelta: {x: 700, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 401}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &604685407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16016,7 +16040,7 @@ GameObject:
   - component: {fileID: 622762307}
   - component: {fileID: 622762309}
   - component: {fileID: 622762308}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "luz pe\xE7a 2"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19494,6 +19518,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: "Pe\xE7a 1"
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d71faaa1a1a60f849ba72a5e200a71f1, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d71faaa1a1a60f849ba72a5e200a71f1, type: 3}
+      propertyPath: m_TagString
+      value: Item
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -20289,7 +20321,7 @@ GameObject:
   - component: {fileID: 809996117}
   - component: {fileID: 809996119}
   - component: {fileID: 809996118}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "luz pe\xE7a 1"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25691,6 +25723,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: "Pe\xE7a 5"
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7f36c863456256643b9a1bfa6ddd2dc3, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7f36c863456256643b9a1bfa6ddd2dc3, type: 3}
+      propertyPath: m_TagString
+      value: Item
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -26420,6 +26460,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: cc8d1c2d9f5cdb949873c4ae528c8ad4, type: 3}
       propertyPath: m_Name
       value: "Pe\xE7a 6"
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cc8d1c2d9f5cdb949873c4ae528c8ad4, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cc8d1c2d9f5cdb949873c4ae528c8ad4, type: 3}
+      propertyPath: m_TagString
+      value: Item
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -29051,7 +29099,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -33225,7 +33273,7 @@ GameObject:
   - component: {fileID: 1312382846}
   - component: {fileID: 1312382848}
   - component: {fileID: 1312382847}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "luz pe\xE7a 4"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37044,7 +37092,7 @@ PrefabInstance:
       objectReference: {fileID: 1418200781}
     - target: {fileID: 1211437056013951622, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: _GameMode1Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1211437056013951622, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: interactionHintText
@@ -37869,9 +37917,25 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7029948723529949830, guid: 4e7e9205ff47b8a4f8a373d1fe16de96, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4e7e9205ff47b8a4f8a373d1fe16de96, type: 3}
       propertyPath: m_Name
       value: "Pe\xE7a 2"
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4e7e9205ff47b8a4f8a373d1fe16de96, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4e7e9205ff47b8a4f8a373d1fe16de96, type: 3}
+      propertyPath: m_TagString
+      value: Item
+      objectReference: {fileID: 0}
+    - target: {fileID: 8821623529969584324, guid: 4e7e9205ff47b8a4f8a373d1fe16de96, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -38858,9 +38922,25 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7029948723529949830, guid: 73f433711a97e534c904d12e5b65c2b2, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 73f433711a97e534c904d12e5b65c2b2, type: 3}
       propertyPath: m_Name
       value: "Pe\xE7a 4"
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 73f433711a97e534c904d12e5b65c2b2, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 73f433711a97e534c904d12e5b65c2b2, type: 3}
+      propertyPath: m_TagString
+      value: Item
+      objectReference: {fileID: 0}
+    - target: {fileID: 8821623529969584324, guid: 73f433711a97e534c904d12e5b65c2b2, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -40497,7 +40577,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8a347bc049a3b794ab9d7018a7126f13, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 2.24
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8a347bc049a3b794ab9d7018a7126f13, type: 3}
       propertyPath: m_LocalPosition.z
@@ -40545,7 +40625,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -516098083770646512, guid: 8a347bc049a3b794ab9d7018a7126f13, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8a347bc049a3b794ab9d7018a7126f13, type: 3}
       propertyPath: m_Name
@@ -41763,7 +41843,7 @@ GameObject:
   - component: {fileID: 1666045936}
   - component: {fileID: 1666045938}
   - component: {fileID: 1666045937}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "luz pe\xE7a 8"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42196,9 +42276,25 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7029948723529949830, guid: 1dbe28b8b3dcf5b4f98e387039c61e2c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1dbe28b8b3dcf5b4f98e387039c61e2c, type: 3}
       propertyPath: m_Name
       value: "Pe\xE7a 8"
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1dbe28b8b3dcf5b4f98e387039c61e2c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1dbe28b8b3dcf5b4f98e387039c61e2c, type: 3}
+      propertyPath: m_TagString
+      value: Item
+      objectReference: {fileID: 0}
+    - target: {fileID: 8821623529969584324, guid: 1dbe28b8b3dcf5b4f98e387039c61e2c, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -51608,7 +51704,7 @@ GameObject:
   - component: {fileID: 1999170073}
   - component: {fileID: 1999170075}
   - component: {fileID: 1999170074}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "luz pe\xE7a 7"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53497,7 +53593,7 @@ GameObject:
   - component: {fileID: 2098472156}
   - component: {fileID: 2098472158}
   - component: {fileID: 2098472157}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "luz pe\xE7a 6"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55190,6 +55286,10 @@ PrefabInstance:
     - target: {fileID: 326235158021037590, guid: 160ae8803e73dd5478a323f0419debb9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 362956875291845379, guid: 160ae8803e73dd5478a323f0419debb9, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1175292543710719872, guid: 160ae8803e73dd5478a323f0419debb9, type: 3}
       propertyPath: m_AnchorMax.x
