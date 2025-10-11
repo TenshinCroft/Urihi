@@ -9138,6 +9138,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1717656835622549246, guid: 160ae8803e73dd5478a323f0419debb9, type: 3}
+      propertyPath: m_Value
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 1757165656189798046, guid: 160ae8803e73dd5478a323f0419debb9, type: 3}
       propertyPath: m_Color.a
       value: 1
