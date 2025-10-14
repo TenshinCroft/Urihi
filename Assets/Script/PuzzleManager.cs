@@ -1,9 +1,10 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PuzzleManager : MonoBehaviour
 {
     [Header("Configurações")]
-    public int _totalPieces= 8; // total de peças no puzzle
+    public int _totalPieces = 8;
     private int _placedPieces = 0;
 
     [Header("Referências")]
@@ -23,7 +24,6 @@ public class PuzzleManager : MonoBehaviour
     [Header("Organização UI")]
     public Transform _slotsContainer;
 
-    // evita rotacionar UVs mais de uma vez
     private bool _uvRotated = false;
 
     void Start()
@@ -34,7 +34,6 @@ public class PuzzleManager : MonoBehaviour
         // ROTACIONA OS UVs DO MESH DO QUADRO (90° para a esquerda)
         RotateFrameMeshUVs90Left();
 
-        // aplica textura inicial (incompleta), já com UVs rotacionados
         if (_frameRenderer != null && _incompleteTexture != null)
             ApplyTexture(_frameRenderer, _incompleteTexture);
     }
@@ -72,14 +71,12 @@ public class PuzzleManager : MonoBehaviour
         if (trigger != null) trigger.FecharPuzzle();
     }
 
-    // aplica a textura no material (compatível com vários shaders)
     private void ApplyTexture(Renderer renderer, Texture tex)
     {
         if (renderer == null || tex == null) return;
 
-        Material mat = renderer.material; // instância do material do renderer
+        Material mat = renderer.material;
 
-        // tenta propriedades comuns (URP usa _BaseMap, Standard usa _MainTex)
         if (mat.HasProperty("_BaseMap"))
             mat.SetTexture("_BaseMap", tex);
         else if (mat.HasProperty("_MainTex"))
@@ -87,7 +84,6 @@ public class PuzzleManager : MonoBehaviour
         else
             mat.mainTexture = tex;
 
-        // zera offset/tiling pra garantir que textura apareça normal
         if (mat.HasProperty("_BaseMap"))
         {
             mat.SetTextureScale("_BaseMap", Vector2.one);
@@ -108,28 +104,32 @@ public class PuzzleManager : MonoBehaviour
             mat.color = Color.white;
     }
 
-    // gira os UVs do mesh 90° para a esquerda (CCW)
     private void RotateFrameMeshUVs90Left()
     {
         if (_uvRotated || _frameRenderer == null) return;
 
-        // tenta MeshFilter (objeto normal com mesh)
         MeshFilter mf = _frameRenderer.GetComponent<MeshFilter>();
         if (mf == null) mf = _frameRenderer.GetComponentInParent<MeshFilter>();
 
         if (mf != null)
         {
-            Mesh mesh = mf.mesh; // garante instância única do mesh
+            Mesh mesh = mf.sharedMesh;
+            if (mesh != null)
+            {
+                mesh = Instantiate(mesh);
+                mf.mesh = mesh;
+            }
+
             if (mesh != null && mesh.uv != null && mesh.uv.Length > 0)
             {
                 Vector2[] oldUV = mesh.uv;
                 Vector2[] newUV = new Vector2[oldUV.Length];
 
-                // rota: newU = oldV ; newV = 1 - oldU  -> 90° direita (CW)
+                // ROTAÇÃO CORRIGIDA: newU = 1 - oldV ; newV = oldU -> 90° esquerda (CCW)
                 for (int i = 0; i < oldUV.Length; i++)
                 {
                     Vector2 uv = oldUV[i];
-                    newUV[i] = new Vector2(uv.y, 1f - uv.x);
+                    newUV[i] = new Vector2(1f - uv.y, uv.x);
                 }
 
                 mesh.uv = newUV;
@@ -138,7 +138,6 @@ public class PuzzleManager : MonoBehaviour
             }
         }
 
-        // se for SkinnedMeshRenderer (modelo importado)
         SkinnedMeshRenderer smr = _frameRenderer.GetComponent<SkinnedMeshRenderer>();
         if (smr != null)
         {
@@ -156,13 +155,11 @@ public class PuzzleManager : MonoBehaviour
                         newUV[i] = new Vector2(1f - uv.y, uv.x);
                     }
                     copy.uv = newUV;
-                    smr.sharedMesh = copy; // substitui pelo clone com UVs rotacionados
+                    smr.sharedMesh = copy;
                     _uvRotated = true;
                     return;
                 }
             }
         }
-
-        Debug.LogWarning("[PuzzleManager] Não encontrou MeshFilter/SkinnedMeshRenderer com UVs para rotacionar.");
     }
 }

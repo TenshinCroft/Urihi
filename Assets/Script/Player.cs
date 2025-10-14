@@ -1,10 +1,9 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using TMPro;
 using System.Collections;
-using System.Collections.Generic; // NOVO: Para usar a Lista
+using System.Collections.Generic;
 
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
@@ -76,11 +75,11 @@ public class Player : MonoBehaviour
 
     // CONTROLER
     [Header("Sistema de Input")]
-    [HideInInspector] public int _i = 0;
+    [HideInInspector] public int _i = 0; // Contador de itens comuns/chaves
     private PlayerControls _inpActions;
     private CharacterController _cntr;
 
-    // ===== AWAKE =====
+    // ===== AWAKE (Mantido) =====
     public void Awake()
     {
         _cntr = GetComponent<CharacterController>();
@@ -104,14 +103,13 @@ public class Player : MonoBehaviour
             _lanternAudioSource.loop = false;
             _lanternAudioSource.spatialBlend = 0f;
         }
-        // Inicializa Animator
         _animator = GetComponent<Animator>();
     }
 
     public void OnEnable() => _inpActions.Enable();
     public void OnDisable() => _inpActions.Disable();
 
-    // ===== START =====
+    // ===== START (Mantido) =====
     public void Start()
     {
         if (interactionHintText != null)
@@ -124,9 +122,8 @@ public class Player : MonoBehaviour
             cartaAtualUI.SetActive(false);
 
         if (imagemExtraUI != null)
-            imagemExtraUI.SetActive(false); // começa desativada
+            imagemExtraUI.SetActive(false);
 
-        // NOVO: Desativa o texto de feedback ao iniciar
         if (feedbackText != null)
             feedbackText.gameObject.SetActive(false);
 
@@ -134,10 +131,9 @@ public class Player : MonoBehaviour
         Cursor.visible = false;
     }
 
-    // ===== UPDATE =====
+    // ===== UPDATE (Mantido) =====
     public void Update()
     {
-        // Toggle do GameMode1
         if (_gmod1Pressed && _GameMode1Enabled)
         {
             _gmod1 = !_gmod1;
@@ -148,9 +144,8 @@ public class Player : MonoBehaviour
         if (!_GameMode1Enabled && _gmod1)
             _gmod1 = false;
 
-        gMode(); // GM1 agora não desativa rotação da câmera
+        gMode();
 
-        // Carta aberta
         if (cartaAberta)
         {
             if (Keyboard.current.fKey.wasPressedThisFrame)
@@ -163,7 +158,7 @@ public class Player : MonoBehaviour
         else
             _inpActions.Enable();
 
-        if (SettingsMenu.isPaused) return; // pausa movimentação, inputs e shake
+        if (SettingsMenu.isPaused) return;
 
         Run();
 
@@ -202,10 +197,9 @@ public class Player : MonoBehaviour
     }
 
 
+    // ===== CHECKFORINTERACTABLE (Mantido) =====
     private void CheckForInteractable()
     {
-       
-        // Se carta está aberta, GM1 ativo ou feedback ativo, esconde dica
         if (cartaAberta || _gmod1 || isFeedbackActive)
         {
             if (interactionHintText != null)
@@ -218,7 +212,6 @@ public class Player : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, _alcanceDeInteração, _mascaraDeInteração, QueryTriggerInteraction.Collide))
         {
-            // Tags interagíveis
             if (hit.collider.CompareTag("Item") ||
                 hit.collider.CompareTag("Carta") ||
                 hit.collider.CompareTag("Porta") ||
@@ -233,12 +226,14 @@ public class Player : MonoBehaviour
             }
         }
 
-        // Se não estiver olhando para nada interagível
         if (interactionHintText != null)
             interactionHintText.gameObject.SetActive(false);
     }
 
-    // ===== FEEDBACK UI (NOVO MÉTODO) =====
+    // ===== FEEDBACK UI (MÉTODO NOVO E CRÍTICO) =====
+    /// <summary>
+    /// Exibe uma mensagem de feedback na tela, parando e reiniciando a contagem de tempo para mensagens subsequentes.
+    /// </summary>
     public void ShowFeedback(string message)
     {
         if (feedbackText == null) return;
@@ -249,32 +244,37 @@ public class Player : MonoBehaviour
         feedbackText.text = message;
         feedbackText.gameObject.SetActive(true);
 
-        isFeedbackActive = true; // <-- ATIVA
+        isFeedbackActive = true;
+
+        // Esconde a dica de interação para evitar poluição visual
+        if (interactionHintText != null)
+        {
+            interactionHintText.gameObject.SetActive(false);
+        }
 
         hideFeedbackCoroutine = StartCoroutine(HideFeedbackAfterDelay(feedbackDuration));
     }
 
     private IEnumerator HideFeedbackAfterDelay(float delay)
     {
-        yield return new WaitForSecondsRealtime(delay);
+        yield return new WaitForSecondsRealtime(delay); // Usa Realtime para não ser afetado por Time.timeScale
 
         if (feedbackText != null)
             feedbackText.gameObject.SetActive(false);
 
-        isFeedbackActive = false; // <-- DESATIVA quando some
+        isFeedbackActive = false;
     }
 
 
-    // ===== ANIMAÇÕES =====
+    // ===== ANIMAÇÕES (Mantido) =====
     private void CheckAnimations()
     {
-        // Movimento (andar/correr)
         bool isMoving = _inpMove.magnitude > 0.1f;
         _animator.SetBool("isWalking", isMoving && !_runPressed);
         _animator.SetBool("isRunning", isMoving && _runPressed);
     }
 
-    // ===== INTERAÇÃO (ATUALIZADO) =====
+    // ===== INTERAÇÃO (CORRIGIDO PARA O NOVO SISTEMA) =====
     public void InteractWithObject()
     {
         Ray ray = new Ray(_pCam.transform.position, _pCam.transform.forward);
@@ -282,44 +282,24 @@ public class Player : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, _alcanceDeInteração, _mascaraDeInteração, QueryTriggerInteraction.Collide))
         {
-            
-            // ITEM
-            if (hit.collider.CompareTag("Item"))
+
+            // Lógica unificada para ITEM, PEÇA DE PUZZLE e CARTA
+            if (hit.collider.CompareTag("Item") || hit.collider.CompareTag("Carta"))
             {
-                // Verifica se tem CollectibleItem para lógica especial
                 CollectibleItem collectible = hit.collider.GetComponent<CollectibleItem>();
                 if (collectible != null)
                 {
-                    collectible.ColetarItem(this); // Chama a lógica especial
+                    // Chama a função centralizada do CollectibleItem
+                    // Se for uma peça de puzzle, CollectibleItem chama o PuzzleItemManager.
+                    collectible.ColetarItem(this);
                 }
                 else
                 {
-                    // Item comum sem CollectibleItem
+                    // Lógica para Item Comum/Legacy (sem script CollectibleItem)
                     _i += 1;
                     ShowFeedback(hit.collider.name + " Coletada");
-                    Debug.Log("Item coletado: " + hit.collider.name);
+                    Debug.Log("Item comum coletado: " + hit.collider.name);
                     Destroy(hit.collider.gameObject);
-                }
-                return;
-            }
-
-
-            // CARTA (Agora usando Raycast - Se você usa CollectibleItem como Trigger, veja o segundo script)
-            if (hit.collider.CompareTag("Carta"))
-            {
-                Debug.Log("Interagiu com a Carta: " + hit.collider.name);
-
-                CollectibleItem carta = hit.collider.GetComponent<CollectibleItem>();
-                if (carta != null)
-                {
-                    // Chamamos a função do CollectibleItem para centralizar a lógica de coleta
-                    // e evitar duplicação com o trigger. Usamos o feedback aqui, mas o item ainda não se destrói
-                    // aqui se for um trigger.
-                    if (carta.cartaUI != null)
-                    {
-                        ShowFeedback("Pressione F para fechar a carta.");
-                        AbrirCarta(carta.cartaUI);
-                    }
                 }
                 return;
             }
@@ -333,17 +313,13 @@ public class Player : MonoBehaviour
                     if (_i >= porta._itensParaAbrir)
                     {
                         porta.AcionarPorta();
-                        
                         Debug.Log("Porta aberta: " + hit.collider.name);
-
                         if (_animator != null)
                             _animator.SetTrigger("openDoor");
                     }
                     else
                     {
-                        // Feedback de porta trancada/faltando itens
                         ShowFeedback("Trancado...");
-                        Debug.Log($"Precisa de {porta._itensParaAbrir} itens, você tem {_i}.");
                     }
                 }
                 return;
@@ -356,56 +332,52 @@ public class Player : MonoBehaviour
                 if (pzt != null)
                 {
                     pzt._bool = true;
-                    ShowFeedback("Você ativou o Quadro!"); // Feedback de quadro
+                    ShowFeedback("Você ativou o Quadro!");
                 }
                 return;
             }
         }
     }
 
-    // ===== ABRIR CARTA =====
+    // ===== ABRIR CARTA (Mantido) =====
     public void AbrirCarta(GameObject cartaUI)
     {
         cartaAtualUI = cartaUI;
         cartaAtualUI.SetActive(true);
 
         if (imagemExtraUI != null)
-            imagemExtraUI.SetActive(true); // ativa a imagem no canto
+            imagemExtraUI.SetActive(true);
 
         cartaAberta = true;
-        Time.timeScale = 0f; // congela o jogo
+        Time.timeScale = 0f;
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-
-        Debug.Log("Carta aberta!");
     }
 
-    // ===== FECHAR CARTA =====
+    // ===== FECHAR CARTA (Mantido) =====
     private void FecharCarta()
     {
         if (cartaAtualUI != null)
             cartaAtualUI.SetActive(false);
 
         if (imagemExtraUI != null)
-            imagemExtraUI.SetActive(false); // desativa junto
+            imagemExtraUI.SetActive(false);
 
         cartaAberta = false;
-        Time.timeScale = 1f; // volta o jogo
+        Time.timeScale = 1f;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        Debug.Log("Carta fechada!");
     }
 
-    // ===== MOVIMENTO =====
+    // ===== MOVIMENTO (Mantido) =====
     public void Run()
     {
         _speed = _runPressed ? _velocidade * _multiplicadorDeVelocidade : _velocidade;
     }
 
-    // ===== LANTERNA =====
+    // ===== LANTERNA (Mantido) =====
     public void LanternPres()
     {
         _lntrOn = !_lntrOn;
@@ -422,7 +394,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    // ===== GAME MODE 1 (Noclip/Fly) =====
+    // ===== GAME MODE 1 (Noclip/Fly) (Mantido) =====
     public void gMode()
     {
         if (_gmod1)
@@ -448,10 +420,10 @@ public class Player : MonoBehaviour
         }
     }
 
-    // ===== GIZMOS =====
+    // ===== GIZMOS (Mantido) =====
     private void OnDrawGizmos()
     {
-        if (_giz)
+        if (_giz && _pCam != null)
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawRay(_pCam.transform.position, _pCam.transform.forward * _alcanceDeInteração);

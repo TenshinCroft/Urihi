@@ -14,6 +14,7 @@ TagManager:
   - ChaveInicio
   - Carta
   - Quadro
+  - "Pe\xE7a"
   layers:
   - Default
   - TransparentFX
