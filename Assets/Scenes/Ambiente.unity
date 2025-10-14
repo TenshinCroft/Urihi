@@ -18112,8 +18112,8 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0.24607658, g: 1, b: 0, a: 1}
-  m_Intensity: 0.5
-  m_Range: 45.38
+  m_Intensity: 32.5
+  m_Range: 51.08
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -20121,7 +20121,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 15.9, y: -291.3}
+  m_AnchoredPosition: {x: 15.9, y: -232}
   m_SizeDelta: {x: 700, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1379841396
@@ -22439,7 +22439,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 15.899994, y: -291.3}
+  m_AnchoredPosition: {x: 15.899994, y: -231.99997}
   m_SizeDelta: {x: 700, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1526256770
