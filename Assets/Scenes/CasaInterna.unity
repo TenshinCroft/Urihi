@@ -38260,7 +38260,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 759465116420982895, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 16
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 821796178188311430, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -38284,7 +38284,7 @@ PrefabInstance:
       objectReference: {fileID: 425318672}
     - target: {fileID: 2379241700353882784, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 16
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3099742786686974341, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: far clip plane
@@ -38312,15 +38312,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6179141448131298415, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 16
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6270317829974405682, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 16
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6469013451043635662, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 16
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6812683406811213645, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -38364,11 +38364,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7537623978432399707, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 16
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7903240628741356184, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 16
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8179845243717924264, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_Name
@@ -38376,7 +38376,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8688575833368881273, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 16
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
