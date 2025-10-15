@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
 
     // CONTROLER
     [Header("Sistema de Input")]
-    [HideInInspector] public int _i = 0; // Contador de itens comuns/chaves
+    public int _i = 0; // Contador de itens comuns/chaves
     private PlayerControls _inpActions;
     private CharacterController _cntr;
 

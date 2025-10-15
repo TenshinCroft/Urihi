@@ -13,6 +13,8 @@ public class CollectibleItem : MonoBehaviour
 
     [Header("Puzzle Settings")]
     public bool isPuzzlePiece = false; // SE TRUE, USA O PuzzleItemManager
+    // NOVO: Se TRUE, o item só aparece quando o método ActivateItem() for chamado.
+    public bool requiresExternalActivation = false;
 
     [Header("Key Settings")]
     public bool isKey = false;
@@ -30,6 +32,8 @@ public class CollectibleItem : MonoBehaviour
     [Header("Scene Settings")]
     public string menuSceneName = "tela inicio";
 
+    // MANTIDA para peças de puzzle, chaves e fim de jogo.
+    // Para cartas, a lógica de reabrir a UI não depende desta flag.
     private bool _coletado = false;
 
     void Start()
@@ -46,6 +50,14 @@ public class CollectibleItem : MonoBehaviour
             {
                 gameObject.layer = interactionLayer;
             }
+            DeactivateItem(); // não precisa ser chamado aqui se for cuidado pelo bloco requiresExternalActivation
+        }
+
+        // CORREÇÃO: O item só começa DESATIVADO se for uma peça de puzzle E requer ativação externa.
+        // Carta comum deve começar ATIVA.
+        if (isPuzzlePiece && requiresExternalActivation)
+        {
+            gameObject.SetActive(false);
         }
 
         // Se não foi atribuída uma tela preta, tenta encontrar automaticamente
@@ -74,19 +86,49 @@ public class CollectibleItem : MonoBehaviour
         }
     }
 
+    // NOVO MÉTODO PÚBLICO: Torna o item visível e coletável
+    public void ActivateItem()
+    {
+        if (!gameObject.activeSelf)
+        {
+            gameObject.SetActive(true);
+            Debug.Log($"Item '{itemName}' ativado (apareceu) após evento.");
+        }
+    }
+
+    public void DeactivateItem()
+    {
+        // Mantenho este método, se for chamado por fora ou pela lógica de requiresExternalActivation.
+        if (gameObject.activeSelf)
+        {
+            gameObject.SetActive(false);
+            Debug.Log($"Item '{itemName}' desativado (desapareceu) antes do jogo.");
+        }
+    }
+
+
     // MÉTODO PÚBLICO para ser chamado pelo Player.cs via raycast
     public void ColetarItem(Player player)
     {
-        if (_coletado) return;
+        // Define se o item é consumível (desaparece ou finaliza algo)
+        bool isConsumable = isPuzzlePiece || isKey || endsGame || itemName == "Cassete";
+
+        if (_coletado && isConsumable) return;
+
 
         Debug.Log("Item coletado via clique: " + itemName);
-        _coletado = true;
+
+        if (isConsumable)
+        {
+            _coletado = true; // Só marca como coletado se for consumível
+        }
+
 
         if (collectSound != null)
             AudioSource.PlayClipAtPoint(collectSound, transform.position);
 
         // ===============================================
-        // LÓGICA DE COLETA DE PEÇA DO PUZZLE (CORREÇÃO)
+        // LÓGICA DE COLETA DE PEÇA DO PUZZLE (RESTAURADO!)
         // ===============================================
         if (isPuzzlePiece)
         {
@@ -149,22 +191,29 @@ public class CollectibleItem : MonoBehaviour
             return;
         }
 
-        // Caso seja carta comum abre normalmente
+        // LÓGICA DA CARTA COMUM
         if (player != null && cartaUI != null)
         {
+            // Esta lógica NÃO marca _coletado = true e NÃO destrói o objeto, 
+            // permitindo a reinteração (reabertura).
             player.ShowFeedback("Carta coletada. Pressione F para fechar.");
             player.AbrirCarta(cartaUI);
+            return;
+        }
+
+        // Se o item não for nenhum dos tipos especiais acima, destrói após a coleta (comportamento padrão de item)
+        if (isConsumable)
+        {
             Destroy(gameObject);
         }
     }
 
-    // O restante do código (GameEndSequence, FadeToBlack, etc.)
-    // é mantido como no seu script original.
+    // O restante do código (GameEndSequence, FadeToBlack, ShowTextsSequence, FadeInText, FinishGame)
+    // é mantido como na correção anterior.
 
     private IEnumerator GameEndSequence()
     {
-        Time.timeScale = 0f;
-
+        // Desativar movimento/olhar do jogador
         Player player = FindObjectOfType<Player>();
         if (player != null) { player.enabled = false; }
 
@@ -178,26 +227,31 @@ public class CollectibleItem : MonoBehaviour
         yield return StartCoroutine(ShowTextsSequence());
 
         FinishGame();
-        Destroy(gameObject);
     }
 
     private IEnumerator FadeToBlack()
     {
-        if (telaPretalFinal == null) { yield break; }
+        if (telaPretalFinal == null)
+        {
+            Debug.LogError("TelaPretalFinal (Image) não está atribuída ou não foi encontrada!");
+            yield break;
+        }
+
         telaPretalFinal.gameObject.SetActive(true);
-        Color initialColor = Color.black; initialColor.a = 0f; telaPretalFinal.color = initialColor;
 
         RectTransform rectTransform = telaPretalFinal.GetComponent<RectTransform>();
         if (rectTransform != null)
         {
-            rectTransform.anchorMin = Vector2.zero; rectTransform.anchorMax = Vector2.one;
-            rectTransform.offsetMin = Vector2.zero; rectTransform.offsetMax = Vector2.zero;
-            rectTransform.anchoredPosition = Vector2.zero; rectTransform.sizeDelta = Vector2.zero;
+            rectTransform.anchorMin = Vector2.zero;
+            rectTransform.anchorMax = Vector2.one;
+            rectTransform.offsetMin = Vector2.zero;
+            rectTransform.offsetMax = Vector2.zero;
         }
 
         float elapsedTime = 0f;
-        Color startColor = telaPretalFinal.color;
+        Color startColor = new Color(0f, 0f, 0f, 0f);
         Color targetColor = new Color(0f, 0f, 0f, 1f);
+        telaPretalFinal.color = startColor;
 
         while (elapsedTime < fadeToBlackDuration)
         {
@@ -234,7 +288,7 @@ public class CollectibleItem : MonoBehaviour
 
         float elapsedTime = 0f;
         Color startColor = texto.color; startColor.a = 0f;
-        Color targetColor = startColor; targetColor.a = 1f;
+        Color targetColor = texto.color; targetColor.a = 1f;
 
         texto.color = startColor;
 
@@ -268,5 +322,6 @@ public class CollectibleItem : MonoBehaviour
             Application.Quit();
 #endif
         }
+        Destroy(gameObject);
     }
 }

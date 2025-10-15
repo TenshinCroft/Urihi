@@ -12,7 +12,10 @@ public class ScreenShake : MonoBehaviour
     {
         // só chacoalha se efeitos estiverem ativos e jogo não estiver pausado
         if (SettingsMenu.isPaused || !SettingsMenu.effectsEnabled)
+        {
+            ResetCameraPosition();
             return;
+        }
 
         if (_shakeCoroutine != null)
             StopCoroutine(_shakeCoroutine);
@@ -32,17 +35,38 @@ public class ScreenShake : MonoBehaviour
                 continue;
             }
 
-            float offsetX = Random.Range(-1f, 1f) * magnitude;
-            float offsetY = Random.Range(-1f, 1f) * magnitude;
+            // CORREÇÃO: Removemos o cálculo de fade out para garantir a força máxima do shake.
+            // O screenshake agora usa a 'magnitude' total durante toda a 'duration'.
 
-            transform.localPosition = _originalPos + new Vector3(offsetX, offsetY, 0);
+            // Aplica a posição original mais o offset do shake, usando a magnitude total
+            transform.localPosition = _originalPos + new Vector3(
+                Random.Range(-1f, 1f) * magnitude,
+                Random.Range(-1f, 1f) * magnitude,
+                0
+            );
 
-            elapsed += Time.deltaTime;
+            // Usa Time.unscaledDeltaTime para que o shake termine no tempo real.
+            elapsed += Time.unscaledDeltaTime;
             yield return null;
         }
 
-        transform.localPosition = _originalPos;
+        // Chamada de reset explícita ao final da corrotina para garantir a estabilidade.
+        ResetCameraPosition();
     }
 
+    public void ResetCameraPosition()
+    {
+        if (_shakeCoroutine != null)
+        {
+            StopCoroutine(_shakeCoroutine);
+            _shakeCoroutine = null;
+        }
 
+        // Força o localPosition de volta ao original.
+        if (transform.localPosition != _originalPos)
+        {
+            transform.localPosition = _originalPos;
+            Debug.Log("Posição da câmera resetada para estabilidade.");
+        }
+    }
 }
