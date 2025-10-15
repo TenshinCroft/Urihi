@@ -18,8 +18,9 @@ public class PianoPuzzle : MonoBehaviour
     public AudioClip somErro;
     public AudioClip somAcerto;
 
-    [Header("Materiais de Feedback")]
-    public Material materialPreto;
+    [Header("Cor de Reset dos Indicadores")]
+    // Use esta variável no Inspector para definir a cor de "vazio" (provavelmente preto)
+    public Color corPreta = Color.black;
 
     private int indiceAtual = 0;
     private Rigidbody rbItem;
@@ -28,22 +29,32 @@ public class PianoPuzzle : MonoBehaviour
     private bool feedbackTocando = false;
     private LayerMask pianoLayerMask;
 
+    // Array para armazenar as N teclas clicadas pelo usuário
+    private GameObject[] sequenciaUsuario;
+
+    // Bloco de propriedades para mudar a cor de forma eficiente (sem criar novas instâncias de material)
+    private MaterialPropertyBlock propBlock;
+
     void Start()
     {
-        // Certifique-se de que a Layer está corretamente configurada como 'Interação'
+        // Inicializa o MaterialPropertyBlock
+        propBlock = new MaterialPropertyBlock();
+
+        // Inicializa o array de entrada do usuário com o mesmo tamanho da ordem correta
+        sequenciaUsuario = new GameObject[ordemCorreta.Length];
+
+        // Configuração da Layer: Usando o nome exato 'Interação'
         pianoLayerMask = LayerMask.GetMask("Interação");
 
         if (pianoLayerMask.value == 0)
         {
-            Debug.LogError("ERRO: A Layer 'Interação' não foi encontrada. Verifique a ortografia.");
+            Debug.LogError("ERRO: A Layer 'Interação' não foi encontrada. O Raycast do piano não funcionará.");
         }
 
         if (itemLiberado != null)
         {
             itemLiberado.SetActive(false);
-
             rbItem = itemLiberado.GetComponent<Rigidbody>();
-
             if (rbItem != null)
             {
                 rbItem.isKinematic = true;
@@ -62,13 +73,14 @@ public class PianoPuzzle : MonoBehaviour
 
     void Update()
     {
+        // Bloqueia a entrada enquanto o puzzle está completo ou tocando feedback/resetando
         if (puzzleCompleto || feedbackTocando)
             return;
 
         Vector2 posicaoClique = Vector2.zero;
         bool clicou = false;
 
-        // Detecção de Clique (Omitido por brevidade)
+        // Detecção de Clique
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
             posicaoClique = Mouse.current.position.ReadValue();
@@ -85,6 +97,7 @@ public class PianoPuzzle : MonoBehaviour
         {
             Ray ray = Camera.main.ScreenPointToRay(posicaoClique);
 
+            // Raycast usando a máscara de camada 'Interação'
             if (Physics.Raycast(ray, out RaycastHit hit, 100f, pianoLayerMask))
             {
                 GameObject objetoClicado = hit.collider.gameObject;
@@ -93,69 +106,102 @@ public class PianoPuzzle : MonoBehaviour
 
                 if (indiceDoObjeto != -1)
                 {
-                    if (puzzleCompleto)
+                    // Toca o som da tecla clicada (se não estiver em loop de feedback)
+                    TocarSomDoObjeto(objetoClicado);
+
+                    // 1. Armazena a tecla clicada no slot atual
+                    sequenciaUsuario[indiceAtual] = objetoClicado;
+
+                    // 2. Acende o indicador na posição atual com a COR da tecla
+                    AtualizarIndicador(indiceAtual, objetoClicado);
+
+                    // 3. Avança para o próximo slot
+                    indiceAtual++;
+
+                    // 4. VERIFICAÇÃO: A sequência completa foi preenchida?
+                    if (indiceAtual >= ordemCorreta.Length)
                     {
-                        TocarSomDoObjeto(objetoClicado);
-                        return;
-                    }
-
-                    bool clicouCorretamente = (objetoClicado == ordemCorreta[indiceAtual]);
-                    bool completou = (indiceAtual + 1) >= ordemCorreta.Length;
-
-                    // NOVA LÓGICA DE INDICADOR (Movemos para antes do if/else)
-                    // Se o clique for em qualquer tecla, ela acende seu próprio indicador temporariamente
-                    // O indicador acendido é o que está na posição atual (indiceAtual)
-                    if (indiceAtual < indicadores.Length)
-                    {
-                        AtualizarIndicador(indiceAtual, objetoClicado);
-                    }
-
-                    if (clicouCorretamente)
-                    {
-                        // Se acertar, o indicador já está aceso e a cor é mantida.
-
-                        if (completou)
-                        {
-                            if (somAcerto != null) { StartCoroutine(TocarSomFeedback(somAcerto)); }
-                            if (itemLiberado != null)
-                            {
-                                itemLiberado.SetActive(true);
-                                if (rbItem != null) { rbItem.isKinematic = false; rbItem.useGravity = true; }
-                            }
-                            puzzleCompleto = true;
-                        }
-                        else
-                        {
-                            TocarSomDoObjeto(objetoClicado);
-                            indiceAtual++;
-                        }
-                    }
-                    else // Clicou na tecla errada
-                    {
-                        PararSomDoCubo(objetoClicado);
-
-                        // O som de erro é tocado
-                        if (somErro != null) { StartCoroutine(TocarSomFeedback(somErro)); }
-
-                        // O indicador acende a cor errada, mas é resetado após o feedback
-                        // Para permitir que o jogador veja o erro, vamos usar um Coroutine para resetar
-                        StartCoroutine(ResetarComAtraso(0.5f)); // Espera 0.5s para o som de erro antes de resetar
-
-                        // Reseta o índice para 0
-                        indiceAtual = 0;
+                        VerificarSequenciaCompleta();
                     }
                 }
             }
         }
     }
 
-    // NOVO MÉTODO: Reseta os indicadores após um pequeno atraso
-    IEnumerator ResetarComAtraso(float delay)
+    // Contém toda a lógica de checagem e punição/recompensa.
+    void VerificarSequenciaCompleta()
     {
-        yield return new WaitForSeconds(delay);
-        ResetarIndicadores();
+        bool sequenciaCorreta = true;
+
+        // Itera sobre toda a sequência para checar
+        for (int i = 0; i < ordemCorreta.Length; i++)
+        {
+            if (sequenciaUsuario[i] != ordemCorreta[i])
+            {
+                sequenciaCorreta = false;
+                break; // Errou
+            }
+        }
+
+        if (sequenciaCorreta)
+        {
+            // --- ACERTO COMPLETO ---
+            if (somAcerto != null) { StartCoroutine(TocarSomFeedback(somAcerto, false)); }
+
+            if (itemLiberado != null)
+            {
+                itemLiberado.SetActive(true);
+                if (rbItem != null) { rbItem.isKinematic = false; rbItem.useGravity = true; }
+            }
+            puzzleCompleto = true;
+            Debug.Log("Puzzle completo!");
+        }
+        else
+        {
+            // --- ERRO COMPLETO ---
+            if (somErro != null) { StartCoroutine(TocarSomFeedback(somErro, true)); }
+            Debug.Log("Sequência errada. Resetando.");
+            // O reset (indices e cores) é feito dentro da coroutine TocarSomFeedback
+        }
     }
 
+    // Coroutine TocarSomFeedback: Modificada para lidar com o reset atrasado do modo Fill-and-Check
+    IEnumerator TocarSomFeedback(AudioClip clip, bool isError)
+    {
+        feedbackTocando = true;
+
+        audioSource.Stop();
+        audioSource.PlayOneShot(clip);
+
+        float delay = clip.length;
+
+        // Se for erro, reseta o puzzle e os indicadores após o som
+        if (isError)
+        {
+            yield return new WaitForSeconds(delay);
+
+            ResetarIndicadores(); // Reseta visual (cores)
+            LimparSequenciaUsuario(); // Reseta o array de entrada
+            indiceAtual = 0; // Reseta o índice
+        }
+        else
+        {
+            yield return new WaitForSeconds(delay);
+        }
+
+        feedbackTocando = false;
+    }
+
+    // Limpa o array de entrada do usuário
+    void LimparSequenciaUsuario()
+    {
+        for (int i = 0; i < sequenciaUsuario.Length; i++)
+        {
+            sequenciaUsuario[i] = null;
+        }
+    }
+
+    // FUNÇÃO ATUALIZADA: Usa MaterialPropertyBlock para mudar a Cor Base e a Cor de Emissão
     void AtualizarIndicador(int indice, GameObject tecla)
     {
         if (indice < indicadores.Length)
@@ -165,20 +211,27 @@ public class PianoPuzzle : MonoBehaviour
 
             if (teclaRenderer != null && indicadorRenderer != null)
             {
-                // Copia o material principal da tecla para o indicador
-                indicadorRenderer.material = teclaRenderer.sharedMaterial;
+                // Obter a cor base da tecla (do material compartilhado)
+                Color corDaTecla = teclaRenderer.sharedMaterial.GetColor("_BaseColor");
+
+                // Obter o bloco de propriedades ATUAL do indicador
+                indicadorRenderer.GetPropertyBlock(propBlock);
+
+                // 1. Definir a nova COR BASE
+                propBlock.SetColor("_BaseColor", corDaTecla);
+
+                // 2. Definir a nova COR DE EMISSÃO (para fazer o cubo brilhar)
+                propBlock.SetColor("_EmissionColor", corDaTecla);
+
+                // 3. Aplicar o bloco de propriedades de volta ao indicador
+                indicadorRenderer.SetPropertyBlock(propBlock);
             }
         }
     }
 
+    // FUNÇÃO ATUALIZADA: Reseta a Cor Base e a Cor de Emissão para o preto (corPreta)
     void ResetarIndicadores()
     {
-        if (materialPreto == null)
-        {
-            Debug.LogError("O Material Preto de Reset não foi atribuído no Inspector do PianoPuzzle.");
-            return;
-        }
-
         foreach (GameObject indicador in indicadores)
         {
             if (indicador != null)
@@ -186,7 +239,15 @@ public class PianoPuzzle : MonoBehaviour
                 Renderer renderer = indicador.GetComponent<Renderer>();
                 if (renderer != null)
                 {
-                    renderer.material = materialPreto;
+                    renderer.GetPropertyBlock(propBlock);
+
+                    // 1. Resetar COR BASE para a cor de reset
+                    propBlock.SetColor("_BaseColor", corPreta);
+
+                    // 2. Resetar COR DE EMISSÃO para a cor de reset (desliga o brilho)
+                    propBlock.SetColor("_EmissionColor", corPreta);
+
+                    renderer.SetPropertyBlock(propBlock);
                 }
             }
         }
@@ -199,18 +260,10 @@ public class PianoPuzzle : MonoBehaviour
         if (audio != null && audio.clip != null) { audio.Stop(); audio.Play(); }
     }
 
+    // PararSomDoCubo não é mais usado, mas mantido caso necessite.
     void PararSomDoCubo(GameObject objeto)
     {
         AudioSource audio = objeto.GetComponent<AudioSource>();
         if (audio != null) { audio.Stop(); }
-    }
-
-    IEnumerator TocarSomFeedback(AudioClip clip)
-    {
-        feedbackTocando = true;
-        audioSource.Stop();
-        audioSource.PlayOneShot(clip);
-        yield return new WaitForSeconds(clip.length);
-        feedbackTocando = false;
     }
 }
