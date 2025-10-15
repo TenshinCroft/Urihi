@@ -4481,7 +4481,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Mas percebeu que o que ele enfrentava, n\xE3o era algo comum"
+  m_text: E algo aponta que se trata da lenda do Mapinguari, mas como?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -12480,7 +12480,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 15.899994, y: -232.99998}
+  m_AnchoredPosition: {x: 15.899994, y: -164.99997}
   m_SizeDelta: {x: 700, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &425318672
@@ -16572,7 +16572,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 15.9, y: -233}
+  m_AnchoredPosition: {x: 15.9, y: -165}
   m_SizeDelta: {x: 700, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &604685407
@@ -47391,6 +47391,10 @@ PrefabInstance:
       value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 1115580553016946764, guid: d41e92f6828ad2745a19fe6798963848, type: 3}
+      propertyPath: m_TagString
+      value: Carta
+      objectReference: {fileID: 0}
+    - target: {fileID: 1115580553016946764, guid: d41e92f6828ad2745a19fe6798963848, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 16
       objectReference: {fileID: 0}
@@ -54761,7 +54765,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2839993640257526322, guid: e1e07beddb0cac1488251203d998d9fa, type: 3}
       propertyPath: _itensParaAbrir
-      value: 10
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2929404726394090882, guid: e1e07beddb0cac1488251203d998d9fa, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
