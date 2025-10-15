@@ -17,7 +17,7 @@ public class LightConfig
     public Light[] lights;
     public LightMode lightMode = LightMode.None;
     public LightEndMode endMode = LightEndMode.None;
-public bool changeColor = false;
+    public bool changeColor = false;
     public Color newColor = Color.red;
 
     public bool changeIntensity = false;
@@ -69,12 +69,23 @@ public class ShakeConfig
     public TimerMode timerMode = TimerMode.Primary;
 }
 
+// NOVO STRUCT PARA ITENS COLETÁVEIS
+[System.Serializable]
+public class CollectibleActivation
+{
+    [Tooltip("Se TRUE, ativa os itens listados ao fim do evento.")]
+    public bool activateItems = false;
+    [Tooltip("Itens CollectibleItem que serão ativados (tornados visíveis e coletáveis).")]
+    public CollectibleItem[] itemsToActivate;
+}
+
+
 public class EnemyTriggerEvent : MonoBehaviour
 {
     [Header("Geral")]
     public GameObject enemy;
     public GameObject mainCamera;
-[Header("Duração do Evento")]
+    [Header("Duração do Evento")]
     public float primaryDuration = 5f;
     public float secondaryDuration = 3f;
     public bool repeatableEvent = false;
@@ -86,6 +97,10 @@ public class EnemyTriggerEvent : MonoBehaviour
     public FlashlightConfig flashlightConfig;
     public PostProcessConfig postConfig;
     public ShakeConfig shakeConfig;
+
+    // NOVO: Configuração para ativação de itens
+    [Header("Ativação de Itens Coletáveis")]
+    public CollectibleActivation collectibleActivation;
 
     private Renderer[] enemyRenderers;
     private NavMeshAgent enemyNav;
@@ -179,6 +194,9 @@ public class EnemyTriggerEvent : MonoBehaviour
 
         HandleEndModes(lightConfig, flashlightConfig, enemyConfig, postConfig);
 
+        // NOVO: Chama o método para ativar os itens coletáveis após o evento
+        ActivateCollectibleItems();
+
         _alreadyPlayed = true;
 
         if (repeatableEvent)
@@ -186,6 +204,23 @@ public class EnemyTriggerEvent : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
             _alreadyPlayed = false;
             GetComponent<Collider>().enabled = true;
+        }
+    }
+
+    // NOVO MÉTODO: Ativa os itens coletáveis
+    private void ActivateCollectibleItems()
+    {
+        if (!collectibleActivation.activateItems || collectibleActivation.itemsToActivate == null)
+        {
+            return;
+        }
+
+        foreach (CollectibleItem item in collectibleActivation.itemsToActivate)
+        {
+            if (item != null)
+            {
+                item.ActivateItem();
+            }
         }
     }
 
