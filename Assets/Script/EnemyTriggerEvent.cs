@@ -69,7 +69,6 @@ public class ShakeConfig
     public TimerMode timerMode = TimerMode.Primary;
 }
 
-// NOVO STRUCT PARA ITENS COLETÁVEIS
 [System.Serializable]
 public class CollectibleActivation
 {
@@ -79,6 +78,13 @@ public class CollectibleActivation
     public CollectibleItem[] itemsToActivate;
 }
 
+[System.Serializable]
+public class AdditionalAudioConfig
+{
+    [Tooltip("AudioSources adicionais que serão reproduzidos durante o evento")]
+    public AudioSource[] audioSources;
+    public TimerMode timerMode = TimerMode.Primary;
+}
 
 public class EnemyTriggerEvent : MonoBehaviour
 {
@@ -98,9 +104,11 @@ public class EnemyTriggerEvent : MonoBehaviour
     public PostProcessConfig postConfig;
     public ShakeConfig shakeConfig;
 
-    // NOVO: Configuração para ativação de itens
     [Header("Ativação de Itens Coletáveis")]
     public CollectibleActivation collectibleActivation;
+
+    [Header("Áudios Adicionais")]
+    public AdditionalAudioConfig additionalAudioConfig;
 
     private Renderer[] enemyRenderers;
     private NavMeshAgent enemyNav;
@@ -129,7 +137,6 @@ public class EnemyTriggerEvent : MonoBehaviour
             screenShake = mainCamera.GetComponent<ScreenShake>();
             postController = mainCamera.GetComponentInChildren<PostProcessController>();
 
-            // fallback se não achar no mainCamera
             if (postController == null)
                 postController = FindObjectOfType<PostProcessController>();
 
@@ -175,6 +182,9 @@ public class EnemyTriggerEvent : MonoBehaviour
         if (shakeConfig.enabled && screenShake != null)
             StartCoroutine(HandleShake(duration));
 
+        if (additionalAudioConfig.audioSources != null && additionalAudioConfig.audioSources.Length > 0)
+            StartCoroutine(HandleAdditionalAudio(duration));
+
         if (lightConfig.lights.Length > 0)
             ApplyLightChanges(lightConfig);
 
@@ -194,7 +204,6 @@ public class EnemyTriggerEvent : MonoBehaviour
 
         HandleEndModes(lightConfig, flashlightConfig, enemyConfig, postConfig);
 
-        // NOVO: Chama o método para ativar os itens coletáveis após o evento
         ActivateCollectibleItems();
 
         _alreadyPlayed = true;
@@ -207,7 +216,6 @@ public class EnemyTriggerEvent : MonoBehaviour
         }
     }
 
-    // NOVO MÉTODO: Ativa os itens coletáveis
     private void ActivateCollectibleItems()
     {
         if (!collectibleActivation.activateItems || collectibleActivation.itemsToActivate == null)
@@ -226,21 +234,17 @@ public class EnemyTriggerEvent : MonoBehaviour
 
     private void HandleEndModes(LightConfig lightCfg, FlashlightConfig flashCfg, EnemyConfig enemyCfg, PostProcessConfig postCfg)
     {
-        // luzes
         if (lightCfg.endMode == LightEndMode.None) RestoreLights(lightCfg);
         else if (lightCfg.endMode == LightEndMode.Off) TurnLightsOff(lightCfg);
 
-        // lanterna do player
         if (flashCfg.endMode == FlashlightEndMode.Off && playerScript != null)
             playerScript._lntrOn = false;
         else if (flashCfg.endMode == FlashlightEndMode.On && playerScript != null)
             playerScript._lntrOn = true;
 
-        // inimigo
         if (enemyCfg.endMode == EnemyEndMode.Off) SetEnemyVisible(false);
         else if (enemyCfg.endMode == EnemyEndMode.On) SetEnemyVisible(true);
 
-        // post processing — sempre tratar se o evento mexeu com ele
         if (postCfg.mode != PostProcessMode.None)
             HandlePostEndMode();
     }
@@ -369,4 +373,25 @@ public class EnemyTriggerEvent : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
     }
 
+    private IEnumerator HandleAdditionalAudio(float duration)
+    {
+        foreach (AudioSource audioSource in additionalAudioConfig.audioSources)
+        {
+            if (audioSource != null)
+            {
+                audioSource.Play();
+            }
+        }
+
+        float waitTime = (additionalAudioConfig.timerMode == TimerMode.Secondary) ? secondaryDuration : duration;
+        yield return new WaitForSeconds(waitTime);
+
+        foreach (AudioSource audioSource in additionalAudioConfig.audioSources)
+        {
+            if (audioSource != null && audioSource.isPlaying)
+            {
+                audioSource.Stop();
+            }
+        }
+    }
 }

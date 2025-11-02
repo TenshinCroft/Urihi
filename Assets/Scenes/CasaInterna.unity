@@ -30069,6 +30069,9 @@ MonoBehaviour:
     - {fileID: 1678677354}
     - {fileID: 935950522}
     - {fileID: 4931218027966133707}
+  additionalAudioConfig:
+    audioSources: []
+    timerMode: 0
 --- !u!1 &1104536338 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5898653232141146909, guid: 524cee88b97444c48a74804fa72cd209, type: 3}
@@ -33736,7 +33739,19 @@ MonoBehaviour:
     timerMode: 0
   collectibleActivation:
     activateItems: 0
-    itemsToActivate: []
+    itemsToActivate:
+    - {fileID: 8780077626604279878}
+    - {fileID: 6888441889262780823}
+    - {fileID: 4931218028149568403}
+    - {fileID: 4931218026267173604}
+    - {fileID: 1940824886}
+    - {fileID: 1678677354}
+    - {fileID: 935950522}
+    - {fileID: 4931218027966133707}
+  additionalAudioConfig:
+    audioSources:
+    - {fileID: 304044051}
+    timerMode: 0
 --- !u!1 &1251325216 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 86715634860418777, guid: 3657d3aa9037c1b439e7cbea15ed8e41, type: 3}
