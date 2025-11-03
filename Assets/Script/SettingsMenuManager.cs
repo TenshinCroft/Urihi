@@ -8,7 +8,9 @@ public class SettingsMenuManager : MonoBehaviour
     public GameObject optionsMenu;
     public Slider sensitivitySlider;
     public Slider volumeSlider;
-    public Toggle effectsToggle;
+    // Removido: public Toggle effectsToggle; 
+    public Toggle motionBlurToggle;     // NOVO: Toggle para Motion Blur
+    public Toggle screenShakeToggle;    // NOVO: Toggle para Screen Shake
     public Dropdown graphicsDropdown;
 
     [Header("Referências externas")]
@@ -18,7 +20,7 @@ public class SettingsMenuManager : MonoBehaviour
     public ScreenShake screenShake;
 
     public static bool isPaused = false;
-    public static bool effectsEnabled = true;
+    // Removida: public static bool effectsEnabled = true;
 
     private MenuOptionsManager optionsManager;
 
@@ -56,7 +58,11 @@ public class SettingsMenuManager : MonoBehaviour
     {
         if (sensitivitySlider != null) sensitivitySlider.gameObject.SetActive(active);
         if (volumeSlider != null) volumeSlider.gameObject.SetActive(active);
-        if (effectsToggle != null) effectsToggle.gameObject.SetActive(active);
+
+        // ATUALIZADO: Ativar/Desativar os novos Toggles
+        if (motionBlurToggle != null) motionBlurToggle.gameObject.SetActive(active);
+        if (screenShakeToggle != null) screenShakeToggle.gameObject.SetActive(active);
+
         if (graphicsDropdown != null) graphicsDropdown.gameObject.SetActive(active);
     }
 
@@ -80,13 +86,24 @@ public class SettingsMenuManager : MonoBehaviour
             Debug.LogWarning("volumeSlider NÃO está referenciado no Inspector!");
         }
 
-        if (effectsToggle != null)
+        // NOVO: Listener para Motion Blur
+        if (motionBlurToggle != null)
         {
-            effectsToggle.onValueChanged.AddListener(SetEffects);
+            motionBlurToggle.onValueChanged.AddListener(SetMotionBlur);
         }
         else
         {
-            Debug.LogWarning("effectsToggle NÃO está referenciado no Inspector!");
+            Debug.LogWarning("motionBlurToggle NÃO está referenciado no Inspector!");
+        }
+
+        // NOVO: Listener para Screen Shake
+        if (screenShakeToggle != null)
+        {
+            screenShakeToggle.onValueChanged.AddListener(SetScreenShake);
+        }
+        else
+        {
+            Debug.LogWarning("screenShakeToggle NÃO está referenciado no Inspector!");
         }
 
         if (graphicsDropdown != null)
@@ -98,16 +115,17 @@ public class SettingsMenuManager : MonoBehaviour
 
     private void InitializeGraphicsDropdown()
     {
+        // ... (o código do Dropdown permanece o mesmo)
         if (graphicsDropdown != null)
         {
             graphicsDropdown.ClearOptions();
             string[] qualityNames = QualitySettings.names;
-            
+
             for (int i = 0; i < qualityNames.Length; i++)
             {
                 graphicsDropdown.options.Add(new Dropdown.OptionData(qualityNames[i]));
             }
-            
+
             graphicsDropdown.RefreshShownValue();
         }
     }
@@ -116,37 +134,32 @@ public class SettingsMenuManager : MonoBehaviour
     {
         if (optionsManager == null) return;
 
-        if (sensitivitySlider != null)
+        // Sensibilidade e Volume
+        if (sensitivitySlider != null) sensitivitySlider.value = optionsManager.GetSensitivity();
+        if (volumeSlider != null) volumeSlider.value = optionsManager.GetVolume();
+
+        // NOVO: Motion Blur
+        if (motionBlurToggle != null)
         {
-            sensitivitySlider.value = optionsManager.GetSensitivity();
-            Debug.Log("sensitivitySlider inicializado com valor: " + optionsManager.GetSensitivity());
+            motionBlurToggle.isOn = optionsManager.GetMotionBlurEnabled();
+            Debug.Log("motionBlurToggle inicializado como: " + optionsManager.GetMotionBlurEnabled());
         }
 
-        if (volumeSlider != null)
+        // NOVO: Screen Shake
+        if (screenShakeToggle != null)
         {
-            volumeSlider.value = optionsManager.GetVolume();
-            Debug.Log("volumeSlider inicializado com valor: " + optionsManager.GetVolume());
+            screenShakeToggle.isOn = optionsManager.GetScreenShakeEnabled();
+            Debug.Log("screenShakeToggle inicializado como: " + optionsManager.GetScreenShakeEnabled());
         }
 
-        if (effectsToggle != null)
-        {
-            effectsToggle.isOn = optionsManager.GetEffectsEnabled();
-            effectsEnabled = optionsManager.GetEffectsEnabled();
-            Debug.Log("effectsToggle inicializado como: " + optionsManager.GetEffectsEnabled());
-        }
-
-        if (graphicsDropdown != null)
-        {
-            graphicsDropdown.value = optionsManager.GetGraphicsQuality();
-            Debug.Log("graphicsDropdown inicializado com valor: " + optionsManager.GetGraphicsQuality());
-        }
+        // Gráficos
+        if (graphicsDropdown != null) graphicsDropdown.value = optionsManager.GetGraphicsQuality();
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("ESC pressionado, toggle pause");
             TogglePause();
         }
     }
@@ -154,15 +167,9 @@ public class SettingsMenuManager : MonoBehaviour
     public void TogglePause()
     {
         if (isPaused)
-        {
-            Debug.Log("Resuming game");
             ResumeGame();
-        }
         else
-        {
-            Debug.Log("Pausing game");
             PauseGame();
-        }
     }
 
     private void PauseGame()
@@ -186,6 +193,9 @@ public class SettingsMenuManager : MonoBehaviour
         isPaused = false;
         Time.timeScale = 1f;
 
+        // Salva as configurações ao fechar o menu de pausa (boa prática)
+        if (optionsManager != null) optionsManager.SaveSettings();
+
         if (optionsMenu != null)
         {
             optionsMenu.gameObject.SetActive(false);
@@ -202,7 +212,6 @@ public class SettingsMenuManager : MonoBehaviour
         if (optionsManager != null)
         {
             optionsManager.SetSensitivity(value);
-            Debug.Log("Sensibilidade ajustada para " + value);
         }
     }
 
@@ -211,16 +220,28 @@ public class SettingsMenuManager : MonoBehaviour
         if (optionsManager != null)
         {
             optionsManager.SetVolume(value);
-            Debug.Log("Volume ajustado para " + value);
         }
     }
 
-    public void SetEffects(bool enabled)
+    // REMOVIDO: public void SetEffects(bool enabled) { ... }
+
+    // NOVO: Chama o setter específico para Motion Blur
+    public void SetMotionBlur(bool enabled)
     {
         if (optionsManager != null)
         {
-            optionsManager.SetEffects(enabled);
-            Debug.Log("Effects toggled: " + enabled);
+            optionsManager.SetMotionBlur(enabled);
+            Debug.Log("Motion Blur toggled: " + enabled);
+        }
+    }
+
+    // NOVO: Chama o setter específico para Screen Shake
+    public void SetScreenShake(bool enabled)
+    {
+        if (optionsManager != null)
+        {
+            optionsManager.SetScreenShake(enabled);
+            Debug.Log("Screen Shake toggled: " + enabled);
         }
     }
 
@@ -229,7 +250,6 @@ public class SettingsMenuManager : MonoBehaviour
         if (optionsManager != null)
         {
             optionsManager.SetGraphicsQuality(qualityIndex);
-            Debug.Log("Graphics quality set to: " + QualitySettings.names[qualityIndex]);
         }
     }
 

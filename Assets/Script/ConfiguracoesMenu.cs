@@ -7,7 +7,9 @@ public class ConfiguracoesMenu : MonoBehaviour
     [Header("Referências de UI do Menu Principal")]
     public Slider sensitivitySlider;
     public Slider volumeSlider;
-    public Toggle effectsToggle;
+    // Removido: public Toggle effectsToggle; 
+    public Toggle motionBlurToggle;     // NOVO: Toggle para Motion Blur
+    public Toggle screenShakeToggle;    // NOVO: Toggle para Screen Shake
     public Dropdown graphicsDropdown;
     public Button resetButton;
     public Button applyButton;
@@ -33,9 +35,16 @@ public class ConfiguracoesMenu : MonoBehaviour
             volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
         }
 
-        if (effectsToggle != null)
+        // NOVO: Listener para Motion Blur
+        if (motionBlurToggle != null)
         {
-            effectsToggle.onValueChanged.AddListener(OnEffectsChanged);
+            motionBlurToggle.onValueChanged.AddListener(OnMotionBlurChanged);
+        }
+
+        // NOVO: Listener para Screen Shake
+        if (screenShakeToggle != null)
+        {
+            screenShakeToggle.onValueChanged.AddListener(OnScreenShakeChanged);
         }
 
         if (graphicsDropdown != null)
@@ -61,12 +70,12 @@ public class ConfiguracoesMenu : MonoBehaviour
         {
             graphicsDropdown.ClearOptions();
             string[] qualityNames = QualitySettings.names;
-            
+
             for (int i = 0; i < qualityNames.Length; i++)
             {
                 graphicsDropdown.options.Add(new Dropdown.OptionData(qualityNames[i]));
             }
-            
+
             graphicsDropdown.RefreshShownValue();
         }
     }
@@ -85,9 +94,16 @@ public class ConfiguracoesMenu : MonoBehaviour
             volumeSlider.value = optionsManager.GetVolume();
         }
 
-        if (effectsToggle != null)
+        // NOVO: Carrega Motion Blur
+        if (motionBlurToggle != null)
         {
-            effectsToggle.isOn = optionsManager.GetEffectsEnabled();
+            motionBlurToggle.isOn = optionsManager.GetMotionBlurEnabled();
+        }
+
+        // NOVO: Carrega Screen Shake
+        if (screenShakeToggle != null)
+        {
+            screenShakeToggle.isOn = optionsManager.GetScreenShakeEnabled();
         }
 
         if (graphicsDropdown != null)
@@ -112,11 +128,23 @@ public class ConfiguracoesMenu : MonoBehaviour
         }
     }
 
-    private void OnEffectsChanged(bool enabled)
+    // REMOVIDO: private void OnEffectsChanged(bool enabled) { ... }
+
+    // NOVO: Chama o setter específico para Motion Blur
+    private void OnMotionBlurChanged(bool enabled)
     {
         if (optionsManager != null)
         {
-            optionsManager.SetEffects(enabled);
+            optionsManager.SetMotionBlur(enabled);
+        }
+    }
+
+    // NOVO: Chama o setter específico para Screen Shake
+    private void OnScreenShakeChanged(bool enabled)
+    {
+        if (optionsManager != null)
+        {
+            optionsManager.SetScreenShake(enabled);
         }
     }
 
@@ -133,6 +161,7 @@ public class ConfiguracoesMenu : MonoBehaviour
         if (optionsManager != null)
         {
             optionsManager.ResetToDefaults();
+            // Recarrega a UI para exibir os novos valores padrão
             LoadCurrentSettings();
         }
     }

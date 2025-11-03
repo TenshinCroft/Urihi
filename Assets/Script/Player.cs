@@ -219,7 +219,7 @@ public class Player : MonoBehaviour
             {
                 if (interactionHintText != null)
                 {
-                    interactionHintText.text = "Pressione LMB";
+                    interactionHintText.text = "Pressione o Botão Esquerdos";
                     interactionHintText.gameObject.SetActive(true);
                 }
                 return;
@@ -297,8 +297,16 @@ public class Player : MonoBehaviour
                 {
                     // Lógica para Item Comum/Legacy (sem script CollectibleItem)
                     _i += 1;
-                    ShowFeedback(hit.collider.name + " Coletada");
-                    Debug.Log("Item comum coletado: " + hit.collider.name);
+                    if (hit.collider.CompareTag("Carta"))
+                    {
+                        Debug.Log(hit.collider.name + " Aberta");
+                        ShowFeedback(hit.collider.name + " Aberta");
+                    }
+                    else
+                    {
+                        Debug.Log(hit.collider.name + " Coletada");
+                        ShowFeedback(hit.collider.name + " Coletada");
+                    }
                     Destroy(hit.collider.gameObject);
                 }
                 return;

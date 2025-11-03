@@ -8,6 +8,7 @@ public class MenuOptionsManager : MonoBehaviour
     {
         get
         {
+            // Padrão Singleton DontDestroyOnLoad
             if (instance == null)
             {
                 instance = FindObjectOfType<MenuOptionsManager>();
@@ -25,18 +26,22 @@ public class MenuOptionsManager : MonoBehaviour
     [Header("Configurações Padrão")]
     public float defaultSensitivity = 2f;
     public float defaultVolume = 1f;
-    public bool defaultEffectsEnabled = true;
+    public bool defaultMotionBlurEnabled = true;     // RENOMEADO
+    public bool defaultScreenShakeEnabled = true;    // NOVO
     public int defaultGraphicsQuality = 2;
 
     [Header("Teclas para Configurações")]
     private const string SENSITIVITY_KEY = "MouseSensitivity";
-    private const string VOLUME_KEY = "Volume";
-    private const string EFFECTS_KEY = "EffectsEnabled";
+    private const string VOLUME_KEY = "MasterVolume";
+    private const string MOTION_BLUR_KEY = "MotionBlurEnabled";   // NOVO
+    private const string SCREEN_SHAKE_KEY = "ScreenShakeEnabled"; // NOVO
     private const string GRAPHICS_QUALITY_KEY = "GraphicsQuality";
 
+    // Variáveis de estado
     private float currentSensitivity;
     private float currentVolume;
-    private bool currentEffectsEnabled;
+    private bool currentMotionBlurEnabled;     // RENOMEADO
+    private bool currentScreenShakeEnabled;    // NOVO
     private int currentGraphicsQuality;
 
     private void Awake()
@@ -49,15 +54,22 @@ public class MenuOptionsManager : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject);
-        
+
         LoadSettings();
     }
 
     public void LoadSettings()
     {
+        // Carrega configurações existentes
         currentSensitivity = PlayerPrefs.GetFloat(SENSITIVITY_KEY, defaultSensitivity);
         currentVolume = PlayerPrefs.GetFloat(VOLUME_KEY, defaultVolume);
-        currentEffectsEnabled = PlayerPrefs.GetInt(EFFECTS_KEY, defaultEffectsEnabled ? 1 : 0) == 1;
+
+        // NOVO: Carrega Motion Blur
+        currentMotionBlurEnabled = PlayerPrefs.GetInt(MOTION_BLUR_KEY, defaultMotionBlurEnabled ? 1 : 0) == 1;
+
+        // NOVO: Carrega Screen Shake
+        currentScreenShakeEnabled = PlayerPrefs.GetInt(SCREEN_SHAKE_KEY, defaultScreenShakeEnabled ? 1 : 0) == 1;
+
         currentGraphicsQuality = PlayerPrefs.GetInt(GRAPHICS_QUALITY_KEY, defaultGraphicsQuality);
 
         ApplySettings();
@@ -67,7 +79,13 @@ public class MenuOptionsManager : MonoBehaviour
     {
         PlayerPrefs.SetFloat(SENSITIVITY_KEY, currentSensitivity);
         PlayerPrefs.SetFloat(VOLUME_KEY, currentVolume);
-        PlayerPrefs.SetInt(EFFECTS_KEY, currentEffectsEnabled ? 1 : 0);
+
+        // NOVO: Salva Motion Blur
+        PlayerPrefs.SetInt(MOTION_BLUR_KEY, currentMotionBlurEnabled ? 1 : 0);
+
+        // NOVO: Salva Screen Shake
+        PlayerPrefs.SetInt(SCREEN_SHAKE_KEY, currentScreenShakeEnabled ? 1 : 0);
+
         PlayerPrefs.SetInt(GRAPHICS_QUALITY_KEY, currentGraphicsQuality);
         PlayerPrefs.Save();
     }
@@ -76,19 +94,24 @@ public class MenuOptionsManager : MonoBehaviour
     {
         SetVolume(currentVolume);
         SetGraphicsQuality(currentGraphicsQuality);
-        SettingsMenu.effectsEnabled = currentEffectsEnabled;
+
+        // NOVO: Aplica os efeitos separadamente
+        SetMotionBlur(currentMotionBlurEnabled);
+        SetScreenShakeInternal(currentScreenShakeEnabled);
+
+        // Removida: SettingsMenu.effectsEnabled = currentEffectsEnabled;
     }
+
+    // --- MÉTODOS DE AJUSTE (SETTERS) ---
 
     public void SetSensitivity(float sensitivity)
     {
         currentSensitivity = Mathf.Clamp(sensitivity, 0.1f, 10f);
-        
         PlayerLook playerLook = FindObjectOfType<PlayerLook>();
         if (playerLook != null)
         {
             playerLook.mouseSensitivity = currentSensitivity;
         }
-        
         SaveSettings();
     }
 
@@ -96,29 +119,45 @@ public class MenuOptionsManager : MonoBehaviour
     {
         currentVolume = Mathf.Clamp01(volume);
         AudioListener.volume = currentVolume;
+        // Se você usa AudioMixer, adicione a lógica aqui também:
+        // audioMixer.SetFloat("MasterVolume", Mathf.Log10(Mathf.Max(currentVolume, 0.0001f)) * 20);
         SaveSettings();
     }
 
-    public void SetEffects(bool enabled)
+    // RENOMEADO/ATUALIZADO: Trata apenas o Motion Blur
+    public void SetMotionBlur(bool enabled)
     {
-        currentEffectsEnabled = enabled;
-        SettingsMenu.effectsEnabled = enabled;
+        currentMotionBlurEnabled = enabled;
 
         PostProcessController postProcess = FindObjectOfType<PostProcessController>();
         if (postProcess != null)
         {
             postProcess.EnableMotionBlur(enabled);
         }
+        SaveSettings();
+    }
 
+    // NOVO MÉTODO: Trata apenas o Screen Shake.
+    // Usamos um nome interno para evitar chamadas recursivas de SaveSettings
+    private void SetScreenShakeInternal(bool enabled)
+    {
+        currentScreenShakeEnabled = enabled;
+
+        // Esta lógica deve ser suficiente, mas a verificação principal acontece no script ScreenShake.
         if (!enabled)
         {
             ScreenShake screenShake = FindObjectOfType<ScreenShake>();
             if (screenShake != null)
             {
-                screenShake.StopAllCoroutines();
+                screenShake.ResetCameraPosition(); // É mais seguro chamar ResetCameraPosition ou StopAllCoroutines
             }
         }
+    }
 
+    // NOVO MÉTODO: Setter público para o Menu (chama o método interno e salva)
+    public void SetScreenShake(bool enabled)
+    {
+        SetScreenShakeInternal(enabled);
         SaveSettings();
     }
 
@@ -129,48 +168,41 @@ public class MenuOptionsManager : MonoBehaviour
         SaveSettings();
     }
 
-    public float GetSensitivity()
-    {
-        return currentSensitivity;
-    }
+    // --- MÉTODOS DE LEITURA (GETTERS) ---
 
-    public float GetVolume()
-    {
-        return currentVolume;
-    }
+    public float GetSensitivity() => currentSensitivity;
+    public float GetVolume() => currentVolume;
+    public int GetGraphicsQuality() => currentGraphicsQuality;
 
-    public bool GetEffectsEnabled()
-    {
-        return currentEffectsEnabled;
-    }
+    // RENOMEADO: Get para Motion Blur
+    public bool GetMotionBlurEnabled() => currentMotionBlurEnabled;
 
-    public int GetGraphicsQuality()
-    {
-        return currentGraphicsQuality;
-    }
+    // NOVO: Get para Screen Shake
+    public bool GetScreenShakeEnabled() => currentScreenShakeEnabled;
+
+    // REMOVIDO: GetEffectsEnabled() e a variável currentEffectsEnabled
+
+    // --- MÉTODOS DE UTILIDADE ---
 
     public void ResetToDefaults()
     {
         SetSensitivity(defaultSensitivity);
         SetVolume(defaultVolume);
-        SetEffects(defaultEffectsEnabled);
+        SetMotionBlur(defaultMotionBlurEnabled);        // NOVO
+        SetScreenShake(defaultScreenShakeEnabled);      // NOVO
         SetGraphicsQuality(defaultGraphicsQuality);
     }
 
+    // ... (OnApplicationPause, OnApplicationFocus, OnDestroy permanecem os mesmos)
+
     private void OnApplicationPause(bool pauseStatus)
     {
-        if (pauseStatus)
-        {
-            SaveSettings();
-        }
+        if (pauseStatus) SaveSettings();
     }
 
     private void OnApplicationFocus(bool hasFocus)
     {
-        if (!hasFocus)
-        {
-            SaveSettings();
-        }
+        if (!hasFocus) SaveSettings();
     }
 
     private void OnDestroy()

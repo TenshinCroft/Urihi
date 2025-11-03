@@ -5338,9 +5338,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1211437056013951622, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
+      propertyPath: feedbackText
+      value: 
+      objectReference: {fileID: 1369984563}
+    - target: {fileID: 1211437056013951622, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: _GameMode1Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1211437056013951622, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
+      propertyPath: interactionHintText
+      value: 
+      objectReference: {fileID: 1526256771}
     - target: {fileID: 1814352272028235428, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_Range
       value: 25
@@ -5364,6 +5372,10 @@ PrefabInstance:
     - target: {fileID: 3325390696779830590, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_Intensity
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527131033287250222, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
+      propertyPath: mouseSensitivity
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6812683406811213645, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_LocalScale.x
@@ -17645,8 +17657,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.014555536, y: 0.003610953, z: 0.024620429}
-  m_Center: {x: -0.0037614957, y: 3.2312626e-16, z: 0.012309367}
+  m_Size: {x: 0.014555538, y: 0.002010199, z: 0.024620427}
+  m_Center: {x: -0.0037614957, y: 0.00009416009, z: 0.012309367}
 --- !u!82 &1219274501
 AudioSource:
   m_ObjectHideFlags: 0

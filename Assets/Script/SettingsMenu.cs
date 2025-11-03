@@ -4,75 +4,42 @@ using UnityEngine.Audio;
 
 public class SettingsMenu : MonoBehaviour
 {
-    [Header("Refer�ncias de UI")]
+    // --- Chaves para PlayerPrefs ---
+    private const string SensitivityKey = "MouseSensitivity";
+    private const string VolumeKey = "MasterVolume";
+    private const string MotionBlurKey = "MotionBlurEnabled";
+    private const string ScreenShakeKey = "ScreenShakeEnabled";
+
+    // --- Valores Padrão (Fallback) ---
+    private const float DefaultSensitivity = 5f;
+    private const float DefaultVolume = 1f;
+    private const bool DefaultMotionBlur = true;
+    private const bool DefaultScreenShake = true;
+
+    [Header("Referências de UI")]
     public GameObject optionsMenu;
     public Slider sensitivitySlider;
     public Slider volumeSlider;
-    public Toggle effectsToggle;
+    public Toggle motionBlurToggle;     // O antigo effectsToggle foi substituído por este
+    public Toggle screenShakeToggle;    // NOVO campo para o Toggle de Screen Shake
 
-    [Header("Refer�ncias externas")]
+    [Header("Referências externas")]
     public PlayerLook playerLook;
     public AudioMixer audioMixer;
     public PostProcessController postProcessController;
     public ScreenShake screenShake;
 
     public static bool isPaused = false;
-    public static bool effectsEnabled = true;
 
     private void Awake()
     {
-        Debug.Log("SettingsMenu Awake");
+        Debug.Log("SettingsMenu Awake - Tentando carregar configurações...");
 
-        if (optionsMenu != null)
-        {
-            optionsMenu.gameObject.SetActive(false);
-            sensitivitySlider.gameObject.SetActive(false);
-            volumeSlider.gameObject.SetActive(false);
-            effectsToggle.gameObject.SetActive(false);
-            Debug.Log("optionsMenu inicializado como inativo");
-        }
-        else
-        {
-            Debug.LogWarning("optionsMenu N�O est� referenciado no Inspector!");
-        }
+        // 1. CARREGAR E APLICAR CONFIGURAÇÕES PERSISTENTES
+        LoadSettings();
 
-        if (sensitivitySlider != null)
-        {
-            sensitivitySlider.onValueChanged.AddListener(SetSensitivity);
-            if (playerLook != null)
-            {
-                sensitivitySlider.value = playerLook.mouseSensitivity;
-                Debug.Log("sensitivitySlider inicializado com valor: " + playerLook.mouseSensitivity);
-            }
-        }
-        else
-        {
-            Debug.LogWarning("sensitivitySlider N�O est� referenciado no Inspector!");
-        }
-
-        if (volumeSlider != null)
-        {
-            volumeSlider.onValueChanged.AddListener(SetVolume);
-            // Inicializa o slider com o volume atual do AudioListener
-            volumeSlider.value = AudioListener.volume;
-            Debug.Log("volumeSlider referenciado e inicializado com valor: " + AudioListener.volume);
-        }
-        else
-        {
-            Debug.LogWarning("volumeSlider N�O est� referenciado no Inspector!");
-        }
-
-        if (effectsToggle != null)
-        {
-            effectsToggle.onValueChanged.AddListener(SetEffects);
-            effectsToggle.isOn = true;
-            effectsEnabled = true;
-            Debug.Log("effectsToggle inicializado como ON");
-        }
-        else
-        {
-            Debug.LogWarning("effectsToggle N�O est� referenciado no Inspector!");
-        }
+        // 2. INICIALIZAÇÃO DA UI E LISTENERS
+        InitializeUI();
 
         isPaused = false;
         Time.timeScale = 1f;
@@ -81,12 +48,78 @@ public class SettingsMenu : MonoBehaviour
         Cursor.visible = false;
     }
 
+    private void InitializeUI()
+    {
+        // Oculta o menu de opções e seus filhos na inicialização
+        if (optionsMenu != null)
+        {
+            optionsMenu.gameObject.SetActive(false);
+
+            // Desativar Sliders e Toggles individualmente
+            if (sensitivitySlider != null) sensitivitySlider.gameObject.SetActive(false);
+            if (volumeSlider != null) volumeSlider.gameObject.SetActive(false);
+            if (motionBlurToggle != null) motionBlurToggle.gameObject.SetActive(false);
+            if (screenShakeToggle != null) screenShakeToggle.gameObject.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("optionsMenu NÃO está referenciado no Inspector!");
+        }
+
+        // Adiciona Listeners
+        if (sensitivitySlider != null)
+        {
+            sensitivitySlider.onValueChanged.AddListener(SetSensitivity);
+            Debug.Log("sensitivitySlider configurado com Listener.");
+        }
+        if (volumeSlider != null)
+        {
+            volumeSlider.onValueChanged.AddListener(SetVolume);
+            Debug.Log("volumeSlider configurado com Listener.");
+        }
+        if (motionBlurToggle != null)
+        {
+            motionBlurToggle.onValueChanged.AddListener(SetMotionBlur);
+            Debug.Log("motionBlurToggle configurado com Listener.");
+        }
+        if (screenShakeToggle != null)
+        {
+            screenShakeToggle.onValueChanged.AddListener(SetScreenShake);
+            Debug.Log("screenShakeToggle configurado com Listener.");
+        }
+    }
+
+    private void LoadSettings()
+    {
+        // --- 1. Sensibilidade ---
+        float loadedSensitivity = PlayerPrefs.GetFloat(SensitivityKey, DefaultSensitivity);
+        if (playerLook != null) playerLook.mouseSensitivity = loadedSensitivity;
+        if (sensitivitySlider != null) sensitivitySlider.value = loadedSensitivity;
+        Debug.Log($"Sensibilidade carregada: {loadedSensitivity}");
+
+        // --- 2. Volume ---
+        float loadedVolume = PlayerPrefs.GetFloat(VolumeKey, DefaultVolume);
+        SetVolume(loadedVolume);
+        if (volumeSlider != null) volumeSlider.value = loadedVolume;
+        Debug.Log($"Volume carregado: {loadedVolume}");
+
+        // --- 3. Motion Blur ---
+        bool loadedMotionBlur = PlayerPrefs.GetInt(MotionBlurKey, DefaultMotionBlur ? 1 : 0) == 1;
+        SetMotionBlur(loadedMotionBlur);
+        if (motionBlurToggle != null) motionBlurToggle.isOn = loadedMotionBlur;
+        Debug.Log($"Motion Blur carregado: {loadedMotionBlur}");
+
+        // --- 4. Screen Shake ---
+        bool loadedScreenShake = PlayerPrefs.GetInt(ScreenShakeKey, DefaultScreenShake ? 1 : 0) == 1;
+        SetScreenShake(loadedScreenShake);
+        if (screenShakeToggle != null) screenShakeToggle.isOn = loadedScreenShake;
+        Debug.Log($"Screen Shake carregado: {loadedScreenShake}");
+    }
+
     private void Update()
     {
-        // Detecta a tecla ESC para abrir/fechar o menu
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("ESC pressionado, toggle pause");
             TogglePause();
         }
     }
@@ -94,15 +127,9 @@ public class SettingsMenu : MonoBehaviour
     public void TogglePause()
     {
         if (isPaused)
-        {
-            Debug.Log("Resuming game");
             ResumeGame();
-        }
         else
-        {
-            Debug.Log("Pausing game");
             PauseGame();
-        }
     }
 
     private void PauseGame()
@@ -113,10 +140,12 @@ public class SettingsMenu : MonoBehaviour
         if (optionsMenu != null)
         {
             optionsMenu.gameObject.SetActive(true);
-            sensitivitySlider.gameObject.SetActive(true);
-            volumeSlider.gameObject.SetActive(true);
-            effectsToggle.gameObject.SetActive(true);
-            Debug.Log("Menu ativado com filhos vis�veis");
+
+            // Ativar Sliders e Toggles individualmente
+            if (sensitivitySlider != null) sensitivitySlider.gameObject.SetActive(true);
+            if (volumeSlider != null) volumeSlider.gameObject.SetActive(true);
+            if (motionBlurToggle != null) motionBlurToggle.gameObject.SetActive(true);
+            if (screenShakeToggle != null) screenShakeToggle.gameObject.SetActive(true);
         }
 
         Cursor.lockState = CursorLockMode.None;
@@ -130,63 +159,66 @@ public class SettingsMenu : MonoBehaviour
 
         if (optionsMenu != null)
         {
-            // Mant�m o Canvas ativo, mas desativa os filhos
             optionsMenu.gameObject.SetActive(false);
-            sensitivitySlider.gameObject.SetActive(false);
-            volumeSlider.gameObject.SetActive(false);
-            effectsToggle.gameObject.SetActive(false);
-            Debug.Log("Filhos do menu desativados");
+
+            // Desativar Sliders e Toggles individualmente
+            if (sensitivitySlider != null) sensitivitySlider.gameObject.SetActive(false);
+            if (volumeSlider != null) volumeSlider.gameObject.SetActive(false);
+            if (motionBlurToggle != null) motionBlurToggle.gameObject.SetActive(false);
+            if (screenShakeToggle != null) screenShakeToggle.gameObject.SetActive(false);
         }
+
+        SaveSettings(); // Salva ao sair do menu
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    // Fun��o para ativar/desativar todos os filhos de um GameObject
-    private void SetChildrenActive(GameObject parent, bool active)
+    public void SaveSettings()
     {
-        for (int i = 0; i < parent.transform.childCount; i++)
-        {
-            parent.transform.GetChild(i).gameObject.SetActive(active);
-        }
+        PlayerPrefs.Save();
+        Debug.Log("Configurações salvas no disco (PlayerPrefs.Save())");
     }
 
     public void SetSensitivity(float value)
     {
-        if (playerLook != null)
-        {
-            playerLook.mouseSensitivity = value;
-            Debug.Log("Sensibilidade ajustada para " + value);
-        }
+        if (playerLook != null) playerLook.mouseSensitivity = value;
+        PlayerPrefs.SetFloat(SensitivityKey, value);
     }
 
     public void SetVolume(float value)
     {
-        // Controla o volume global do Unity (0.0 a 1.0)
         AudioListener.volume = value;
-        Debug.Log("Volume ajustado para " + value);
-        
-        // Se o audioMixer estiver configurado, também controla pelo mixer
         if (audioMixer != null)
         {
             audioMixer.SetFloat("MasterVolume", Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20);
         }
+        PlayerPrefs.SetFloat(VolumeKey, value);
     }
 
-    public void SetEffects(bool enabled)
+    public void SetMotionBlur(bool enabled)
     {
-        effectsEnabled = enabled;
-        Debug.Log("Effects toggled: " + enabled);
-
         if (postProcessController != null)
             postProcessController.EnableMotionBlur(enabled);
 
+        Debug.Log("Motion Blur toggled: " + enabled);
+
+        PlayerPrefs.SetInt(MotionBlurKey, enabled ? 1 : 0);
+    }
+
+    public void SetScreenShake(bool enabled)
+    {
         if (!enabled && screenShake != null)
             screenShake.StopAllCoroutines();
+
+        Debug.Log("Screen Shake toggled: " + enabled);
+
+        PlayerPrefs.SetInt(ScreenShakeKey, enabled ? 1 : 0);
     }
 
     public void QuitGame()
     {
+        SaveSettings();
         Debug.Log("Quit game called");
         Application.Quit();
     }
