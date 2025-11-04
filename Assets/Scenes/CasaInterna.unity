@@ -4988,7 +4988,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1cb253fac4d32024bba977d7827dd241, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.4741263
+      value: -1.514
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1cb253fac4d32024bba977d7827dd241, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10939,7 +10939,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1020785362057560820, guid: d41e92f6828ad2745a19fe6798963848, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.2008762
+      value: -1.2198
       objectReference: {fileID: 0}
     - target: {fileID: 1020785362057560820, guid: d41e92f6828ad2745a19fe6798963848, type: 3}
       propertyPath: m_LocalPosition.z
@@ -22457,15 +22457,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6ec86031311d2b14f8cb7a172229f5ed, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.076563
+      value: -2.077
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6ec86031311d2b14f8cb7a172229f5ed, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.4613764
+      value: -1.509
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6ec86031311d2b14f8cb7a172229f5ed, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 16.268082
+      value: 16.268
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6ec86031311d2b14f8cb7a172229f5ed, type: 3}
       propertyPath: m_LocalRotation.w
@@ -39215,7 +39215,7 @@ PrefabInstance:
       objectReference: {fileID: 1418200781}
     - target: {fileID: 1211437056013951622, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: _GameMode1Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1211437056013951622, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: interactionHintText
@@ -46496,6 +46496,10 @@ PrefabInstance:
     - target: {fileID: 2772668629724960978, guid: d41e92f6828ad2745a19fe6798963848, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088493810013463708, guid: d41e92f6828ad2745a19fe6798963848, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3088493810013463708, guid: d41e92f6828ad2745a19fe6798963848, type: 3}
       propertyPath: m_StaticEditorFlags
