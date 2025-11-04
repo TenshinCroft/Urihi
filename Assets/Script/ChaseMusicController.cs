@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class ChaseMusicController : MonoBehaviour
 {
-    [Header("Configuração do Áudio")]
-    public AudioSource chaseMusic; // música de perseguição
-    public bool canPlayMusic = false; // só habilita após evento 2
+    [Header("Configuraï¿½ï¿½o do ï¿½udio")]
+    public AudioSource chaseMusic; // mï¿½sica de perseguiï¿½ï¿½o
+    public bool canPlayMusic = false; // sï¿½ habilita apï¿½s evento 2
 
     private bool isPlaying = false;
+    private bool forcedStart = false;
 
     public static ChaseMusicController instance;
 
@@ -27,8 +28,32 @@ public class ChaseMusicController : MonoBehaviour
         }
     }
 
+    public void StartChaseForced()
+    {
+        if (!canPlayMusic) return;
+
+        forcedStart = true;
+        if (!isPlaying && chaseMusic != null)
+        {
+            chaseMusic.Play();
+            isPlaying = true;
+        }
+    }
+
     public void StopChase()
     {
+        if (forcedStart) return;
+
+        if (isPlaying && chaseMusic != null)
+        {
+            chaseMusic.Stop();
+            isPlaying = false;
+        }
+    }
+
+    public void StopChaseForced()
+    {
+        forcedStart = false;
         if (isPlaying && chaseMusic != null)
         {
             chaseMusic.Stop();

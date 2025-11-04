@@ -4,10 +4,11 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
-    [Header("Áudio do Inimigo")]
+    [Header("ï¿½udio do Inimigo")]
     public AudioSource footstepAudio;
     public bool footstepsEnabled = false;
-    //============== ANIMAÇÕES ===================
+    private bool footstepsBlockedByEvent = false;
+    //============== ANIMAï¿½ï¿½ES ===================
     public Animator anim;
 
     public string walkParam = "IsWalking";
@@ -21,8 +22,8 @@ public class Enemy : MonoBehaviour
    
 
 
-    //============== REFERÊNCIAS =================
-    [Header("Referências")]
+    //============== REFERï¿½NCIAS =================
+    [Header("Referï¿½ncias")]
     public GameObject _p;
 
     //============== STATUS ======================
@@ -30,16 +31,16 @@ public class Enemy : MonoBehaviour
     public bool _plyAtq = false;
 
     //============== MOVIMENTO ===================
-    [Header("Parâmetros de Movimento")]
+    [Header("Parï¿½metros de Movimento")]
     public float _stpDst = 1.7f;
     public float _chsRng = 15f;
     [Range(0, 360)]
     public float _fov = 135f;
 
     [Header("Velocidade")]
-    public float _maxSpeed = 5f;       // velocidade máxima
-    public float _accelRate = 3f;      // aceleração quando começa a correr
-    public float _decelRate = 6f;      // desaceleração quando para
+    public float _maxSpeed = 5f;       // velocidade mï¿½xima
+    public float _accelRate = 3f;      // aceleraï¿½ï¿½o quando comeï¿½a a correr
+    public float _decelRate = 6f;      // desaceleraï¿½ï¿½o quando para
     private float _curSpeed = 0f;      // velocidade atual
 
     //============== IA ==========================
@@ -91,15 +92,15 @@ public class Enemy : MonoBehaviour
             hasAttackParam = HasAnimatorParameter(anim, attackParam, AnimatorControllerParameterType.Trigger);
 
             if (!hasWalkParam)
-                Debug.LogWarning($"Animator NÃO possui o parâmetro boolean '{walkParam}'. Verifique o nome no Animator (Parameters).");
+                Debug.LogWarning($"Animator Nï¿½O possui o parï¿½metro boolean '{walkParam}'. Verifique o nome no Animator (Parameters).");
             if (!hasRunParam)
-                Debug.LogWarning($"Animator NÃO possui o parâmetro boolean '{runParam}'. Verifique o nome no Animator (Parameters).");
+                Debug.LogWarning($"Animator Nï¿½O possui o parï¿½metro boolean '{runParam}'. Verifique o nome no Animator (Parameters).");
             if (!hasAttackParam)
-                Debug.LogWarning($"Animator NÃO possui o parâmetro trigger '{attackParam}'. Verifique o nome no Animator (Parameters).");
+                Debug.LogWarning($"Animator Nï¿½O possui o parï¿½metro trigger '{attackParam}'. Verifique o nome no Animator (Parameters).");
         }
         else
         {
-            Debug.LogWarning("Animator não atribuído ou não encontrado no GameObject.");
+            Debug.LogWarning("Animator nï¿½o atribuï¿½do ou nï¿½o encontrado no GameObject.");
         }
 
     }
@@ -107,9 +108,9 @@ public class Enemy : MonoBehaviour
     public void Start()
     {
         if (_p.transform == null)
-            Debug.LogError("O jogador não foi atribuído ao inimigo!");
+            Debug.LogError("O jogador nï¿½o foi atribuï¿½do ao inimigo!");
         if (anim != null && anim.applyRootMotion)
-            Debug.LogWarning("Recomendado: desmarcar 'Apply Root Motion' no Animator para que o NavMeshAgent controle a posição.");
+            Debug.LogWarning("Recomendado: desmarcar 'Apply Root Motion' no Animator para que o NavMeshAgent controle a posiï¿½ï¿½o.");
     }
 
     public void Update()
@@ -134,19 +135,16 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        // define destino + controle de aceleração
         if (_playerVisible)
         {
             _nav.SetDestination(_p.transform.position);
 
-            // rotação instantânea pro player
             _nav.updateRotation = false;
             Vector3 dir = (_p.transform.position - transform.position).normalized;
             dir.y = 0;
             if (dir != Vector3.zero)
                 transform.rotation = Quaternion.LookRotation(dir);
 
-            // acelera até a velocidade máxima
             _curSpeed = Mathf.MoveTowards(_curSpeed, _maxSpeed, _accelRate * Time.deltaTime);
 
             if (Vector3.Distance(_p.transform.position, transform.position) <= _stpDst)
@@ -156,20 +154,16 @@ public class Enemy : MonoBehaviour
         {
             _nav.updateRotation = true;
             Patrol();
-            // desacelera um pouco quando patrulhando
             _curSpeed = Mathf.MoveTowards(_curSpeed, _maxSpeed * 0.5f, _accelRate * Time.deltaTime);
         }
         else
         {
             _nav.ResetPath();
-            // desaceleração rápida
             _curSpeed = Mathf.MoveTowards(_curSpeed, 0f, _decelRate * Time.deltaTime);
         }
 
-        // aplica a velocidade no navmesh
         _nav.speed = _curSpeed;
 
-        // Atualiza parâmetros do Animator usando booleanos (Walk/Run)
         if (anim != null)
         {
             bool isWalking = _curSpeed > walkSpeedThreshold && _curSpeed <= runSpeedThreshold;
@@ -178,6 +172,7 @@ public class Enemy : MonoBehaviour
             if (hasWalkParam) anim.SetBool(walkHash, isWalking);
             if (hasRunParam) anim.SetBool(runHash, isRunning);
         }
+
         if (_playerVisible)
         {
             ChaseMusicController.instance?.StartChase();
@@ -186,7 +181,26 @@ public class Enemy : MonoBehaviour
         {
             ChaseMusicController.instance?.StopChase();
         }
-        // checagem de término de ataque (sem coroutine)
+
+        if (footstepsEnabled && !footstepsBlockedByEvent && footstepAudio != null && Time.timeScale > 0f)
+        {
+            bool isWalking = _curSpeed > walkSpeedThreshold && _curSpeed <= runSpeedThreshold;
+            bool isRunning = _curSpeed > runSpeedThreshold;
+
+            if ((isWalking || isRunning) && !footstepAudio.isPlaying)
+            {
+                footstepAudio.Play();
+            }
+            else if (!isWalking && !isRunning && footstepAudio.isPlaying)
+            {
+                footstepAudio.Stop();
+            }
+        }
+        else if (footstepAudio != null && footstepAudio.isPlaying)
+        {
+            footstepAudio.Stop();
+        }
+
         if (_attackInProgress && anim != null)
         {
             AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(0);
@@ -213,27 +227,10 @@ public class Enemy : MonoBehaviour
                     if (_attackFallbackTimer >= _attackFallbackTimeout) EndAttack();
                 }
             }
-            if (footstepsEnabled && footstepAudio != null)
-            {
-                bool isWalking = _curSpeed > walkSpeedThreshold && _curSpeed <= runSpeedThreshold;
-                bool isRunning = _curSpeed > runSpeedThreshold;
-
-                if ((isWalking || isRunning) && !footstepAudio.isPlaying)
-                {
-                    footstepAudio.Play();
-                }
-                else if (!isWalking && !isRunning && footstepAudio.isPlaying)
-                {
-                    footstepAudio.Stop();
-                }
-            }
-            else if (footstepAudio != null && footstepAudio.isPlaying)
-            {
-                // se não estiver habilitado, garante que para
-                footstepAudio.Stop();
-            }
         }
+
     }
+
     private void EndAttack()
     {
         _plyAtq = false;
@@ -242,11 +239,27 @@ public class Enemy : MonoBehaviour
         _attackFallbackTimer = 0f;
     }
 
+    public void BlockFootsteps()
+    {
+        footstepsBlockedByEvent = true;
+        if (footstepAudio != null && footstepAudio.isPlaying)
+        {
+            footstepAudio.Stop();
+        }
+    }
+
+    public void UnblockFootsteps()
+    {
+        footstepsBlockedByEvent = false;
+    }
+
+
+
 
 
     public void AttackPlayer()
     {
-        Debug.Log("Você Morreu");
+        Debug.Log("Vocï¿½ Morreu");
         _plyAtq = true;
         _nav.ResetPath();
         _curSpeed = 0f; // trava movimento quando atacar
@@ -260,8 +273,8 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            if (anim == null) Debug.LogWarning("Sem Animator: ataque será apenas lógico (sem animação).");
-            else Debug.LogWarning($"Parâmetro de ataque '{attackParam}' não encontrado no Animator; trigger ignorado.");
+            if (anim == null) Debug.LogWarning("Sem Animator: ataque serï¿½ apenas lï¿½gico (sem animaï¿½ï¿½o).");
+            else Debug.LogWarning($"Parï¿½metro de ataque '{attackParam}' nï¿½o encontrado no Animator; trigger ignorado.");
             _plyAtq = false;
         }
     }
@@ -300,7 +313,7 @@ public class Enemy : MonoBehaviour
             }
         }
     }
-    // alternativa: chamar a partir de um Animation Event no final da animação de ataque
+    // alternativa: chamar a partir de um Animation Event no final da animaï¿½ï¿½o de ataque
     public void OnAttackAnimationEnd() { EndAttack(); }
     public void OnDrawGizmos()
     {

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
 
@@ -110,6 +110,22 @@ public class EnemyTriggerEvent : MonoBehaviour
     [Header("Áudios Adicionais")]
     public AdditionalAudioConfig additionalAudioConfig;
 
+    [Header("Controle de Footsteps do Inimigo")]
+    [Tooltip("Se TRUE, bloqueia os footsteps do inimigo quando o evento INICIAR")]
+    public bool blockEnemyFootstepsOnStart = false;
+    [Tooltip("Se TRUE, desbloqueia os footsteps do inimigo quando o evento INICIAR")]
+    public bool unblockEnemyFootstepsOnStart = false;
+    [Tooltip("Se TRUE, bloqueia os footsteps do inimigo quando o evento TERMINAR")]
+    public bool blockEnemyFootstepsOnEnd = false;
+    [Tooltip("Se TRUE, desbloqueia os footsteps do inimigo quando o evento TERMINAR")]
+    public bool unblockEnemyFootstepsOnEnd = false;
+
+    [Header("Controle de Chase Music")]
+    [Tooltip("Se TRUE, habilita a música de chase quando o evento INICIAR")]
+    public bool enableChaseMusicOnStart = false;
+    [Tooltip("Se TRUE, inicia a música de chase IMEDIATAMENTE ao habilitar (não espera o inimigo ver o jogador)")]
+    public bool startChaseMusicImmediately = false;
+
     private Renderer[] enemyRenderers;
     private NavMeshAgent enemyNav;
     private CharacterController enemyCC;
@@ -173,6 +189,34 @@ public class EnemyTriggerEvent : MonoBehaviour
     {
         float duration = primaryDuration;
 
+        if (blockEnemyFootstepsOnStart && enemy != null)
+        {
+            Enemy enemyScript = enemy.GetComponent<Enemy>();
+            if (enemyScript != null)
+            {
+                enemyScript.BlockFootsteps();
+            }
+        }
+
+        if (unblockEnemyFootstepsOnStart && enemy != null)
+        {
+            Enemy enemyScript = enemy.GetComponent<Enemy>();
+            if (enemyScript != null)
+            {
+                enemyScript.UnblockFootsteps();
+            }
+        }
+
+        if (enableChaseMusicOnStart)
+        {
+            ChaseMusicController.instance?.EnableMusicAfterEvent2();
+            
+            if (startChaseMusicImmediately)
+            {
+                ChaseMusicController.instance?.StartChaseForced();
+            }
+        }
+
         if (flashlightConfig.mode != FlashlightConfig.FlashlightMode.Normal && flashlightScript != null)
             StartCoroutine(HandleFlashlight(duration));
 
@@ -205,6 +249,24 @@ public class EnemyTriggerEvent : MonoBehaviour
         HandleEndModes(lightConfig, flashlightConfig, enemyConfig, postConfig);
 
         ActivateCollectibleItems();
+
+        if (blockEnemyFootstepsOnEnd && enemy != null)
+        {
+            Enemy enemyScript = enemy.GetComponent<Enemy>();
+            if (enemyScript != null)
+            {
+                enemyScript.BlockFootsteps();
+            }
+        }
+
+        if (unblockEnemyFootstepsOnEnd && enemy != null)
+        {
+            Enemy enemyScript = enemy.GetComponent<Enemy>();
+            if (enemyScript != null)
+            {
+                enemyScript.UnblockFootsteps();
+            }
+        }
 
         _alreadyPlayed = true;
 
