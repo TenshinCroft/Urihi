@@ -62,6 +62,7 @@ public class Enemy : MonoBehaviour
     private NavMeshAgent _nav;
     public bool _playerVisible;
     public bool _IsPlayerInFOV;
+    private bool _wasChasing = false;
 
     // hashes para performance
     private int walkHash;
@@ -173,13 +174,18 @@ public class Enemy : MonoBehaviour
             if (hasRunParam) anim.SetBool(runHash, isRunning);
         }
 
-        if (_playerVisible)
+        // Music control with state change detection
+        if (_playerVisible && !_wasChasing)
         {
+            Debug.Log($"Enemy detected player! Calling StartChase. Instance null? {ChaseMusicController.instance == null}");
             ChaseMusicController.instance?.StartChase();
+            _wasChasing = true;
         }
-        else
+        else if (!_playerVisible && _wasChasing)
         {
+            Debug.Log($"Enemy lost player! Calling StopChase. Instance null? {ChaseMusicController.instance == null}");
             ChaseMusicController.instance?.StopChase();
+            _wasChasing = false;
         }
 
         if (footstepsEnabled && !footstepsBlockedByEvent && footstepAudio != null && Time.timeScale > 0f)

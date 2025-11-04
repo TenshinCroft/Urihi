@@ -20775,7 +20775,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &757958437
 RectTransform:
   m_ObjectHideFlags: 0
@@ -39201,6 +39201,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: 1203318187298603664, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
+      propertyPath: canPlayMusic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1211437056013951622, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: feedbackText
       value: 
@@ -39211,7 +39215,7 @@ PrefabInstance:
       objectReference: {fileID: 1418200781}
     - target: {fileID: 1211437056013951622, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: _GameMode1Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1211437056013951622, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: interactionHintText
@@ -39308,11 +39312,11 @@ PrefabInstance:
     - target: {fileID: 7662234616256285710, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_Resource
       value: 
-      objectReference: {fileID: 8300000, guid: fe917e99c7eb0c44ea74d48e8b67e17e, type: 3}
+      objectReference: {fileID: 8300000, guid: 4611174a5c8a81c4fbd58bc2c13528ab, type: 3}
     - target: {fileID: 7662234616256285710, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: fe917e99c7eb0c44ea74d48e8b67e17e, type: 3}
+      objectReference: {fileID: 8300000, guid: 4611174a5c8a81c4fbd58bc2c13528ab, type: 3}
     - target: {fileID: 7903240628741356184, guid: cc04ea42b05d2e4459ef264f5993943a, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
